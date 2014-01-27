@@ -1,0 +1,47 @@
+security:
+#    jms_security_extra:
+#        secure_controllers:  true
+#        secure_all_services: false
+    firewalls:
+      main:
+        pattern: ^/
+        form_login:
+            provider: fos_userbundle
+            csrf_provider: form.csrf_provider
+        logout:       true
+        anonymous:    true
+        remember_me:
+          key:      k4rt6y2op9
+          lifetime: 604800
+          path:     /
+          domain:   ~
+      secured_area:
+        form_login:
+          use_referer: true
+
+    access_control:
+      - { path: ^/idee/list, role: IS_AUTHENTICATED_ANONYMOUSLY }
+      - { path: ^/login$, role: IS_AUTHENTICATED_ANONYMOUSLY }
+      - { path: ^/register, role: IS_AUTHENTICATED_ANONYMOUSLY }
+      - { path: ^/resetting, role: IS_AUTHENTICATED_ANONYMOUSLY }
+      - { path: ^/admin/, role: ROLE_ADMIN }
+      - { path: ^/idee/list/moderation, role: ROLE_ADMIN }
+      - { path: ^/idee/admin_moderate, role: ROLE_ADMIN }
+      - { path: ^/idee/admin_validate, role: ROLE_ADMIN }
+      - { path: ^/message/, role: ROLE_ADMIN }
+      - { path: ^/idee, roles: ROLE_USER }
+      - { path: ^/invitation, roles: ROLE_USER }
+      - { path: ^/alerte, roles: ROLE_USER }
+      - { path: ^/vote, roles: ROLE_USER }
+      - { path: ^/profile, roles: ROLE_USER }
+      
+    providers:
+      fos_userbundle:
+        id: fos_user.user_provider.username
+
+    encoders:
+      FOS\UserBundle\Model\UserInterface: sha512
+
+    role_hierarchy:
+      ROLE_ADMIN:       ROLE_USER
+      ROLE_SUPER_ADMIN: ROLE_ADMIN

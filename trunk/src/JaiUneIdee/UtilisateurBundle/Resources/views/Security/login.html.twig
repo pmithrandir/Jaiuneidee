@@ -1,0 +1,28 @@
+{% extends "login" in app.request.requesturi ? 'FOSUserBundle::layout.html.twig' : 'FOSUserBundle::blank.html.twig' %}
+
+{% block title %}Se connecter{% endblock%}
+{% block fos_user_content %}
+{% if error %}
+    <div>{{ error|trans({}, 'FOSUserBundle') }}</div>
+{% endif %}
+
+<form action="{{ path("fos_user_security_check") }}" method="post" class="{{"login" in app.request.requesturi ?'form':''}}">
+    <input type="hidden" name="_csrf_token" value="{{ csrf_token }}" />
+
+    <label for="username">{{ 'security.login.username'|trans({}, 'FOSUserBundle') }}</label>
+    <input type="text" id="username" name="_username" />
+
+    <label for="password">{{ 'security.login.password'|trans({}, 'FOSUserBundle') }}</label>
+    <input type="password" id="password" name="_password" />
+    
+    <input type="checkbox" id="remember_me" name="_remember_me" value="on" />
+		<label for="remember_me" class="label_checkbox">{{ 'security.login.remember_me'|trans({}, 'FOSUserBundle') }}</label>
+    <br />
+    <input type="submit" id="_submit" name="_submit" value="{{ 'security.login.submit'|trans({}, 'FOSUserBundle') }}" />
+    ou <a href="{{ path('fos_user_registration_register') }}">Inscription</a>
+</form>
+{% if "login" in app.request.requesturi %}
+    <a class="lien_visible" href="{{ path('fos_user_resetting_request') }}">Mot de passe oublié</a>
+{% endif %}
+		
+{% endblock fos_user_content %}

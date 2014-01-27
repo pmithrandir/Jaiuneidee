@@ -1,0 +1,72 @@
+{% extends 'LyraAdminBundle::layout.html.twig' %}
+{% form_theme form.view 'LyraAdminBundle:Form:form_theme.html.twig' %}
+{% block title %}
+    {{ form.title|trans({}, form.transDomain) }}
+{% endblock %}
+{% block content %}
+<div id="ly-form-wrapper">
+    {% block form_title %}
+        <h1>{{ block('title') }}</h1>
+    {% endblock %}
+    {% block form_actions %}
+    <div class="form-actions">
+        {% for action in (form.action.name == 'new' ? form.newActions : form.editActions) %}
+            {% include action.template|default('LyraAdminBundle:Form:action.html.twig') %}
+        {% endfor %}    </div>
+    {% endblock %}
+    {% block form %}
+        {{ form_errors(form.view) }}
+        {% set params = object.id is defined ? { 'id' : object.id } : {} %}
+        <form class="ly-form" action="{{ path(form.action.routeName, params) }}" method="post">
+            <div id="column-1">
+            {% for group in form.groups %}
+                {% block form_group %}
+                <fieldset>
+                {% if group.caption %}
+                    <legend>{{ group.caption|trans({}, form.transDomain) }}</legend>
+                {% endif %}
+                <ol>
+                {% for field in group.fields %}
+                    {% set fld = not group.embed is defined ? form.fields[field] : '' %}
+                    {% set name = fld is empty ? field : fld.tag %}
+                    {% set view = form.view(group.embed|default(null)) %}
+                    {% block form_field %}
+                    <li>
+                    {{ form_errors(view[name]) }}
+                    {% if not (fld.label is defined and fld.label is empty) %}
+                        {{ form_label(view[name], fld.label is defined ? fld.label : null) }}
+                    {% endif %}
+                    {{ form_widget(view[name]) }}
+                    </li>
+                    {% endblock form_field %}
+                {% endfor %}
+                </ol>
+                </fieldset>
+                {% endblock form_group %}
+                {% if group.break_after %}
+                    </div>
+                    <div id="column-2">
+                {% endif %}
+            {% endfor %}
+            </div>
+            {{ form_row(form.view._token) }}
+            <hr class="clear" />
+            <input class="button" type="submit" value="{{ 'form.button.submit'|trans({}, 'LyraAdminBundle') }}" />
+        </form>
+    {% endblock %}
+</div>
+{% endblock %}
+{% block stylesheets %}
+{{ parent() }}
+<link rel="stylesheet" type="text/css" href="{{ asset('bundles/lyraadmin/css/form.css') }}" />
+{% if form.hasWidget('datetime_picker') %}
+    <link rel="stylesheet" type="text/css" href="{{ asset('bundles/lyraadmin/css/jquery-ui-timepicker-addon.css') }}" />
+{% endif %}
+{% endblock %}
+{% block javascripts %}
+{{ parent() }}
+<script type="text/javascript" src="{{ asset('bundles/lyraadmin/js/lyra_dual_list.js') }}"></script>
+<script type="text/javascript" src="{{ asset('bundles/lyraadmin/js/lyra_confirm.js') }}"></script>
+<script type="text/javascript" src="{{ asset('bundles/lyraadmin/js/form.js') }}"></script>
+{% include 'LyraAdminBundle:Admin:datepicker_js.html.twig' with { 'renderer' : form } %}
+{% endblock %}

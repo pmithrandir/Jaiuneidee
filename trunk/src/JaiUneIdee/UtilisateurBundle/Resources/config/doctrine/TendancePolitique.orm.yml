@@ -1,0 +1,12 @@
+JaiUneIdee\UtilisateurBundle\Entity\TendancePolitique:
+  type: entity
+  repositoryClass: JaiUneIdee\UtilisateurBundle\Repository\TendancePolitiqueRepository
+  table: tendance_politique
+  fields:
+    id:
+      type: integer
+      id: true
+      generator:
+        strategy: AUTO
+    value:
+      type: string

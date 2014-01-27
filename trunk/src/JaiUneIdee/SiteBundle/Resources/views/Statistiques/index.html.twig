@@ -1,0 +1,56 @@
+{% extends 'JaiUneIdeeSiteBundle::layout_1_col.html.twig' %}
+
+{% block title %}Statistiques{% endblock%}
+
+
+
+{% block javascript %}
+    {{ parent() }}
+    <!--[if lt IE 9]><script language="javascript" type="text/javascript" src="{{ asset('js/jqplot/excanvas.js') }}"></script><![endif]-->
+    <script language="javascript" type="text/javascript" src="{{ asset('js/jqplot/jquery.jqplot.min.js') }}"></script>
+    <script language="javascript" type="text/javascript" src="{{ asset('js/jqplot/plugins/jqplot.highlighter.min.js') }}"></script>
+    <script language="javascript" type="text/javascript" src="{{ asset('js/jqplot/plugins/jqplot.cursor.min.js') }}"></script>
+    <script language="javascript" type="text/javascript" src="{{ asset('js/jqplot/plugins/jqplot.dateAxisRenderer.min.js') }}"></script>
+{% endblock %}
+{% block stylesheets %}
+    {{ parent() }}
+    <link rel="stylesheet" type="text/css" href="{{ asset('css/jqplot/jquery.jqplot.css') }}" />
+{% endblock %}
+
+{% block mainCol %}
+	<h1>Stats</h1>
+            {%for key,value in tabStatsJson%} 
+                 <div id="{{key}}"></div>
+            {%endfor%}
+{% endblock %}
+{% block javascripts %}
+    <script language="javascript">
+        jQuery(document).ready(function() {
+            {%for key,value in tabStatsJson%} 
+            var plot1 = $.jqplot('{{key}}', [
+                    {{value.json|raw}}
+                            ], {
+                title:"{{value.title}}",
+                axes:{
+                  xaxis:{
+                    renderer:$.jqplot.DateAxisRenderer,
+                    tickOptions:{
+                        formatString:'%b&nbsp;%#d'
+                    }
+                  },
+                  yaxis:{
+                  }
+                },
+                highlighter: {
+                  show: true,
+                  sizeAdjust: 7.5
+                },
+                cursor: {
+                  show: false
+                }
+            });
+            {%endfor%}
+            
+        });
+    </script>
+{% endblock %}

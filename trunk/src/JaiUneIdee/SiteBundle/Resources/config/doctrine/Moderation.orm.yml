@@ -1,0 +1,20 @@
+JaiUneIdee\SiteBundle\Entity\Moderation:
+  type: entity
+  repositoryClass: JaiUneIdee\SiteBundle\Repository\ModerationRepository
+  table: moderation
+  fields:
+    id:
+      type: integer
+      id: true
+      generator:
+        strategy: AUTO
+  manyToOne:
+    idee:
+      targetEntity: Idee
+      joinColumn:
+        onDelete: CASCADE
+    user:
+      targetEntity: JaiUneIdee\UtilisateurBundle\Entity\User
+      joinColumn:
+        onDelete: CASCADE
+  lifecycleCallbacks: {  }

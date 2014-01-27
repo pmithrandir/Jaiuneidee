@@ -1,0 +1,30 @@
+message:
+    pattern:  /
+    defaults: { _controller: "JaiUneIdeeSiteBundle:Message:index" }
+
+message_show:
+    pattern:  /{id}/show
+    defaults: { _controller: "JaiUneIdeeSiteBundle:Message:show" }
+
+message_new:
+    pattern:  /new
+    defaults: { _controller: "JaiUneIdeeSiteBundle:Message:new" }
+
+message_create:
+    pattern:  /create
+    defaults: { _controller: "JaiUneIdeeSiteBundle:Message:create" }
+    requirements: { _method: post }
+
+message_edit:
+    pattern:  /{id}/edit
+    defaults: { _controller: "JaiUneIdeeSiteBundle:Message:edit" }
+
+message_update:
+    pattern:  /{id}/update
+    defaults: { _controller: "JaiUneIdeeSiteBundle:Message:update" }
+    requirements: { _method: post }
+
+message_delete:
+    pattern:  /{id}/delete
+    defaults: { _controller: "JaiUneIdeeSiteBundle:Message:delete" }
+    requirements: { _method: post }

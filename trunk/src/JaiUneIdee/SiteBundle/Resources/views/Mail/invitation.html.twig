@@ -1,0 +1,19 @@
+{% extends 'JaiUneIdeeSiteBundle::layout_email.html.twig' %}
+
+{% block body %}
+Bonjour,
+<br />
+<br />
+{{ invitation.inviteur | capitalize }} veut vous faire découvrir le site "J'ai Une Idée".<br />
+Ce site est accessible à l'adresse suivante : <a href="{{ url('JaiUneIdeeSiteBundle_homepage') }}">{{ url('JaiUneIdeeSiteBundle_homepage') }}</a><br />
+<br />
+Pour échanger avec les autres utilisateurs, vous aurez besoin de vous inscrire, et pour cela il vous faudra un code d'inscription.<br />
+Ce code est : {{ code }}<br />
+<br />
+Ce code n'est valable que pour une seule inscription.<br />
+<br />
+Toute l'équipe de "J'ai Une Idée" espère vous retrouver bientôt.<br />
+<br />
+Bonne journée, <br />
+L'équipe J'ai Une Idée.
+{% endblock %}

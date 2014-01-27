@@ -1,0 +1,42 @@
+{% extends 'JaiUneIdeeSiteBundle::layout_2_col.html.twig' %}
+
+{% block title %}Contact{% endblock%}
+{% block mainCol %}
+	  <h1>Message</h1>
+	
+	<table class="record_properties">
+	    <tbody>
+	        <tr>
+	            <th>Id</th>
+	            <td>{{ entity.id }}</td>
+	        </tr>
+	        <tr>
+	            <th>Sujet</th>
+	            <td>{{ entity.sujet }}</td>
+	        </tr>
+	        <tr>
+	            <th>Message</th>
+	            <td>{{ entity.message }}</td>
+	        </tr>
+	        <tr>
+	            <th>Created_at</th>
+	            <td>{{ entity.createdat|date('Y-m-d H:i:s') }}</td>
+	        </tr>
+	    </tbody>
+	</table>
+	
+	<ul class="record_actions">
+	    <li>
+	        <a href="{{ path('message') }}">
+	            Retourner à la liste des messages
+	        </a>
+	    </li>
+	    <li>
+	        <form action="{{ path('message_delete', { 'id': entity.id }) }}" method="post">
+	            {{ form_widget(delete_form) }}
+	            <button type="submit">Delete</button>
+	        </form>
+	    </li>
+	</ul>
+
+{% endblock %}

@@ -1,0 +1,16 @@
+{# src/JaiUneIdee/SiteBundle/Resources/views/Page/index.html.twig #}
+{% extends 'JaiUneIdeeSiteBundle::layout.html.twig' %}
+
+{% block body %}
+    <div class="main-col">
+        {% for flashMessage in app.session.flashbag.get('notice') %}
+            <div class="flash-notice">
+                {{ flashMessage }}
+            </div>
+        {% endfor %}
+        {% block mainCol %}{% endblock %}
+    </div>
+    <div class="second-col">
+        {% block secondCol %}{% endblock %}
+    </div>
+{% endblock %}

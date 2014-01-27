@@ -1,0 +1,20 @@
+{% extends "FOSUserBundle::layout_profile.html.twig" %}
+
+{% block title %}Votre Avatar{% endblock %}
+{% block mainCol %}
+    <h1>Votre Avatar</h1>
+    
+    {% if (user.avatar)%}
+    <img src="{{asset('upload/' ~ user.id ~'/' ~ user.avatar)}}" alt="avatar" />
+    <br />
+    <br />
+    <a href="{{ path('supprimer_avatar') }}" >Supprimer mon avatar</a>
+    {% else%}
+    <form action="{{ path('avatar') }}" method="post" {{ form_enctype(form) }}>
+        {{ form_widget(form) }}
+        <input type="submit" />
+    </form>
+    {% endif%}
+    <p>Le fichier doit être plus grand que 50px de large et de hauteur et moins grand que 200px de large et de hauteur.
+    <br />La taille maximum est de 200ko.</p>
+{% endblock %}

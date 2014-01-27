@@ -1,0 +1,35 @@
+JaiUneIdee\SiteBundle\Entity\Message:
+  type: entity
+  repositoryClass: JaiUneIdee\SiteBundle\Repository\MessageRepository
+  table: message
+  fields:
+    id:
+      type: integer
+      id: true
+      generator:
+        strategy: AUTO
+    sujet:
+      type: string
+      lenght: 255
+      notnull: true
+    message:
+      type: text
+      notnull: true
+    created_at:
+      type: datetime
+      notnull: true
+    nom:
+      type: string
+      lenght: 255
+    email:
+      type: string
+      lenght: 255
+  manyToOne:
+    userFrom:
+      targetEntity: JaiUneIdee\UtilisateurBundle\Entity\User
+    userTo:
+      targetEntity: JaiUneIdee\UtilisateurBundle\Entity\User
+      notnull: true
+  manyToMany:
+  lifecycleCallbacks:
+    preUpdate: [ setUpdatedValue ]

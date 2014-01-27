@@ -1,0 +1,7 @@
+6f15728c1aefa5246caa83730e3dbf70b0d46052	not-for-merge	branch '2.0' of git://github.com/symfony/AsseticBundle
+49ed2a7aa9942e5564c7211a3ed5ea974f61b687	not-for-merge	branch '2.1' of git://github.com/symfony/AsseticBundle
+65bd076341ac54ebfcd845d8471044fc4afa73d2	not-for-merge	branch '2.3' of git://github.com/symfony/AsseticBundle
+e1958f4f14b8a958563d98959d5b5002491d1f91	not-for-merge	branch 'cache-buster' of git://github.com/symfony/AsseticBundle
+f93bbaa86fe05772bc9ffdb66d6a954729105241	not-for-merge	branch 'lessc-bin' of git://github.com/symfony/AsseticBundle
+52ee7a223e71b77ad8705e0a3fe0f46766f6800d	not-for-merge	branch 'master' of git://github.com/symfony/AsseticBundle
+0ea06d674d9bb830c75b94cab080417260ede4bd	not-for-merge	branch 'node-visitor' of git://github.com/symfony/AsseticBundle

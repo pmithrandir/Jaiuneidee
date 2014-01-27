@@ -1,0 +1,28 @@
+{# src/JaiUneIdee/SiteBundle/Resources/views/Page/about.html.twig #}
+{% extends 'JaiUneIdeeSiteBundle::layout_2_col.html.twig' %}
+
+{% block title %}Comment ça Marche ?{% endblock%}
+
+{% block mainCol %}
+    <header>
+        <h1>Comment ça Marche ?</h1>
+    </header>
+    <img class="ccm" src="/images/ccm.jpeg" alt="comment ça marche" />
+
+{% endblock %}
+
+{% block secondCol %}
+
+<p>
+Ce site est fait pour partager toutes les idées qui peuvent contribuer à améliorer la vie !<br />
+Le fonctionnement du site est simple : vous avez une idée qui concerne votre ville, votre région ou votre pays&nbsp;?
+</p>
+<ol class="decimal">
+	<li>Vous vous identifiez.</li>
+	<li>Vous vérifiez que votre idée n'existe pas déjà sur le site.</li>
+	<li>Si elle n'existe pas, vous la créez, sinon, n'hésitez pas à voter pour/contre celle déjà existante !</li>
+	<li>Vous en parlez autour de vous, en utilisant au besoin les réseaux sociaux, afin que les internautes viennent voter pour votre idée.</li>
+	<li>Vous votez pour les idées proposées par d'autres utilisateurs.</li>
+	<li>Les élus accèdent au site et peuvent sélectionner les idées plébiscitées par les utilisateurs.</li> 
+</ol> 
+{% endblock %}

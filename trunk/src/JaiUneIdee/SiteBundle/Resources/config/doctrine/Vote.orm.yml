@@ -1,0 +1,33 @@
+JaiUneIdee\SiteBundle\Entity\Vote:
+  type: entity
+  repositoryClass: JaiUneIdee\SiteBundle\Repository\VoteRepository
+  table: vote
+  fields:
+    id:
+      type: integer
+      id: true
+      generator:
+        strategy: AUTO
+    note:
+      type: integer
+      notnull: true
+    created_at:
+      type: datetime
+      notnull: true
+      options:
+        default: 0
+    is_removed:
+      type: boolean
+      notnull: true
+      options:
+        default: false
+  manyToOne:
+    idee:
+      targetEntity: Idee
+      joinColumn:
+        onDelete: CASCADE
+    user:
+      targetEntity: JaiUneIdee\UtilisateurBundle\Entity\User
+      joinColumn:
+        onDelete: CASCADE
+  lifecycleCallbacks: {  }

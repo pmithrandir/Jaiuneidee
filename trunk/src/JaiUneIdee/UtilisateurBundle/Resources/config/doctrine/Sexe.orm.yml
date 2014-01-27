@@ -1,0 +1,12 @@
+JaiUneIdee\UtilisateurBundle\Entity\Sexe:
+  type: entity
+  repositoryClass: JaiUneIdee\UtilisateurBundle\Repository\SexeRepository
+  table: sexe
+  fields:
+    id:
+      type: integer
+      id: true
+      generator:
+        strategy: AUTO
+    value:
+      type: string

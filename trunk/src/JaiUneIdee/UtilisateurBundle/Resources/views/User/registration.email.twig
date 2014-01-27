@@ -1,0 +1,31 @@
+{% block subject %}Confirmation d'inscription{% endblock %}
+
+{% block body_text %}
+{% autoescape false %}
+Bonjour {{ user.username }} !
+
+Vous devez confirmer votre inscription en cliquant sur le lien suivant : {{ confirmationUrl }}
+
+Votre login est : {{ user.username }}
+Si vous ne vous souvenez pas de votre mot de passe, vous pouvez le réinitialiser a cette adresse : {{ url('fos_user_resetting_request') }}.
+
+Amicalement,
+L'équipe de "Jai Une Idee"
+{% endautoescape %}
+{% endblock %}
+
+{% block body_html %}
+{#
+    Vous pouvez ici définir le HTML que vous souhaitez ou même utiliser la force de twig, à savoir l'inclusion de template : 
+    include 'MyAppMonBundle:User:registration_email.html.twig'
+#}
+Bonjour {{ user.username }} !
+<br /><br />
+Vous devez confirmer votre inscription en cliquant sur le lien suivant : {{ confirmationUrl }}
+<br /><br />
+Votre login est : {{ user.username }}<br />
+Si vous ne vous souvenez pas de votre mot de passe, vous pouvez le réinitialiser <a href="{{ url('fos_user_resetting_request') }}">ici</a>.
+<br /><br />
+Amicalement,<br />
+L'équipe de "Jai Une Idee"
+{% endblock %}

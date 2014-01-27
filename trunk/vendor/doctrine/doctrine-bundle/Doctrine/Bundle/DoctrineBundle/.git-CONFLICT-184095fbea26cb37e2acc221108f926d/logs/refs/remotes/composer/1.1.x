@@ -1,0 +1,1 @@
+0000000000000000000000000000000000000000 78b3680da8ae38f87df83a100e2e3a6820dd6177 Pierre Bonneau <pmithrandir@localhost.(none)> 1370693043 +0300	fetch composer: storing head

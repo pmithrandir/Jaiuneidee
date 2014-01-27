@@ -1,0 +1,14 @@
+JaiUneIdee\UtilisateurBundle\Entity\Dommage:
+  type: entity
+  repositoryClass: JaiUneIdee\UtilisateurBundle\Repository\DommageRepository
+  table: dommage
+  fields:
+    id:
+      type: integer
+      id: true
+      generator:
+        strategy: AUTO
+    level:
+      type: integer
+    value:
+      type: integer

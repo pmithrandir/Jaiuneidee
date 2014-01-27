@@ -1,0 +1,98 @@
+imports:
+    - { resource: parameters.ini }
+    - { resource: security.yml }
+    - { resource: @JaiUneIdeeAdminBundle/Resources/config/lyra.yml }
+
+framework:
+    #esi:             ~
+    translator:      { fallback: fr }
+    secret:          %secret%
+    form:            true
+    csrf_protection: true
+    validation:      { enable_annotations: true }
+    templating:      { engines: ['twig'] } #assets_version: SomeVersionScheme
+    default_locale: %locale%
+    router:
+        resource: "%kernel.root_dir%/config/routing.yml"
+        strict_requirements: "%kernel.debug%"
+    session: ~
+    trust_proxy_headers: false
+
+# Twig Configuration
+twig:
+    debug:            %kernel.debug%
+    strict_variables: %kernel.debug%
+
+# Assetic Configuration
+assetic:
+    bundles: []
+    debug:          %kernel.debug%
+    use_controller: false
+    # java: /usr/bin/java
+    filters:
+        cssrewrite: ~
+        # closure:
+        #     jar: %kernel.root_dir%/java/compiler.jar
+        # yui_css:
+        #     jar: %kernel.root_dir%/java/yuicompressor-2.4.2.jar
+
+# Doctrine Configuration
+doctrine:
+    dbal:
+        driver:   %database_driver%
+        host:     %database_host%
+        port:     %database_port%
+        dbname:   %database_name%
+        user:     %database_user%
+        password: %database_password%
+        charset:  UTF8
+
+    orm:
+        auto_generate_proxy_classes: %kernel.debug%
+        auto_mapping: true
+        query_cache_driver:    apc
+        metadata_cache_driver: apc
+
+# Swiftmailer Configuration
+swiftmailer:
+    transport: %mailer_transport%
+    host:      %mailer_host%
+    username:  %mailer_user%
+    password:  %mailer_password%
+    port:      %mailer_port%
+    spool: { type: memory }
+
+fos_user:
+    db_driver: orm # other valid values are 'mongodb', 'couchdb' and 'propel'
+    firewall_name: main
+    user_class: JaiUneIdee\UtilisateurBundle\Entity\User
+    service:
+        mailer: fos_user.mailer.twig_swift
+    registration:
+      form:
+        type: jaiuneidee_user_registration
+#        handler: jai_une_idee_utilisateur.form.handler.registration
+      # Permet la validation automatique du compte par envoi d'un email
+      confirmation:
+        enabled:    true
+        from_email:
+          # Adresse de l'expediteur
+          address:        noreply@jaiuneidee.net
+          # Nom de l'expediteur
+          sender_name:    Admin de jaiuneidee.net
+        # Permet de définir le template de l'email à envoyer (en html)
+        template: JaiUneIdeeUtilisateurBundle:User:registration.email.twig
+    profile:
+      form:
+        type: jaiuneidee_user_profile_edit
+services: 
+    twig.extension.text:
+       class: Twig_Extensions_Extension_Text
+       tags:
+            - { name: twig.extension }
+ 
+    twig.extension.intl:
+        class: Twig_Extensions_Extension_Intl
+        tags:
+            - { name: twig.extension }
+ 

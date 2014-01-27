@@ -1,0 +1,22 @@
+#Registration : 
+fos_user_registration_form_sexe:                      Sexe
+fos_user_registration_form_tendance_politique:        Tendance Politique
+fos_user_registration_form_invitation:                "Code d'invitation : "
+fos_user_registration_form_approbation_charte:        "J'ai lu la charte et j'approuve son contenu : "
+fos_user_registration_form_plainPassword_second:      Vérification du mot de passe
+
+#profile/edit
+fos_user_profile_form_user_username:                  Pseudo
+fos_user_profile_form_user_email:                     Adresse Email
+fos_user_profile_form_user_sexe:                      Sexe
+fos_user_profile_form_user_tendance_politique:        Tendance Politique
+fos_user_profile_form_current:                        Vérification du mot de passe
+fos_user_profile_edit_change_password:                Changer mon mot de passe
+
+#/profile
+profile.show.username:                                Pseudo
+profile.show.email:                                   Adresse Email
+profile.show.sexe:                                    Sexe
+profile.show.tendancePolitique:                       Tendance Politique
+fos_user_profile_edit:                                Editer Votre profil
+profile.show.localisation:                            Localisation

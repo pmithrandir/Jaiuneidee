@@ -1,0 +1,37 @@
+parameters:
+#    jai_une_idee_utilisateur.example.class: JaiUneIdee\UtilisateurBundle\Example
+    jai_une_idee_site.mailer.class: JaiUneIdee\SiteBundle\Services\Mailer
+
+services:
+    jaiuneidee.registration.form.type:
+        class: JaiUneIdee\UtilisateurBundle\Form\Type\RegistrationFormType
+        arguments: [%fos_user.model.user.class%]
+        tags: [{ name: "form.type", alias: "jaiuneidee_user_registration" }]
+
+    jaiuneidee.invitation.form.type:
+        class: JaiUneIdee\UtilisateurBundle\Form\Type\InvitationFormType
+        arguments: [@jaiuneidee.invitation.form.data_transformer]
+        tags: [{ name: "form.type", alias: "jaiuneidee_invitation_type" }]
+
+    jaiuneidee.invitation.form.data_transformer:
+        class: JaiUneIdee\UtilisateurBundle\Form\DataTransformer\InvitationToCodeTransformer
+        arguments: [@doctrine.orm.entity_manager]
+
+    jaiuneidee_user_profile_edit: 
+        class: JaiUneIdee\UtilisateurBundle\Form\Type\ProfileFormType 
+        arguments: [%fos_user.model.user.class%]
+        tags:
+            - { name: form.type, alias: jaiuneidee_user_profile_edit}
+    user.listener:
+        class: JaiUneIdee\UtilisateurBundle\Listener\UserListener
+        tags:
+            - { name: doctrine.event_listener, event: prePersist }
+
+    jai_une_idee_site.mailer:
+        class: %jai_une_idee_site.mailer.class%
+        arguments: [@mailer, @templating]
+    activity_listener:
+        class: JaiUneIdee\UtilisateurBundle\Listener\Activity
+        arguments: [@security.context, @doctrine.orm.entity_manager]
+        tags:
+            - { name: kernel.event_listener, event: kernel.controller, method: onCoreController }

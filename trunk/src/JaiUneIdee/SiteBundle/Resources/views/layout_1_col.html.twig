@@ -1,0 +1,16 @@
+{# src/JaiUneIdee/SiteBundle/Resources/views/Page/contact.html.twig #}
+{% extends 'JaiUneIdeeSiteBundle::layout.html.twig' %}
+
+{% block title %}Contact{% endblock%}
+{% block body %}
+
+  <div class="one-col">
+    {% for flashMessage in app.session.flashbag.get('notice') %}
+        <div class="flash-notice">
+            {{ flashMessage }}
+        </div>
+    {% endfor %}
+    {% block mainCol %}
+    {% endblock %}
+  </div>
+{% endblock %}

@@ -1,0 +1,17 @@
+{% extends 'JaiUneIdeeSiteBundle::layout_email.html.twig' %}
+
+{% block body %}
+Bonjour {{user.username | capitalize}},
+<br />
+<br />
+L'idée {{idee.title}} vient d'être commentée. Vous aussi venez enrichir le débat.
+<br />
+Vous ne recevrez plus d'alerte sur cette idée jusqu'à votre retour sur sa page :
+<a href="{{ url('JaiUneIdeeSiteBundle_idee_show', { 'id': idee.id, 'slug': idee.slug }) }}">{{ url('JaiUneIdeeSiteBundle_idee_show', { 'id': idee.id, 'slug': idee.slug }) }}</a>
+<br />
+<br />
+Bonne journée, <br />
+L'équipe J'ai Une Idée.
+<br /><br />
+Vous pouvez vous désabonner sur la page de l'idée.
+{% endblock %}

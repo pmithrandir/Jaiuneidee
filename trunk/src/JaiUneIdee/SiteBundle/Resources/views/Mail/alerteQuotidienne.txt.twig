@@ -1,0 +1,23 @@
+Bonjour,
+
+{% if news|length>0%}
+    Du nouveau sur J'ai Une Idée : 
+    {% for new in news %}
+        ->{{new.publicationDate|localizeddate('full', 'none') | capitalize}} - {{new.publicationDate|localizeddate('none', 'short')}}
+        {{new.content | nl2br}}
+    {% endfor%}
+{% endif %}
+        
+        
+{% if idees|length>0%}
+    Voici les idées qui ont été créées depuis hier sur J'ai Une Idée.
+    {% for idee in idees %}
+        - {{idee}} : {{ url('JaiUneIdeeSiteBundle_idee_show', { 'id': idee.id, 'slug': idee.slug }) }}
+    {% endfor%}
+{% endif %}
+Bonne journée,
+L'équipe J'ai Une Idée.
+{{ url('JaiUneIdeeSiteBundle_homepage')}}
+
+
+Vous pouvez vous désabonner sur votre compte : {{ url('fos_user_profile_edit')}}.

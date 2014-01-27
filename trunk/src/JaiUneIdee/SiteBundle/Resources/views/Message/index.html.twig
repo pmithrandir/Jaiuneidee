@@ -1,0 +1,34 @@
+{% extends 'JaiUneIdeeSiteBundle::layout_2_col.html.twig' %}
+
+{% block title %}Contact{% endblock%}
+{% block mainCol %}
+	<h1>Message Reçus</h1>
+	
+	<table class="records_list">
+	    <thead>
+	        <tr>
+	            <th>Id</th>
+	            <th>Sujet</th>
+	            <th>Created_at</th>
+	        </tr>
+	    </thead>
+	    <tbody>
+	    {% for entity in entities %}
+	        <tr>
+	            <td><a href="{{ path('message_show', { 'id': entity.id }) }}">{{ entity.id }}</a></td>
+	            <td><a href="{{ path('message_show', { 'id': entity.id }) }}">{{ entity.sujet }}</a></td>
+	            <td>{% if entity.createdat %}{{ entity.createdat|date('Y-m-d H:i:s') }}{% endif %}</td>
+	        </tr>
+	    {% endfor %}
+	    </tbody>
+	</table>
+	
+	<ul>
+	    <li>
+	        <a href="{{ path('message_new') }}">
+	            Créer un nouveau message
+	        </a>
+	    </li>
+	</ul>
+
+{% endblock %}

@@ -1,0 +1,34 @@
+
+<ol>
+{% for idee in idees %}
+    {% if ideesLues[idee[0].id] is defined and ideesLues[idee[0].id] |length>0%}
+        {% set lueClass = "dejaLu" %}
+    {% else %}
+        {% set lueClass = "" %}
+    {% endif %}
+    <li class="index_idee {{lueClass}} box">
+        <header class="separation"></header>
+        <div class="index_idee_theme">
+            <img src="/images/themes/{{ idee[0].theme|lower }}.png" alt="{{ idee[0].theme }}" title="{{ idee[0].theme }}"/>
+        </div>
+        <div class="index_idee_commentaire">
+            <a class="lien_nb_comments" href="{{ path('JaiUneIdeeSiteBundle_idee_show', { 'id': idee[0].id, 'slug': idee[0].slug }) }}#comments"> {{ idee["nombre"] }}</a>
+        </div>
+        <div class="index_idee_body">
+            <a class="idee" href="{{ path('JaiUneIdeeSiteBundle_idee_show', { 'id': idee[0].id, 'slug': idee[0].slug }) }}" alt="{{ idee[0]}}" title="{{ idee[0]}}">
+                <h3>{{ idee[0].title }}</h3>
+                <div class="ellipsis">
+                    {{ idee[0].description|striptags }}
+                </div>
+            </a>
+        </div>
+    </li>
+{% else %}
+    <p>Il n'y a pas encore d'idées insérées qui correspondent à vos critères.</p>
+{% endfor %}
+</ol>
+{% if pager.haveToPaginate %}
+    <div class="pagerfanta">
+    {{ pagerfanta(pager, 'default_translated', options_pager) }}
+    </div>
+{% endif %}

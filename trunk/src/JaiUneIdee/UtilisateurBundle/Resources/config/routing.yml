@@ -1,0 +1,15 @@
+jai_une_idee_utilisateur_invitation:
+    resource: "@JaiUneIdeeUtilisateurBundle/Resources/config/routing/invitation.yml"
+    prefix:   /invitation
+user_profile:
+    pattern:  /user/profile/{user_id}/{username}
+    defaults: { _controller: JaiUneIdeeUtilisateurBundle:User:profile }
+    requirements:
+        _method:  GET
+        user_id: \d+
+avatar:
+    pattern:  /profile/avatar
+    defaults: { _controller: JaiUneIdeeUtilisateurBundle:User:avatar }
+supprimer_avatar:
+    pattern:  /profile/avatar/supprimer
+    defaults: { _controller: JaiUneIdeeUtilisateurBundle:User:supprimerAvatar }

@@ -1,0 +1,6 @@
+# pack-refs with: peeled 
+e4ac6da7c28b9e6b9b012c14dc423bc3866ba5a8 refs/remotes/origin/feature/migrations3.0
+e1f6efcd94993b493de5c6a413cbc327ea9c0caa refs/remotes/origin/master
+3dd738b2a709f4d5185c144292189c6e708ca37d refs/remotes/origin/support_old
+445856c3049757462a2b02f61693524a20fa292a refs/tags/v1.0-ALPHA1
+^b38ddb190ec78d389b2c2de838b2a4d646ad1ce2

@@ -1,0 +1,68 @@
+{% block datagrid_column_filter__theme %}
+    <th>
+    	<div id="div_filter_theme" onmouseout="hideFiltersOpts( event, 'theme' );">
+				<div style="white-space: nowrap;">
+	        <input type="hidden" name="{{ datagrid.pager.getConfig('filtersVar') }}[f][theme]" value="theme" />
+	        <input type="hidden" name="{{ datagrid.pager.getConfig('filtersVar') }}[o][theme]" value="equals" />
+	
+	        <select name="{{ datagrid.pager.getConfig('filtersVar') }}[v][theme]" onchange="$('#datagrid form').submit()">
+	            <option value="">-- Thème --</option>
+	            {% for row in field.getOption('select_options') %}
+	                <option value="{{ row.id }}" {% if datagrid.pager.getValue('filtersVar').v['theme']|default('') == row.id %}selected="selected"{% endif %}>{{ row.nom }}</option>
+	            {% endfor %}
+	        </select>
+	      </div>
+	    </div>
+    </th>
+{% endblock %}
+{% block datagrid_column_filter__localisation %}
+    <script type="text/javascript">
+		var datas =[
+			{% if datagrid.pager.getValue('filtersVar') and datagrid.pager.getValue('filtersVar').v['localisation'] %}
+		 		{id: {{ datagrid.pager.getValue('filtersVar').v['localisation'] }}, nom: "{{ field.getOption('selected_localisation') }}"},
+			{% endif %}
+		]
+		</script>
+    <th>
+    	<div id="div_filter_localisation" onmouseout="hideFiltersOpts( event, 'localisation' );">
+				<div style="white-space: nowrap;">
+	        <input type="hidden" name="{{ datagrid.pager.getConfig('filtersVar') }}[f][localisation]" value="localisation" />
+	        <input type="hidden" name="{{ datagrid.pager.getConfig('filtersVar') }}[o][localisation]" value="equals" />
+	        <input class="tokeninput_unique_datagrid" name="{{ datagrid.pager.getConfig('filtersVar') }}[v][localisation]" />
+	      </div>
+	    </div>
+    </th>
+{% endblock %}
+{#
+{% block datagrid_row_values %}
+    <tr id="idee_{{ item.id }}" class="value" url="{{ path('JaiUneIdeeSiteBundle_idee_show', { 'id': item.id, 'slug': item.slug }) }}"> 
+    		{% for alias, field in datagrid.fields %}
+           {{ datagrid_column_value(datagrid, field, item, alias) }}
+        {% endfor %}
+        {% if datagrid.hasActions('row') %}
+            {{ datagrid_column_action(datagrid, item) }}
+        {% endif %}
+    </tr>
+{% endblock %}
+#}
+{% block datagrid_column_value %}
+    <td>
+    		<a  class="datagrid_link" href="{{ path('JaiUneIdeeSiteBundle_idee_show', { 'id': item.id, 'slug': item.slug }) }}">
+        	{{ datagrid_item_value(datagrid, field, item) }}
+        </a>
+    </td>
+{% endblock %}
+{% block datagrid_column_value__localisation %}
+    <td>
+    		<a  class="datagrid_link" href="{{ path('JaiUneIdeeSiteBundle_idee_show', { 'id': item.id, 'slug': item.slug }) }}">
+					{{ item.getLocalisations()|join(', ') }}
+        </a>
+    </td>
+{% endblock %}
+{% block datagrid_column_value__user %}
+    <td>
+    		<a class="datagrid_link" href="{{ path('user_profile', { 'user_id': item.user.id, 'username':item.user}) }}">
+					{{ item.user }}
+        </a>
+    </td>
+{% endblock %}
