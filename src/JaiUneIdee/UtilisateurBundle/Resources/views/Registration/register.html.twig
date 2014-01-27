@@ -1,0 +1,36 @@
+{% extends "FOSUserBundle::layout.html.twig" %}
+
+{% block title %}Inscription{% endblock%}
+{% block mainCol %}
+	{% include "FOSUserBundle:Registration:register_content.html.twig" %}
+{% endblock %}
+{% block secondCol %}
+		<p>Avant de vous inscrire, nous vous conseillons d'aller lire <a target="_blank" class="lien_visible" href="{{ path('JaiUneIdeeSiteBundle_charte') }}">la charte</a> d'utilisation du site. 
+		Vous pouvez également consulter la page <a target="_blank" class="lien_visible" href="{{ path('JaiUneIdeeSiteBundle_comment_ca_marche') }}">"Comment ça Marche"</a> pour mieux comprendre le fonctionnement.
+		</p>
+		<br />
+		<p>De notre coté, nous nous engageons :</p> 
+		<ul>
+		<li>A ne pas publier d'informations personnelles vous concernant.</li>
+		<li>A générer des statistiques anonymes.</li>
+		</ul>
+		<br />
+		 <p>
+		 Pour celà, nous n'obligeons personne à s'exprimer sous son vrai nom. Vous êtes libre de choisir un pseudonyme de votre choix. (quelques exceptions sont listées dans <a target="_blank" class="lien_visible" href="{{ path('JaiUneIdeeSiteBundle_charte') }}">la charte</a>)
+		 </p>
+		<br />
+		 <p>
+		 Pour la zone géographique, écrivez soit le nom de votre ville, de votre département où de votre région. Vous pouvez également mettre la France entière, mais celà n'a pas beaucoup de sens dans la logique du site. 
+                 Commencez à taper le nom et le site vous proposera des choix possibles.
+		 </p>
+		<br />
+		 <p>
+		 Le code de parrainage est optionel et ne peut être obtenu que de la part d'un utilisateur déjà enregistré. 
+		 </p>
+		<br />
+		 Bienvenue sur J'ai Une Idée,
+		 
+		<br />
+		<br />
+		 Toute l'équipe
+{% endblock %}

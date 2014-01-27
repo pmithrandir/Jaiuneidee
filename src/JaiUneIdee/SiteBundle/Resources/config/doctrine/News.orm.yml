@@ -1,0 +1,34 @@
+JaiUneIdee\SiteBundle\Entity\News:
+  type: entity
+  repositoryClass: JaiUneIdee\SiteBundle\Repository\NewsRepository
+  table: news
+  fields:
+    id:
+      type: integer
+      id: true
+      generator:
+        strategy: AUTO
+    content:
+      type: text
+      notnull: true
+    is_validated_by_admin:
+      type: boolean
+      notnull: true
+      options:
+        default: false
+    is_removed:
+      type: boolean
+      notnull: true
+      options:
+        default: false
+    publication_date:
+      type: datetime
+      notnull: true
+    created_at:
+      type: datetime
+      notnull: true
+    updated_at:
+      type: datetime
+      notnull: true
+  lifecycleCallbacks:
+    preUpdate: [ setUpdatedValue ]

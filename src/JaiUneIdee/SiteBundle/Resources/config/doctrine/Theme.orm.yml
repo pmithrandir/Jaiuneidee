@@ -1,0 +1,27 @@
+JaiUneIdee\SiteBundle\Entity\Theme:
+  type: entity
+  repositoryClass: JaiUneIdee\SiteBundle\Repository\ThemeRepository
+  table: theme
+  fields:
+    id:
+      type: integer
+      id: true
+      generator:
+        strategy: AUTO
+    nom:
+      type: string
+      lenght: 255
+      notnull: true
+    descriptif:
+      type: string
+      lenght: 255
+      notnull: true
+    is_moderated:
+      type: boolean
+      options:
+        default: false
+    ordre:
+      type: integer
+      notnull: true
+      options:
+        default: 0

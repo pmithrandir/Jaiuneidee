@@ -1,0 +1,28 @@
+JaiUneIdee\UtilisateurBundle\Entity\Invitation:
+  type: entity
+  repositoryClass: JaiUneIdee\UtilisateurBundle\Repository\InvitationRepository
+  fields:
+    id:
+      type: string
+      length: 6
+      id: true
+    email:
+      type: string
+    sent:
+      type: boolean
+      options:
+        default: false
+    created_at:
+      type: datetime
+      notnull: true
+      options:
+        default: 0
+  oneToOne:
+    user:
+      targetEntity: User
+      mappedBy: invitation
+      cascade: {persist, merge}
+  manyToOne:
+    inviteur:
+      targetEntity: User
+

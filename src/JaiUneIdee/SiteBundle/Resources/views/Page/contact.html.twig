@@ -1,0 +1,13 @@
+{# src/JaiUneIdee/SiteBundle/Resources/views/Page/contact.html.twig #}
+{% extends 'JaiUneIdeeSiteBundle::layout_2_col.html.twig' %}
+
+{% block title %}Contact{% endblock%}
+{% block mainCol %}
+    <h1>Contacter J'ai Une Idée</h1>
+    <p>Vous voulez nous contacter ?</p>
+
+    <form action="{{ path('JaiUneIdeeSiteBundle_contact') }}" method="post" {{ form_enctype(form) }} class="form">
+	{{ form_widget(form) }}
+        <input type="submit" value="{{ "contact.submit" | trans }}">
+    </form>
+{% endblock %}

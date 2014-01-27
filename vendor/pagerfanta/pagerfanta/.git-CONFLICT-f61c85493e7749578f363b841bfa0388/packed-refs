@@ -1,0 +1,5 @@
+# pack-refs with: peeled 
+b51b71e96ee5dc7d9a318e4065646ef42054d3a6 refs/remotes/origin/doctrine_dbal_adapter
+90766bc6571841fd2b5fad9b96d73b5a9d31fb44 refs/remotes/origin/limit_subquery_walker
+55544f3af5b409d4ee9d618934f4d92ef874672c refs/remotes/origin/master
+4d5f15a3700a769bd0af364ccd7ecadb07d91d78 refs/tags/v1.0.0

@@ -1,0 +1,7 @@
+parameters:
+#    jai_une_idee_admin.example.class: JaiUneIdee\AdminBundle\Example
+
+services:
+#    jai_une_idee_admin.example:
+#        class: %jai_une_idee_admin.example.class%
+#        arguments: [@service_id, "plain_value", %parameter%]

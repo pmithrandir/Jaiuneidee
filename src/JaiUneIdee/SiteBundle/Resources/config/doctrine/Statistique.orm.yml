@@ -1,0 +1,65 @@
+JaiUneIdee\SiteBundle\Entity\Statistique:
+  type: entity
+  repositoryClass: JaiUneIdee\SiteBundle\Repository\StatistiqueRepository
+  table: statistique
+  fields:
+    id:
+      type: integer
+      id: true
+      generator:
+        strategy: AUTO
+    created_at:
+      type: datetime
+      notnull: true
+    nb_utilisateurs_connectes_24:
+      type: integer
+      options:
+        default: 0
+    nb_inscrits_24:
+      type: integer
+      options:
+        default: 0
+    nb_idees_24:
+      type: integer
+      options:
+        default: 0
+    nb_commentaires_24:
+      type: integer
+      options:
+        default: 0
+    nb_votes_24:
+      type: integer
+      options:
+        default: 0
+    nb_invitations_24:
+      type: integer
+      options:
+        default: 0
+    nb_alertes_24:
+      type: integer
+      options:
+        default: 0
+    nb_inscrits_total:
+      type: integer
+      options:
+        default: 0
+    nb_idees_total:
+      type: integer
+      options:
+        default: 0
+    nb_votes_total:
+      type: integer
+      options:
+        default: 0
+    nb_commentaires_total:
+      type: integer
+      options:
+        default: 0
+    nb_invitations_total:
+      type: integer
+      options:
+        default: 0
+    nb_alertes_total:
+      type: integer
+      options:
+        default: 0

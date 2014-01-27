@@ -1,0 +1,17 @@
+#JaiUneIdee\UtilisateurBundle\Entity\User:
+#    constraints:
+#        - Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity: invitation
+#    properties:
+#        invitation:
+#            - NotNull: 
+#               message: Votre code d'identification est faux.
+JaiUneIdee\UtilisateurBundle\Entity\User:
+    properties:
+        avatar:
+            - Image:
+                groups: [avatar]
+                maxSize: 200k
+                minWidth: 50
+                maxWidth: 200
+                minHeight: 50
+                maxHeight: 200

@@ -1,0 +1,10 @@
+#Contact page
+contact.name:           Nom
+contact.email:          Email
+contact.subject:        Sujet
+contact.body:           Message
+contact.submit:         Envoyer un message
+#idee
+idee.title:             Titre
+idee.description:       Description
+idee.content:           Contenu

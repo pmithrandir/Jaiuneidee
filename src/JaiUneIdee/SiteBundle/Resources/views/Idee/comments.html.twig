@@ -1,0 +1,44 @@
+{% for comment in commentaires %}
+<article class="box commentaire {{ cycle(['odd', 'even'], loop.index0) }}" id="comment-{{ comment.id }}">
+    <div class="box_left">
+        <a href="{{ path('user_profile', { 'user_id': comment.user.id, 'username':comment.user}) }}">
+        {% if(comment.user.avatar) %}
+            <img src="{{asset('upload/' ~ comment.user.id ~'/' ~ comment.user.avatar)}}" alt="avatar" title="avatar" class="avatar" />
+        {% else %}
+            <img src="{{asset('images/avatar_default.png')}}" alt="avatar" title="avatar" class="avatar" />
+        {% endif %}
+        {{ comment.user|capitalize }}</a><br />
+        {% if comment.isModerated == false %}
+            {% if is_granted('ROLE_USER') %}
+                {% if moderationCommentairesExistant[comment.id][0] is defined %}
+                    <img src="{{asset('images/inspection.png')}}" alt="Inspection en cours" title="Inspection en cours" class="action"/>
+                {% else %}
+                    <a href="{{ path('JaiUneIdeeSiteBundle_idee_moderate_commentaire', { 'id': comment.id }) }}">
+                        <img src="{{asset('images/alert.png')}}" alt="Signaler ce commentaire" title="Signaler ce commentaire" class="action" />
+                    </a>
+                {% endif %}
+            {% endif %}
+            {% if is_granted('ROLE_ADMIN') %}<br />
+                <a href="{{ path('JaiUneIdeeSiteBundle_idee_admin_moderate_commentaire', { 'id': comment.id }) }}">Suspendre le commentaire</a><br />
+                <a href="{{ path('JaiUneIdeeSiteBundle_idee_admin_validate_commentaire', { 'id': comment.id }) }}">Valider le commentaire</a><br />
+            {% endif %}
+        {% else %}
+            <img src="{{asset('images/valid.png')}}" alt="Commentaire conforme à la charte" title="Commentaire conforme à la charte" class="action" />
+        {% endif %}<br />
+        Posté le {{ comment.createdAt|date('d/m/Y') }} <br />
+        à {{ comment.createdAt|date('H:i:s') }}
+    </div>
+    <div class="box_content {{ comment in commentairesAVerifier ? 'toModerate' : '' }}">
+        <p>
+            {{ comment.content|nl2br }}
+        </p>
+    </div>
+</article>
+{% else %}
+    <p>Il n'y a pas encore de commentaires sur cette idée. Soyez le premier a la commenter...</p>
+{% endfor %}
+{% if pager.haveToPaginate %}
+    <div class="pagerfanta">
+    {{ pagerfanta(pager, 'default_translated', options) }}
+    </div>
+{% endif %}

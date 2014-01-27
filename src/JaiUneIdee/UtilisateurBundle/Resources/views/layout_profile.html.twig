@@ -1,0 +1,25 @@
+{% extends 'JaiUneIdeeSiteBundle::layout_2_col.html.twig' %}
+
+{% block title %}{% endblock %}
+
+{% block mainCol %}
+	{% block fos_user_content %}{% endblock %}
+{% endblock %}
+{% block secondCol %}
+	<div class="box">
+  	<header class="gradient">
+  		<a href="{{ path('fos_user_profile_edit') }}">Mon profil</a>
+  	</header>
+  	<div class="body">
+            <ul>
+                  <li><a href="{{ path('fos_user_change_password') }}">{{ 'fos_user_profile_edit_change_password'|trans({}, 'FOSUserBundle') }}</a></li>
+                  <li><a href="{{ path('avatar') }}">Changer mon avatar</a></li>
+                  <li><a href="{{ path('invitation') }}">Mes invitations</a></li>
+                  {% if is_granted('ROLE_ADMIN') %}
+                      <li><a href="{{ path('message') }}">Mes messages</a></li>
+                  {% endif %}
+            </ul>
+        </div>
+        <footer></footer>
+	</div>
+{% endblock %}

@@ -1,0 +1,17 @@
+{% extends "FOSUserBundle::layout_profile.html.twig" %}
+
+{% block title %}Inviter un ami{% endblock%}
+{% block mainCol %}
+<h1>Inviter un ami</h1>
+
+<form action="{{ path('invitation_create') }}" method="post" {{ form_enctype(form) }}>
+    {{ form_widget(form) }}
+    <p>
+        <button type="submit">Inviter un ami</button>
+    </p>
+</form>
+<p>
+Malheureusement, malgré tous nos efforts pour authentifier nos messages auprès des principaux fournisseurs de mail, il semble que nous soyons toujours trié en spam chez certain d'entre eux. 
+<br />N'oubliez donc pas de prévenir vos amis de vérifier leur dossier spam.
+</p> 
+{% endblock mainCol %}

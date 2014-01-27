@@ -1,0 +1,49 @@
+{% extends 'JaiUneIdeeSiteBundle::layout_1_col.html.twig' %}
+{% block title %}Liste des idées à  modérer{% endblock %}
+{% block mainCol %}
+<h1>Liste des idées à modérer ({{ idees|length }})</h1>
+
+<table class="records_list">
+    <thead>
+        <tr class="gradient">
+            <th>Titre</th>
+            <th>Description</th>
+            <th>Vie</th>
+            <th>Theme</th>
+            <th>Utilisateur</th>
+            <th>Localisations</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+    {% for idee in idees %}
+        <tr>
+            <td>
+            	<a href="{{ path('JaiUneIdeeSiteBundle_idee_show', { 'id': idee.id, 'slug': idee.slug }) }}">{{ idee.title }}</a>
+    				</td>
+            <td>{{ idee.description }}</td>
+            <td>{{ idee.life }}</td>
+            <td>{{ idee.theme }}</td>
+            <td>{{ idee.user }}</td>
+            <td>{{ idee.localisations| join(", ") }}</td>
+            <td>
+            	{% if idee.life < 500 %}
+	            <a href="{{ path('JaiUneIdeeSiteBundle_idee_admin_validate', { 'id': idee.id }) }}">Approuver</a>
+	             - 
+	            <a href="{{ path('JaiUneIdeeSiteBundle_idee_admin_moderate', { 'id': idee.id }) }}">Refuser</a>
+	            {% else %}
+	            <a href="{{ path('JaiUneIdeeSiteBundle_idee_admin_publish', { 'id': idee.id }) }}">Publier</a>
+	             - 
+	            <a href="{{ path('JaiUneIdeeSiteBundle_idee_admin_remove', { 'id': idee.id }) }}">Supprimer</a>
+	            
+	            {% endif %}
+            </td>
+        </tr>
+    {% else %}
+        <tr>
+            <td colspan="7">Aucune idées à modérer.</td>
+        </tr>
+    {% endfor %}
+    </tbody>
+</table>
+{% endblock %}

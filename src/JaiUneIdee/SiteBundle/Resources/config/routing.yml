@@ -1,0 +1,160 @@
+JaiUneIdeeSiteBundle_homepage:
+    pattern:  /
+    defaults: {_controller: JaiUneIdeeSiteBundle:Page:index, page:1, page_news:1 }
+JaiUneIdeeSiteBundle_homepage_pagination:
+    pattern:  /{page}/{page_news}/{requester}
+    defaults: {_controller: JaiUneIdeeSiteBundle:Page:index, page:1, page_news:1 }
+    requirements:
+        page: \d+
+        page_news: \d+
+JaiUneIdeeSiteBundle_comment_ca_marche:
+    pattern:  /comment_ca_marche
+    defaults: { _controller: JaiUneIdeeSiteBundle:Page:ccm }
+    requirements:
+        _method:  GET
+JaiUneIdeeSiteBundle_charte:
+    pattern:  /charte
+    defaults: { _controller: JaiUneIdeeSiteBundle:Page:charte }
+    requirements:
+        _method:  GET
+JaiUneIdeeSiteBundle_contact:
+    pattern:  /contact
+    defaults: { _controller: JaiUneIdeeSiteBundle:Page:contact }
+    requirements:
+        _method:  GET|POST
+JaiUneIdeeSiteBundle_sitemap:
+    pattern:  /sitemap.xml
+    defaults: { _controller: JaiUneIdeeSiteBundle:Sitemaps:sitemap }
+    requirements:
+        _method:  GET
+JaiUneIdeeSiteBundle_idee_show:
+    pattern:  /{id}/{slug}/{page}
+    defaults: { _controller: JaiUneIdeeSiteBundle:Idee:show, page:1  }
+    requirements:
+        _method:  GET
+        id: \d+
+JaiUneIdeeSiteBundle_idee_new:
+    pattern:  /idee/new
+    defaults: { _controller: JaiUneIdeeSiteBundle:Idee:new }
+JaiUneIdeeSiteBundle_idee_list:
+    pattern:  /idee/list
+    defaults: { _controller: JaiUneIdeeSiteBundle:Idee:list }
+JaiUneIdeeSiteBundle_idee_create:
+    pattern:  /idee/create
+    defaults: { _controller: JaiUneIdeeSiteBundle:Idee:create }
+    requirements:
+        _method:  POST
+JaiUneIdeeSiteBundle_idee_moderate:
+    pattern:  /idee/moderate/{id}
+    defaults: { _controller: JaiUneIdeeSiteBundle:Idee:moderate }
+    requirements:
+        _method:  GET
+        id: \d+
+JaiUneIdeeSiteBundle_idee_moderate_commentaire:
+    pattern:  /idee/moderate/commentaire/{id}
+    defaults: { _controller: JaiUneIdeeSiteBundle:Idee:moderateCommentaire }
+    requirements:
+        _method:  GET
+        id: \d+
+JaiUneIdeeSiteBundle_idee_admin_moderate:
+    pattern:  /idee/admin_moderate/{id}
+    defaults: { _controller: JaiUneIdeeSiteBundle:Idee:adminModerate }
+    requirements:
+        _method:  GET
+        id: \d+
+JaiUneIdeeSiteBundle_idee_admin_validate:
+    pattern:  /idee/admin_validate/{id}
+    defaults: { _controller: JaiUneIdeeSiteBundle:Idee:adminValidate }
+    requirements:
+        _method:  GET
+        id: \d+
+JaiUneIdeeSiteBundle_idee_admin_publish:
+    pattern:  /idee/admin_publish/{id}
+    defaults: { _controller: JaiUneIdeeSiteBundle:Idee:adminPublish }
+    requirements:
+        _method:  GET
+        id: \d+
+JaiUneIdeeSiteBundle_idee_admin_remove:
+    pattern:  /idee/admin_remove/{id}
+    defaults: { _controller: JaiUneIdeeSiteBundle:Idee:adminRemove }
+    requirements:
+        _method:  GET
+        id: \d+
+JaiUneIdeeSiteBundle_idees_moderation_admin:
+    pattern:  /idee/list/moderation
+    defaults: { _controller: JaiUneIdeeSiteBundle:Idee:moderationIdeesAdmin }
+JaiUneIdeeSiteBundle_commentaires_moderation_admin:
+    pattern:  /idee/list/moderation/Commentaires
+    defaults: { _controller: JaiUneIdeeSiteBundle:Idee:moderationCommentairesAdmin }
+    
+JaiUneIdeeSiteBundle_idee_admin_moderate_commentaire:
+    pattern:  /idee/admin_moderate/commentaire/{id}
+    defaults: { _controller: JaiUneIdeeSiteBundle:Idee:adminModerateCommentaire }
+    requirements:
+        _method:  GET
+        id: \d+
+JaiUneIdeeSiteBundle_idee_admin_validate_commentaire:
+    pattern:  /idee/admin_validate/commentaire/{id}
+    defaults: { _controller: JaiUneIdeeSiteBundle:Idee:adminValidateCommentaire }
+    requirements:
+        _method:  GET
+        id: \d+
+JaiUneIdeeSiteBundle_idee_create_comment:
+    pattern:  /idee/comment/{idee_id}
+    defaults: { _controller: JaiUneIdeeSiteBundle:Idee:createComment }
+    requirements:
+        _method:  POST
+        idee_id: \d+
+
+JaiUneIdeeSiteBundle_vote_vote:
+    pattern:  /vote/{idee_id}/{note}
+    defaults: { _controller: JaiUneIdeeSiteBundle:Vote:vote }
+    requirements:
+        _method:  GET
+        idee_id: \d+
+
+JaiUneIdeeSiteBundle_vote_cancel:
+    pattern:  /vote/cancel/{idee_id}
+    defaults: { _controller: JaiUneIdeeSiteBundle:Vote:cancelVote }
+    requirements:
+        _method:  GET
+        idee_id: \d+
+JaiUneIdeeSiteBundle_alerte_activer:
+    pattern:  /alerte/activer/{idee_id}
+    defaults: { _controller: JaiUneIdeeSiteBundle:AlerteIdee:activer }
+    requirements:
+        _method:  GET
+        idee_id: \d+
+JaiUneIdeeSiteBundle_alerte_desactiver:
+    pattern:  /alerte/desactiver/{idee_id}
+    defaults: { _controller: JaiUneIdeeSiteBundle:AlerteIdee:desactiver }
+    requirements:
+        _method:  GET
+        idee_id: \d+
+fos_user_security:
+    resource: "@FOSUserBundle/Resources/config/routing/security.xml"
+    prefix: /
+
+fos_user_profile:
+    resource: "@FOSUserBundle/Resources/config/routing/profile.xml"
+    prefix: /profile
+
+fos_user_register:
+    resource: "@FOSUserBundle/Resources/config/routing/registration.xml"
+    prefix: /register
+
+fos_user_resetting:
+    resource: "@FOSUserBundle/Resources/config/routing/resetting.xml"
+    prefix: /resetting
+
+fos_user_change_password:
+    resource: "@FOSUserBundle/Resources/config/routing/change_password.xml"
+    prefix: /change-password
+JaiUneIdeeSiteBundle_message:
+        resource: "@JaiUneIdeeSiteBundle/Resources/config/routing/message.yml"
+        prefix:   /message
+JaiUneIdeeSiteBundle_statistiques_index:
+    pattern:  /stats/index
+    defaults: { _controller: JaiUneIdeeSiteBundle:Statistique:index }
+        
+        

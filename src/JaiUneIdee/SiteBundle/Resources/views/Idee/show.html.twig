@@ -1,0 +1,153 @@
+{% extends 'JaiUneIdeeSiteBundle::layout_2_col.html.twig' %}
+
+{% block title %}{{ idee.title }}{% endblock %}
+{% block javascript %}
+    {{ parent() }}
+<script>(function(d, s, id) {
+        var js, fjs = d.getElementsByTagName(s)[0];
+        if (d.getElementById(id))
+            return;
+        js = d.createElement(s);
+        js.id = id;
+        js.src = "//connect.facebook.net/en_US/all.js#xfbml=1&appId=111388102225960";
+        fjs.parentNode.insertBefore(js, fjs);
+    }(document, 'script', 'facebook-jssdk'));</script>
+{% endblock %}
+{% block mainCol %}
+    {% if idee.isPublished==false %}
+        {% if idee.isRemoved==false %}
+            <div>		
+                Attention, votre idée n'est pas encore publiée, elle est surement en attente de validation de la part de l'équipe d'administration.
+            </div>
+        {% else %}
+            <div>		
+                Cette idée a été suprimée par un administrateur. Si vous n'êtes pas d'accord avec cette décision, vous pouvez nous contacter par la page de contact. La raison la plus courante est qu'elle ne respectait pas la charte du site. 
+                <br /><br />
+            </div>
+        {% endif %}
+    {% endif %}
+    <div class="idee_body box">
+        <header class="idee_titre ellipsis gradient2">
+            {{ idee.title }}
+        </header>
+        <div class="box_left">
+            <a href="{{ path('user_profile', { 'user_id': idee.user.id, 'username':idee.user}) }}">
+                {% if(idee.user.avatar) %}
+                        <img src="{{asset('upload/' ~ idee.user.id ~'/' ~ idee.user.avatar)}}" alt="avatar de {{ idee.user|capitalize }}" title="avatar de {{ idee.user|capitalize }}" class="avatar" />
+                {% else %}
+                        <img src="{{asset('images/avatar_default.png')}}" alt="avatar de {{ idee.user|capitalize }}" title="avatar de {{ idee.user|capitalize }}" class="avatar" />
+                {% endif %}
+                {{ idee.user|capitalize }}
+            </a>
+            <br />
+            {% if idee.isModerated == false %}
+                {% if is_granted('ROLE_USER') %}
+                    {% if moderationExistant[0] is defined %}
+                        <img src="{{asset('images/inspection.png')}}" alt="Inspection en cours" title="Inspection en cours" class="action"/>
+                    {% else %}
+                        <a href="{{ path('JaiUneIdeeSiteBundle_idee_moderate', { 'id': idee.id }) }}">
+                            <img src="{{asset('images/alert.png')}}" alt="Signaler l'idée" title="Signaler l'idée" class="action" />
+                        </a>
+                    {% endif %}
+                {% endif %}
+                {% if is_granted('ROLE_ADMIN') %}
+                    <br />
+                    l'idée a {{ idee.life }} PV<br />
+                    <a href="{{ path('JaiUneIdeeSiteBundle_idee_admin_validate', { 'id': idee.id })}}" class="lien_visible">Approuver l'idée</a><br />
+                    <a href="{{ path('JaiUneIdeeSiteBundle_idee_admin_moderate', { 'id': idee.id }) }}" class="lien_visible">Refuser l'idée</a><br />
+                {% endif %}
+            {% else %}
+                <img src="{{asset('images/valid.png')}}" alt="Idée conforme à la charte" title="Idée conforme à la charte" class="action" />  
+            {% endif %}
+        </div>
+        <div class="box_content">
+            <h2>{{ idee.description }} </h2>
+            <p>{{ idee.content|nl2br }}</p>
+        </div>
+    </div>
+    <div class="idee_commentaires_liste">
+        {% render 'JaiUneIdeeSiteBundle:Idee:listeCommentaire' with { 'idee_id': idee.id, 'page': page  } %}
+    </div>
+        <br />
+    {% if is_granted('ROLE_USER') %}
+        {% render 'JaiUneIdeeSiteBundle:Idee:newComment' with { 'idee_id': idee.id } %}
+    {% else %}
+        Désolé, vous devez être identifié pour répondre à cette idée.
+    {% endif %}
+{% endblock %}
+{% block secondCol %}
+<div class="box">
+    <header class="gradient2">
+        Informations
+    </header>
+    <div class="body">
+        <h3>Infos sur l'idée</h3>
+        <ul>
+            <li><u>Postée le :</u> {{ idee.createdAt|date('d/m/Y') }} à {{ idee.createdAt|date('H:i:s') }}</li>
+            {%  if(idee.createdAt != idee.updatedAt) %}
+            <li><u>Modifiée le :</u> {{ idee.updatedAt|date('d/m/Y') }} à {{ idee.updatedAt|date('H:i:s') }}</li>
+            {% endif %}
+            <li><u>Zone(s) concernée(s) :</u> {{ idee.localisations|join(', ') }}</li>
+            <li><u>Thème :</u> {{ idee.theme }}
+       </ul>
+    {% if is_granted('ROLE_USER') %}
+        <br />
+        <hr />
+        <h3>Votes ({{votes["total"]}})</h3>
+        <div class="vote_graph">
+            {% if votes["total"]>0 %}
+                <div class="bar pour" style="width:{{ votes["pourcent_1"] }}%;">{{ votes["pourcent_1"] }}%</div>
+                <div class="bar blanc" style="width:{{ votes["pourcent_0"] }}%;">{{ votes["pourcent_0"] }}%</div>
+                <div class="bar contre" style="width:{{ votes["pourcent_-1"] }}%;">{{ votes["pourcent_-1"] }}%</div>
+            {% else %}
+                <div class="bar" style="width:100%;">Pas encore de votes</div>
+            {% endif %}
+        </div> 
+        <br />
+        <span>
+            {% if voteExistant.note is defined %}
+                <span><img src="/images/pouce_vert" alt="Pour" title="Pour" class="idee_vote {{ (voteExistant.note == 1)?'mon_vote':'gris' }}" /></span>
+                <span><img src="/images/pouce_orange" alt="Neutre" title="Neutre" class="idee_vote {{ (voteExistant.note == 0)?'mon_vote':'gris' }}" /></span>
+                <span><img src="/images/pouce_rouge" alt="Neutre" title="Neutre"  class="idee_vote {{ (voteExistant.note == -1)?'mon_vote':'gris' }}" /></span>
+                <span><a class="" href="{{ path('JaiUneIdeeSiteBundle_vote_cancel', { 'idee_id': idee.id}) }}"><img src="/images/undo-30.png" alt="Annuler mon vote" class="idee_vote" /></a></span>
+            {% else %}
+                <a class="" href="{{ path('JaiUneIdeeSiteBundle_vote_vote', { 'idee_id': idee.id, 'note': "1" }) }}"><img src="/images/pouce_vert.png" alt="Voter pour" title="Voter pour"class="idee_vote" /></a>
+                <a class="" href="{{ path('JaiUneIdeeSiteBundle_vote_vote', { 'idee_id': idee.id, 'note': "0" }) }}"><img src="/images/pouce_orange.png" alt="Sans avis - Neutre" title="Sans avis - Neutre" class="idee_vote" /></a>
+                <a class="" href="{{ path('JaiUneIdeeSiteBundle_vote_vote', { 'idee_id': idee.id, 'note': "-1" }) }}"><img src="/images/pouce_rouge.png" alt="Voter contre" title="Voter contre" class="idee_vote" /></a>
+            {% endif %}
+        </span>
+        <br />
+        <br />
+        <hr />
+        <h3>Abonnement</h3>
+
+        {% if(alerteIdee is null or alerteIdee.activated == false ) %}
+            <a href="{{ path('JaiUneIdeeSiteBundle_alerte_activer', { 'idee_id': idee.id}) }}" >Activer les alertes</a>
+        {% else %}
+            <a href="{{ path('JaiUneIdeeSiteBundle_alerte_desactiver', { 'idee_id': idee.id}) }}" >Désactiver les alertes</a>
+        {% endif %}
+    {% else %}
+        Désolé, vous devez être identifié pour voir les votes.
+    {% endif %}
+
+    <br />
+    <br />
+    <hr />
+    <h3>Partager l'idée</h3>
+    <div id="fb-root"></div>
+    <div class="fb-like" data-send="true" data-width="200" data-show-faces="false"></div>
+    <br />
+    <a href="https://twitter.com/share" class="twitter-share-button" data-lang="fr">Tweeter</a>
+    <script>!function(d, s, id) {
+            var js, fjs = d.getElementsByTagName(s)[0];
+            if (!d.getElementById(id)) {
+                js = d.createElement(s);
+                js.id = id;
+                js.src = "//platform.twitter.com/widgets.js";
+                fjs.parentNode.insertBefore(js, fjs);
+            }
+        }(document, "script", "twitter-wjs");</script>
+    </div>
+    <footer></footer>
+</div>
+{% endblock %}

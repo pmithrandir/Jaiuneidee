@@ -1,0 +1,21 @@
+{% extends 'JaiUneIdeeSiteBundle::layout_email.html.twig' %}
+
+{% block body %}
+Bonjour {{ name }},
+<br />
+<br />
+Vous venez d'envoyer un message aux administrateurs. Nous le traiterons dès que possible.
+Vous trouverez ci-dessous une copie de ce message.
+
+Toute l'équipe de "J'ai Une Idée" espère vous retrouver bientôt.<br />
+<br />
+Bonne journée, <br />
+L'équipe J'ai Une Idée.
+<hr />
+{{ subject }} :
+<br />
+<p>
+{{ body|nl2br }}
+</p> 
+
+{% endblock %}

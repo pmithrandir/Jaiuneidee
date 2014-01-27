@@ -1,0 +1,6 @@
+# pack-refs with: peeled 
+5d1b9eb262055019a280a0ec48bc0b11fba5bb23 refs/remotes/origin/2.1
+6bea6f3a23ea4b69d821b00c89a3746e437b8880 refs/remotes/origin/master
+40209ef994fa2f342660d96bf6bea3f88171cd2d refs/remotes/origin/symfony2.0
+d3afee30720bcf19d251c3c5c91d7dc96fa4c704 refs/tags/v1.0.0
+^6bea6f3a23ea4b69d821b00c89a3746e437b8880

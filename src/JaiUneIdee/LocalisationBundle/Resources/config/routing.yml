@@ -1,0 +1,5 @@
+JaiUneIdeeSiteBundle_localisation_list:
+    pattern:  /localisation_list
+    defaults: { _controller: JaiUneIdeeLocalisationBundle:Localisation:localisationList }
+    requirements:
+        _method:  GET

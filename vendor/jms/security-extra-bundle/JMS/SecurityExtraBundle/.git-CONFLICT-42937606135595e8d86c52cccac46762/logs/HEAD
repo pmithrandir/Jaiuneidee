@@ -1,0 +1,6 @@
+0000000000000000000000000000000000000000 f2a345dc468eb0ba9ce50211b289422c82082db0 Pierre Bonneau <pmithrandir@localhost.(none)> 1370692974 +0300	clone: from git://github.com/schmittjoh/JMSSecurityExtraBundle
+f2a345dc468eb0ba9ce50211b289422c82082db0 1942069cfaa7155071566c02e23a4f7303612428 Pierre Bonneau <pmithrandir@localhost.(none)> 1370692984 +0300	checkout: moving from master to 1.2.0
+1942069cfaa7155071566c02e23a4f7303612428 f2a345dc468eb0ba9ce50211b289422c82082db0 Pierre Bonneau <pmithrandir@localhost.(none)> 1370697124 +0300	checkout: moving from 1942069cfaa7155071566c02e23a4f7303612428 to master
+f2a345dc468eb0ba9ce50211b289422c82082db0 fb45172eeefc3bae332d5e5ae25ce63dbbadc58a Pierre Bonneau <pmithrandir@localhost.(none)> 1370697124 +0300	reset: moving to fb45172eeefc3bae332d5e5ae25ce63dbbadc58a
+fb45172eeefc3bae332d5e5ae25ce63dbbadc58a fb45172eeefc3bae332d5e5ae25ce63dbbadc58a Pierre Bonneau <pmithrandir@localhost.(none)> 1371064706 +0300	checkout: moving from master to master
+fb45172eeefc3bae332d5e5ae25ce63dbbadc58a 5152f529004ba94a805f101a65c06c0d4de8a33e Pierre Bonneau <pmithrandir@localhost.(none)> 1371064706 +0300	reset: moving to 5152f529004ba94a805f101a65c06c0d4de8a33e

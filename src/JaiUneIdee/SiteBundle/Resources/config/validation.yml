@@ -1,0 +1,8 @@
+JaiUneIdee\SiteBundle\Entity\Idee:
+    properties:
+        localisations:
+            - Count:
+                min: 1
+                max: 10
+                minMessage: Vous devez spécifier au moins une localisation
+                maxMessage: Vous ne pouvez pas spécifier plus de 10 localisations

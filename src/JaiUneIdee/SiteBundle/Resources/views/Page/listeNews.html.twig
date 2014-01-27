@@ -1,0 +1,18 @@
+<ol>
+{% for new in news %}
+    <li class="index_news">
+        <h3>{{new.publicationDate|localizeddate('full', 'none') | capitalize}} - {{new.publicationDate|localizeddate('none', 'short')}}</h3>
+        <p>
+            {{new.content | nl2br}}
+            <br />
+            <br />
+            L'équipe J'ai Une Idée
+        </p>
+    </li>
+{% endfor %}
+</ol>
+{% if pager_news.haveToPaginate %}
+    <div class="pagerfanta">
+    {{ pagerfanta(pager_news, 'default_translated', options_pager_news) }}
+    </div>
+{% endif %}

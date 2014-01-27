@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta http-equiv="Content-Type" content="text/html"; charset=utf-8" />
+        <title>{% block title %}Accueil{% endblock %} - J'ai Une Idee, la démocratie participative autrement ! </title>
+        {% block javascript %}
+        <!--[if lt IE 9]>
+            <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+        <![endif]-->
+        <script src="http://code.jquery.com/jquery-1.8.2.min.js"></script>
+        {#
+        <script src="{{ asset('js/jquery-1.8.2.min.js') }}"></script>
+        #}
+        <script src="{{ asset('js/jquery.validate.min.js') }}"></script>
+        <script src="{{ asset('js/messages_fr.js') }}"></script>
+        <script src="{{ asset('js/tokeninput.js') }}"></script>
+        <script src="{{ asset('js/msdropdown/jquery.dd.min.js') }}"></script>
+        
+        
+        {% endblock %}
+        {% block stylesheets %}
+        {#
+            <link href='http://fonts.googleapis.com/css?family=Irish+Grover' rel='stylesheet' type='text/css'>
+            <link href='http://fonts.googleapis.com/css?family=La+Belle+Aurore' rel='stylesheet' type='text/css'>
+        #}
+            <link href="{{ asset('css/token-input.css') }}" type="text/css" rel="stylesheet" />
+            <link href="{{ asset('css/token-input-facebook.css') }}" type="text/css" rel="stylesheet" />
+            <link href="{{ asset('css/msdropdown/dd.css') }}" type="text/css" rel="stylesheet" />
+        {% endblock %}
+        <link href="{{ asset('css/jaiuneidee.css') }}" type="text/css" rel="stylesheet" />
+        {#
+        <link rel="shortcut icon" href="{{ asset('favicon.ico') }}" />
+        #}
+        <meta property="fb:admins" content="100005771354609" />
+        <link href="https://plus.google.com/u/0/b/118203067427668607877/118203067427668607877/" rel="publisher" />
+    </head>
+    <body>
+        <div id="fb-root"></div>
+        <script>(function(d, s, id) {
+          var js, fjs = d.getElementsByTagName(s)[0];
+          if (d.getElementById(id)) return;
+          js = d.createElement(s); js.id = id;
+          js.src = "//connect.facebook.net/fr_FR/all.js#xfbml=1";
+          fjs.parentNode.insertBefore(js, fjs);
+        }(document, 'script', 'facebook-jssdk'));</script>
+            
+        <section id="wrapper">
+            <header id="header">
+                {% block login %}{% endblock %}
+                <hgroup>
+            	  <a href="{{ path('JaiUneIdeeSiteBundle_homepage') }}">
+                      <h1 class="accessibilite">J'ai Une Idée</h1>
+                      <img class="logo" src="/images/logo_orange.png" alt="J'ai Une Idée" title="J'ai Une Idée"/>
+            	  </a>
+                    <h2>{% block blog_tagline %}La&nbsp;démocratie&nbsp;participative&nbsp;autrement{% endblock %}</h2>
+                </hgroup>
+                <div id="bandeau" class="separation gradient2">
+                    {% block bandeau %}{% endblock %}
+                </div>
+            </header>
+            <section id="body">
+                {% block body %}{% endblock %}
+            </section>
+        </section>
+        <footer id="footer" class="">
+            <div class="separation gradient2">
+            </div>
+            {% block footer %}
+                <div class="citation">
+                    <span>"Les grands esprits discutent des idées, les esprits moyens discutent des événements, les petits esprits discutent des gens."</span> Eleanor Roosevelt
+                </div>
+                Vous&nbsp;avez&nbsp;une&nbsp;idée&nbsp;?&nbsp;Parlons-en&nbsp;!<br /><br />
+                <a href="{{ path('JaiUneIdeeSiteBundle_charte') }}">Charte</a> - <a href="{{ path('JaiUneIdeeSiteBundle_contact') }}">Contact</a>
+            {% endblock %}
+        </footer>
+
+        {% block javascripts %}{% endblock %}
+    </body>
+</html>

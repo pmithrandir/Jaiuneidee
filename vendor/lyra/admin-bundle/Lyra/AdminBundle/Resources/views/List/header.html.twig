@@ -1,0 +1,23 @@
+<tr>
+    {% if grid.hasBatchActions %}
+        <th class="batch-select-all"><input type="checkbox" /></th>
+    {% endif %}
+    {% set sort = grid.sort %}
+    {% for col in grid.columns %}
+        <th class="{{ (col.isSortable ? (col.name == sort.column ? 'sorted-'~sort.order : 'sortable')~' ' : '')~'col-'~col.name~' '~col.type }}">
+            {% block table_head_sort %}
+                {% if col.sortable %}
+                    <a href="{{ path(grid.actions.index.routeName, {'page': 1, 'column': col.name, 'order': col.name == sort.column ? (sort.order == 'asc' ? 'desc' : 'asc') : 'asc' }) }}">
+                    {{ col.label|trans({}, grid.transDomain) }}
+                    </a>
+                {% else %}
+                    {{ col.label|trans({}, grid.transDomain) }}
+                {% endif %}
+            {% endblock %}
+        </th>
+    {% endfor %}
+    {# Object actions header #}
+    <th class="object-actions">
+        {{ 'list.actions'|trans({}, 'LyraAdminBundle') }}
+    </th>
+</tr>

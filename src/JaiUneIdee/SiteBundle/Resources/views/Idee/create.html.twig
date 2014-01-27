@@ -1,0 +1,42 @@
+{% extends 'JaiUneIdeeSiteBundle::layout_2_col.html.twig' %}
+{% form_theme form _self %}
+{%block _jaiuneidee_sitebundle_ideetype_theme_widget %}
+    <select {{ block('widget_attributes') }} class="theme">
+            <option value="">-- Thème --</option>
+	    {%for choice in choices%}
+                 <option value="{{ choice.value }}" 
+			    {% if choice is selectedchoice(value) %} selected="selected"{% endif %}
+                            data-image="/images/themes/{{choice.label|lower}}.png">
+		{{ choice.label|trans({}, translation_domain) }}
+                 </option>
+	{%endfor%}
+       </select>
+{%endblock%}
+{% block title %}Créer une nouvelle idée{% endblock%}
+
+{% block mainCol %}
+    <form action="{{ path('JaiUneIdeeSiteBundle_idee_create') }}" method="post" {{ form_enctype(form) }} class="form nouvelle_idee">
+    	    <h1>Création d'une nouvelle idée</h1>
+	      {{ form_widget(form) }}
+      <input type="submit" value="Publier" id="idee_submit">
+    </form>
+{% endblock %}
+{% block secondCol %}
+  <div class="case">
+  	<header class="gradient">
+  		N'oubliez pas
+  	</header>
+  	<div class="body">
+		  <h3>Avant de créer une idée : </h3>
+		  <ul>
+		  	<li>N'oubliez pas de vérifier si elle n'existe pas déjà.</li>
+		  	<li>Vérifiez qu'elle respècte <a class="lien_visible" href="{{ path('JaiUneIdeeSiteBundle_charte') }}">la charte</a> du site.</li>
+		  </ul>
+		  <h3>Après la création d'une idée : </h3>
+		  <ul>
+		  	<li>Partagez la sur les réseaux sociaux.</li>
+		  </ul>
+		</div>
+		<footer></footer>
+	</div>
+{% endblock %}

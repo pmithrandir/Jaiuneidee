@@ -1,0 +1,30 @@
+JaiUneIdee\SiteBundle\Entity\AlerteIdee:
+  type: entity
+  repositoryClass: JaiUneIdee\SiteBundle\Repository\AlerteIdeeRepository
+  table: alerte_idee
+  fields:
+    id:
+      type: integer
+      id: true
+      generator:
+        strategy: AUTO
+    activated:
+      type: boolean
+      notnull: true
+      options:
+        default: true
+    created_at:
+      type: datetime
+      notnull: true
+      options:
+        default: 0
+  manyToOne:
+    idee:
+      targetEntity: Idee
+      joinColumn:
+        onDelete: CASCADE
+    user:
+      targetEntity: JaiUneIdee\UtilisateurBundle\Entity\User
+      joinColumn:
+        onDelete: CASCADE
+  lifecycleCallbacks: {  }

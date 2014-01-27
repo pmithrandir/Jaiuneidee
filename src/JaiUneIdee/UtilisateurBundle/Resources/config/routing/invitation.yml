@@ -1,0 +1,12 @@
+invitation:
+    pattern:  /
+    defaults: { _controller: "JaiUneIdeeUtilisateurBundle:Invitation:index" }
+
+invitation_new:
+    pattern:  /new
+    defaults: { _controller: "JaiUneIdeeUtilisateurBundle:Invitation:new" }
+
+invitation_create:
+    pattern:  /create
+    defaults: { _controller: "JaiUneIdeeUtilisateurBundle:Invitation:create" }
+    requirements: { _method: post }

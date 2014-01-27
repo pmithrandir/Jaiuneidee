@@ -1,0 +1,34 @@
+{% from 'LyraAdminBundle:Admin:macros.html.twig' import page_link %}
+{% set pager = grid.pager %}
+<tr>
+    <td colspan="{{ grid.columns|length + (grid.hasBatchActions ? 1 : 0) + 1 }}">
+        <span class="pagination">      
+            <span class="info">
+            {% if pager.total > 0 %}
+                {{ 'pagination.total'|trans({'%count%' : pager.total}, 'LyraAdminBundle') }}
+                {% if filter.criteria|length > 0 %}
+                     ({{ 'pagination.filtered'|trans({}, 'LyraAdminBundle') }})
+                     <a href="{{ path(filter.actions.filter.routeName, {'action' : 'criteria'}) }}" class="button icon-only ui-icon-lightbulb show-filter">{{ 'pagination.button.filters'|trans({}, 'LyraAdminBundle')}}</a>
+                {% endif %}
+            {% endif %}
+            {% if pager.nbPages > 1 %}
+               - {{ 'pagination.info'|trans({'%page%' : pager.page, '%count%' : pager.nbPages}, 'LyraAdminBundle') }}
+            {% endif %}
+            </span>
+            {% if pager.nbPages > 1 %}
+                {% set route = grid.actions.index.routeName  %}
+                {{ page_link(pager, 'first', 1, route) }}
+                {{ page_link(pager, 'prev', pager.prevPage, route) }}
+                {% for p in pager.pageLinks %}
+                    {% if p == pager.page %}
+                        {{ p }}
+                    {% else %}
+                        {{ page_link(pager, 'page', p, route) }}
+                    {% endif %}
+                {% endfor %}
+                {{ page_link(pager, 'next', pager.nextPage, route) }}
+                {{ page_link(pager, 'last', pager.nbPages, route) }}
+            {% endif %}
+        </span>
+    </td>
+</tr>

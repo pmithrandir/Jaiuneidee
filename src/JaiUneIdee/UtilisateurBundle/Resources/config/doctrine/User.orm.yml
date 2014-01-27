@@ -1,0 +1,87 @@
+JaiUneIdee\UtilisateurBundle\Entity\User:
+  type: entity
+  repositoryClass: JaiUneIdee\UtilisateurBundle\Repository\UserRepository
+  table: fos_user
+  fields:
+    id:
+      type: integer
+      id: true
+      generator:
+        strategy: AUTO
+    created_at:
+      type: datetime
+      notnull: true
+      options:
+        default: 0
+    last_activity:
+      type: datetime
+      notnull: true
+      options:
+        default: 0
+    date_de_naissance:
+      type: date
+    date_de_naissance_public:
+      type: boolean
+      notnull: true
+      options:
+        default: false
+    approbation_charte:
+      type: boolean
+      notnull: true
+    sexe_public:
+      type: boolean
+      notnull: true
+      options:
+        default: false
+    localisation_public:
+      type: boolean
+      notnull: true
+      options:
+        default: false
+    tendance_politique_public:
+      type: boolean
+      notnull: true
+      options:
+        default: false
+    newsletter:
+      type: boolean
+      notnull: true
+      options:
+        default: true
+    avatar:
+      type: string
+      notnull: false
+      options:
+        default: ""
+      length: 255
+  oneToOne:
+    invitation:
+      targetEntity: Invitation
+      notnull: false
+      inversedBy: user
+      joinColumn:
+        name: invitation_code
+        referencedColumnName: id
+  manyToOne:
+    sexe:
+      targetEntity: Sexe
+    tendance_politique:
+      targetEntity: TendancePolitique
+    dommage:
+      targetEntity: Dommage
+      notnull: true
+    localisation:
+      targetEntity: JaiUneIdee\LocalisationBundle\Entity\Localisation
+  oneToMany:
+    invitations:
+      targetEntity: Invitation
+      mappedBy: inviteur
+
+  lifecycleCallbacks:
+    preUpdate: [uploadAvatar ]
+    prePersist: [uploadAvatar ]
+    postPersist: [ moveImage ]
+    preRemove: [removeImage]
+#CSP
+#liste de thèmes préférés
+#revenus moyens

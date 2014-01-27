@@ -1,0 +1,10 @@
+Bonjour {{user.username | capitalize}},
+
+L'idée {{idee.title}} vient d'être commentée. Vous aussi venez enrichir le débat.
+
+Vous ne recevrez plus d'alerte sur cette idée jusqu'à votre retour sur sa page : {{ url('JaiUneIdeeSiteBundle_idee_show', { 'id': idee.id, 'slug': idee.slug }) }}
+
+Bonne journée, 
+L'équipe J'ai Une Idée.
+
+PS : Vous pouvez vous désabonner sur la page de l'idée.

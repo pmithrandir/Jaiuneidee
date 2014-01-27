@@ -1,0 +1,17 @@
+{% extends "FOSUserBundle::layout_profile.html.twig" %}
+
+{% block title %}Mon Profil{% endblock%}
+{% block mainCol %}
+		{% include "FOSUserBundle:Profile:edit_content.html.twig" %}
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+		<script type="text/javascript">
+		var datas =[
+			{% if localisation %}
+		 		{id: {{ localisation.id }}, nom: "{{ localisation.nom }}"},
+			{% endif %}
+		]
+		</script>
+{% endblock %}

@@ -1,0 +1,7 @@
+parameters:
+#    jai_une_idee_jai_une_idee.example.class: JaiUneIdee\SiteBundle\Example
+
+services:
+    jai_une_idee_site.mailer:
+        class: %jai_une_idee_site.mailer.class%
+        arguments: [mailer, templating]

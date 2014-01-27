@@ -1,0 +1,47 @@
+{% extends "FOSUserBundle::layout_profile.html.twig" %}
+
+{% block title %}Invitations envoyées{% endblock%}
+{% block fos_user_content %}
+<h1>Liste des invitations envoyées ({{ entities|length }})</h1>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>Code</th>
+            <th>Email</th>
+            <th>Invitation envoyée</th>
+            <th>Pseudo du filleul</th>
+        </tr>
+    </thead>
+    <tbody>
+    {% for entity in entities %}
+        <tr>
+            <td>{{ entity.id }}</td>
+            <td>{{ entity.email }}</td>
+            <td>
+            {% if (entity.sent) %}
+            	<img src="/images/checked.jpeg" />
+            {% endif %}
+            </td>
+            <td>
+                {% if (entity.user is not null) %}
+                <a href="{{ path('user_profile', { 'user_id': entity.user.id, 'username':entity.user}) }}">{{ entity.user|capitalize }}</a>
+                {% endif %}
+            </td>
+        </tr>
+    {% else %}
+        <tr>
+            <td colspan="4">Aucune invitation envoyée.</td>
+        </tr>
+    {% endfor %}
+    </tbody>
+</table>
+
+<ul>
+    <li>
+        <a href="{{ path('invitation_new') }}" class="lien_visible">
+            Inviter un ami
+        </a>
+    </li>
+</ul>
+{% endblock fos_user_content %}

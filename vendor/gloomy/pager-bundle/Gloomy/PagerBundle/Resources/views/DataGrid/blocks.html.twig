@@ -1,0 +1,202 @@
+
+{% block datagrid %}
+    {{ datagrid_stylesheets(datagrid) }}
+    {{ datagrid_javascripts(datagrid) }}
+    {{ datagrid_content(datagrid) }}
+{% endblock %}
+
+
+{% block datagrid_stylesheets %}
+    {% import 'GloomyPagerBundle:Pager:macros.html.twig' as helper %}
+    {{ helper.stylesheets() }}
+{% endblock %}
+
+
+{% block datagrid_javascripts %}
+    {% import 'GloomyPagerBundle:Pager:macros.html.twig' as helper %}
+    {{ helper.javascripts() }}
+{% endblock %}
+
+
+{% block datagrid_content %}
+    <form action="{{ datagrid.pager.pathForm() }}" method="post">
+        {{ datagrid_header(datagrid) }}
+        {{ datagrid_body(datagrid) }}
+        {{ datagrid_footer(datagrid) }}
+
+        {# Allows submitting filters with 'Enter' #}
+        <input type="image" src="{{ asset('bundles/gloomypager/img/transparent.gif') }}" height="0" width="0" border="0">
+    </form>
+{% endblock %}
+
+
+{% block datagrid_header %}
+    {% import 'GloomyPagerBundle:Pager:macros.html.twig' as helper %}
+
+    {% if datagrid.title %}
+        <h3>
+            {{ datagrid.title }}
+            <small>({{ helper.resultsRange(datagrid.pager) }})</small>
+        </h3>
+    {% endif %}
+
+    <div class="btn-toolbar">
+        {% if datagrid.hasActions('toolbar') %}
+            <div class="btn-group">
+                {% for action in datagrid.getActions('toolbar') %}
+                    <a class="btn" href="{{ path(action.route, action.routeParams) }}"
+                        {% if action.confirm %}
+                            onclick="return confirm('{{ action.confirm|e('js') }}');"
+                        {% endif %}
+                        >
+                        {%  if action.image %}
+                            {% if action.image|slice(0, 6) == '#icon-'  %}
+                                <i class="{{ action.image|slice(1) }}"></i>
+                            {% else %}
+                                <img src="{{ asset(action.image) }}" title="{{ action.label }}">
+                            {% endif %}
+                        {%  endif %}
+                        {{ action.label }}
+                    </a>
+                {% endfor %}
+            </div>
+        {% endif %}
+
+        <div class="pull-right">
+            {{ datagrid_items_per_page(datagrid) }}
+            {{ helper.refresh(datagrid.pager) }}
+        </div>
+
+        <div class="clearfix"></div>
+    </div>
+
+{#     <div style="margin: -10px 0 -15px 0;">#}
+{#         {{ datagrid_paginate(datagrid) }}#}
+{#     </div>#}
+
+    {% if datagrid.hasNotifications() %}
+        <div>
+            {% for notification in datagrid.notifications %}
+                <div class="alert alert-{{ notification.type }}">
+                    <button type="button" class="close" data-dismiss="alert">×</button>
+                    {{ notification.message }}
+                </div>
+            {% endfor %}
+        </div>
+    {% endif %}
+{% endblock %}
+
+
+{% block datagrid_body %}
+    <table class="table table-striped table-bordered table-hover">
+       <thead>
+           {{ datagrid_row_order_by(datagrid) }}
+           {{ datagrid_row_filters(datagrid) }}
+        </thead>
+        <tbody>
+            {% for item in datagrid.items %}
+               {{ datagrid_row_values(datagrid, item) }}
+            {% endfor %}
+        </tbody>
+    </table>
+{% endblock %}
+
+
+{% block datagrid_footer %}
+    {{ datagrid_paginate(datagrid) }}
+{% endblock %}
+
+
+{% block datagrid_row_order_by %}
+    <tr>
+        {% for alias, field in datagrid.fields %}
+           {{ datagrid_column_order_by(datagrid, field, alias) }}
+        {% endfor %}
+        {% if datagrid.hasActions('row') %}
+            <th></th>
+        {% endif %}
+    </tr>
+{% endblock %}
+
+
+{% block datagrid_row_filters %}
+    <tr>
+        {% for alias, field in datagrid.fields %}
+            {{ datagrid_column_filter(datagrid, field, alias) }}
+        {% endfor %}
+        {% if datagrid.hasActions('row') %}
+            <th></th>
+        {% endif %}
+    </tr>
+{% endblock %}
+
+
+{% block datagrid_row_values %}
+    <tr>
+        {% for alias, field in datagrid.fields %}
+           {{ datagrid_column_value(datagrid, field, item, alias) }}
+        {% endfor %}
+        {% if datagrid.hasActions('row') %}
+            {{ datagrid_column_action(datagrid, item) }}
+        {% endif %}
+    </tr>
+{% endblock %}
+
+
+{% block datagrid_paginate %}
+    {% import 'GloomyPagerBundle:Pager:macros.html.twig' as helper %}
+    {{ helper.paginate(datagrid.pager) }}
+{% endblock %}
+
+
+{% block datagrid_items_per_page %}
+    {% import 'GloomyPagerBundle:Pager:macros.html.twig' as helper %}
+    {{ helper.itemsPerPageDropdown(datagrid.pager) }}
+{% endblock %}
+
+
+{% block datagrid_column_order_by %}
+    {% import 'GloomyPagerBundle:Pager:macros.html.twig' as helper %}
+    <th>
+        {{ helper.orderBy(datagrid.pager, alias, field.label) }}
+    </th>
+{% endblock %}
+
+
+{% block datagrid_column_filter %}
+    {% import 'GloomyPagerBundle:Pager:macros.html.twig' as helper %}
+    <th>
+        {{ helper.filter(datagrid.pager, alias, field.type) }}
+    </th>
+{% endblock %}
+
+
+{% block datagrid_column_action %}
+    <td class="span1">
+        <div class="btn-group">
+            {% for action in datagrid.getActions('row') %}
+                <a class="btn btn-small" href="{{ path(action.route, array_merge( array_combine( [datagrid.getConfig('rowIdVar')], [item.id] ), action.routeParams)) }}"
+                    {% if action.confirm %}
+                        onclick="return confirm('{{ action.confirm|e('js') }}');"
+                    {% endif %}
+                    >
+                    {%  if action.image %}
+                        {% if action.image|slice(0, 6) == '#icon-'  %}
+                            <i class="{{ action.image|slice(1) }}"></i>
+                        {% else %}
+                            <img src="{{ asset(action.image) }}" title="{{ action.label }}">
+                        {% endif %}
+                    {%  endif %}
+                    {{ action.label }}
+                </a>
+            {% endfor %}
+        </div>
+    </td>
+{% endblock %}
+
+
+{% block datagrid_column_value %}
+    <td>
+        {{ datagrid_item_value(datagrid, field, item) }}
+    </td>
+{% endblock %}

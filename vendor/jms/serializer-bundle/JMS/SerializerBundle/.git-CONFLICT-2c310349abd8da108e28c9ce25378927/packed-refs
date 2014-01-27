@@ -1,0 +1,7 @@
+# pack-refs with: peeled 
+3d2d5606d1cef4857fd121234d46e4a16d555f28 refs/remotes/origin/builder
+ce44a109e58cec5df17304670117fc7a853f3a0e refs/remotes/origin/doctrineMetadata
+bc4c8ddf89c1daba6d24d696e261e088677f49af refs/remotes/origin/master
+d87e8d19ee35a4d3dced79fb2b3eee277d0f9f05 refs/tags/0.10
+12eed88bb3483c1ae1a7b9454abfc2c2cb3d4e2f refs/tags/0.11.0
+4553238f391f14cd1198bdf43fcca8ea02bc4c25 refs/tags/0.9.0

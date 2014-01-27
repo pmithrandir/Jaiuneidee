@@ -1,0 +1,9 @@
+# pack-refs with: peeled 
+f96221125f2c3e9bdd03d77b4dea164eba5dd56f refs/remotes/origin/alternate-autocomp
+f2100a6e313cb9d1aad3d3f5d54bf4736f93df4a refs/remotes/origin/command_details
+86ab2cf48197271a5fff3394e558c3403f63c272 refs/remotes/origin/handle-dumped-output
+f189929c13de8ddc5177b49f0a69f8680c9a9862 refs/remotes/origin/master
+f3f1bcccf529c172c49279f686f30fc136a8b099 refs/remotes/origin/origin-fork
+43a5e14d5e9a3058481207fefd3e07543b480ed8 refs/remotes/origin/symfony-2.0
+f3f1bcccf529c172c49279f686f30fc136a8b099 refs/tags/1.0.0
+f189929c13de8ddc5177b49f0a69f8680c9a9862 refs/tags/1.0.1

@@ -1,0 +1,11 @@
+parameters:
+#    jai_une_idee_localisation.example.class: JaiUneIdee\LocalisationBundle\Example
+
+services:
+    jaiuneidee.localisation.form.data_transformer:
+        class: JaiUneIdee\LocalisationBundle\Form\DataTransformer\LocalisationsToIdsTransformer
+        arguments: [@doctrine.orm.entity_manager]
+    jaiuneidee.localisation.form.type:
+        class: JaiUneIdee\LocalisationBundle\Form\Type\LocalisationFormType
+        arguments: [@jaiuneidee.localisation.form.data_transformer]
+        tags: [{ name: "form.type", alias: "jaiuneidee_localisation_type" }]

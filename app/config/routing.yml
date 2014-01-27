@@ -1,0 +1,23 @@
+JaiUneIdeeLocalisationBundle:
+    resource: "@JaiUneIdeeLocalisationBundle/Resources/config/routing.yml"
+    prefix:   /
+
+JaiUneIdeeAdminBundle:
+    resource: "@JaiUneIdeeAdminBundle/Resources/config/routing.yml"
+    prefix:   /
+
+JaiUneIdeeUtilisateurBundle:
+    resource: "@JaiUneIdeeUtilisateurBundle/Resources/config/routing.yml"
+    prefix:   /
+
+JaiUneIdeeSiteBundle:
+    resource: "@JaiUneIdeeSiteBundle/Resources/config/routing.yml"
+    prefix:   /
+
+# Internal routing configuration to handle ESI
+#_internal:
+#   resource: "@FrameworkBundle/Resources/config/routing/internal.xml"
+#   prefix:   /_internal
+
+LyraAdminBundle:
+    resource: "@LyraAdminBundle/Resources/config/routing.yml"

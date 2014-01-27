@@ -1,0 +1,101 @@
+{# src/JaiUneIdee/SiteBundle/Resources/views/Page/index.html.twig #}
+{% extends 'JaiUneIdeeSiteBundle::layout_2_col.html.twig' %}
+{% block title %}Accueil{% endblock %}
+{% block mainCol %}
+<fieldset id="cadre_filtre">
+    <legend>
+        Filtres et tris
+    </legend>
+    <form action="{{ path('JaiUneIdeeSiteBundle_homepage') }}" method="post" id="filtres">
+        <div>
+            {% if is_granted('IS_AUTHENTICATED_REMEMBERED') %}
+            <label for="localisation_toutes">Toutes les idées</label>
+            <input type="radio" checked="checked" name="localisation" id="localisation_toutes" value="toutes" />
+            <label for="localisation_nationale">Idées générales</label>
+            <input type="radio" name="localisation" id="localisation_nationale" value="national" />
+            <label for="localisation_locale">Près de chez vous</label>
+            <input type="radio" name="localisation" id="localisation_locale" value="local" />
+            {% endif %}
+        </div>
+        <div>
+            <select name="theme" class="theme" onchange="">
+                <option value="all">-- Thème --</option>
+                {% for theme in themes %}
+                    <option data-image="/images/themes/{{ theme.nom|lower }}.png" value="{{ theme.id }}" {% if theme.id == theme_selected %}selected="selected"{% endif %}>{{ theme.nom }}</option>
+                {% endfor %}
+            </select>
+        </div>
+        <div>
+            <label for="tri_par_date_dernier_commentaire">Dernière activité</label>
+            <input type="radio" checked="checked" name="tri" id="tri_par_date_dernier_commentaire" value="derniere_activite" />
+            <label for="tri_par_date">Date de création</label>
+            <input type="radio" name="tri" id="tri_par_date" value="date" />
+            <label for="tri_par_nombre_commentaire">Buzz</label>
+            <input type="radio" name="tri" id="tri_par_nombre_commentaire" value="nb_commentaire" />
+        </div>
+        <!--<input type="submit" value="Actualiser" id="filtres_submit"/>-->
+    </form>
+</fieldset>
+<div id="index_ajout_idee">
+    <a href="{{ path('JaiUneIdeeSiteBundle_idee_new') }}">
+        <img src="{{asset('images/plus.png')}}" alt="" title="Partager une idée" />
+        Partager une idée
+    </span>
+    </a>
+</div>
+<div id="toutes_les_idees"> 
+    {% include "JaiUneIdeeSiteBundle:Page:listeIdees.html.twig" %}
+</div>
+    <div id="ccm">
+        <img src="/images/ccm.png" alt="Afficher Comment ca marche" title="Afficher Comment ca marche"/>
+    </div>
+<div id="cadre_ccm1">
+    <img src="/images/comment_ca_marche.png"  alt="" title="Comment ca marche"/>
+    <ul class="accessibilite">
+        <li>J'ai une idée</li>
+        <li>Elle est approuvée par la communauté</li>
+        <li>L'idée est discutée par les élus</li>
+        <li>Elle est réalisée</li>
+    </ul>
+</div>
+<div id="cadre_ccm2">
+    <img src="/images/comment_ca_marche.png"  alt="" title="Comment ca marche"/>
+    <ul class="accessibilite">
+        <li>J'ai une idée</li>
+        <li>Elle est approuvée par la communauté</li>
+        <li>L'idée est discutée par les élus</li>
+        <li>Elle est réalisée</li>
+    </ul>
+</div>
+{% endblock %}
+{% block secondCol %}
+<h2>News</h2>
+<div id="news">
+    {% include "JaiUneIdeeSiteBundle:Page:listeNews.html.twig" %}
+</div>
+        {% if is_granted('ROLE_ADMIN') %}
+    <ul>
+            <li><a href="{{ path('lyra_admin_idees_index') }}">Admin</a></li>
+            <li><a href="{{ path('JaiUneIdeeSiteBundle_statistiques_index') }}">Stats</a></li>
+            <li><a href="{{ path('JaiUneIdeeSiteBundle_idees_moderation_admin') }}">Idées à modérer 
+                ({% render "JaiUneIdeeSiteBundle:Idee:countModeration" %})
+                </a></li>
+            <li><a href="{{ path('JaiUneIdeeSiteBundle_commentaires_moderation_admin') }}">Commentaires à modérer
+                ({% render "JaiUneIdeeSiteBundle:Idee:countModerationCommentaire" %})
+                </a></li>
+    </ul><br /> <br />
+        {% endif %}
+    Vous aimez ce site, faites le savoir autour de vous ! <br /> <br />
+    <g:plus href="https://plus.google.com/118203067427668607877/118203067427668607877" width="170" height="69" theme="light"></g:plus>
+    <div class="fb-like-box" data-href="https://www.facebook.com/pages/Jai-Une-Id%C3%A9e/171223119712846" data-width="292" data-show-faces="false" data-stream="false" data-show-border="true" data-header="true"></div>
+            
+{% endblock %}
+{% block javascripts %}
+    <script type="text/javascript">
+        (function() {
+          var po = document.createElement('script'); po.type = 'text/javascript'; po.async = true;
+          po.src = 'https://apis.google.com/js/plusone.js';
+          var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(po, s);
+        })();
+    </script>
+{% endblock %}

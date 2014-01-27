@@ -1,0 +1,85 @@
+JaiUneIdee\SiteBundle\Entity\Idee:
+  type: entity
+  repositoryClass: JaiUneIdee\SiteBundle\Repository\IdeeRepository
+  table: idee
+  fields:
+    id:
+      type: integer
+      id: true
+      generator:
+        strategy: AUTO
+    slug:
+      type: string
+      lenght: 255
+      notnull: true
+    title:
+      type: string
+      lenght: 255
+      notnull: true
+    description:
+      type: string
+      lenght: 140
+      notnull: true
+    content:
+      type: text
+      notnull: true
+    is_published:
+      type: boolean
+      notnull: true
+      options:
+        default: false
+    is_removed:
+      type: boolean
+      notnull: true
+      options:
+        default: false
+    created_at:
+      type: datetime
+      notnull: true
+    updated_at:
+      type: datetime
+      notnull: true
+    is_validated_by_admin:
+      type: boolean
+      notnull: true
+      options:
+        default: false
+    is_moderated:
+      type: boolean
+      notnull: true
+      options:
+        default: false
+    life:
+      type: integer
+      options:
+        default: 2000
+  oneToMany:
+    votes:
+      targetEntity: Vote
+      mappedBy: idee
+    moderations:
+      targetEntity: Moderation
+      mappedBy: idee
+    commentaires:
+      targetEntity: Commentaire
+      mappedBy: idee
+  manyToOne:
+    theme:
+      targetEntity: Theme
+    user:
+      targetEntity: JaiUneIdee\UtilisateurBundle\Entity\User
+      joinColumn:
+        onDelete: CASCADE
+  manyToMany:
+    localisations:
+      targetEntity: JaiUneIdee\LocalisationBundle\Entity\Localisation
+      joinTable:
+        name: idee_localisation
+        joinColumns:
+          idee_id:
+            referencedColumnName: id
+        inverseJoinColumns:
+          localisation_id:
+            referencedColumnName: id
+  lifecycleCallbacks:
+    preUpdate: [ setUpdatedValue ]

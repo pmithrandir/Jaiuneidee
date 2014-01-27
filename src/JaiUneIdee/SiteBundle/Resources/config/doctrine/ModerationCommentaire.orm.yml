@@ -1,0 +1,20 @@
+JaiUneIdee\SiteBundle\Entity\ModerationCommentaire:
+  type: entity
+  repositoryClass: JaiUneIdee\SiteBundle\Repository\ModerationCommentaireRepository
+  table: moderation_commentaire
+  fields:
+    id:
+      type: integer
+      id: true
+      generator:
+        strategy: AUTO
+  manyToOne:
+    commentaire:
+      targetEntity: Commentaire
+      joinColumn:
+        onDelete: CASCADE
+    user:
+      targetEntity: JaiUneIdee\UtilisateurBundle\Entity\User
+      joinColumn:
+        onDelete: CASCADE
+  lifecycleCallbacks: {  }

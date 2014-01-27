@@ -1,0 +1,6 @@
+# IDE Meta
+/nbproject
+
+# Comopser
+/composer.lock
+/vendor
