@@ -1,0 +1,15 @@
+JaiUneIdee\SiteBundle\Entity\TypeMandat:
+  type: entity
+  repositoryClass: JaiUneIdee\SiteBundle\Repository\TypeMandatRepository
+  table: type_mandat
+  fields:
+    id:
+      type: integer
+      id: true
+      generator:
+        strategy: AUTO
+    nom:
+      type: string
+      lenght: 255
+      notnull: true
+    

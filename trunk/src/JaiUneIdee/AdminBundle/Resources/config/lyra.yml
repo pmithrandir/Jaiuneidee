@@ -142,8 +142,8 @@ lyra_admin:
                 title: Listing users
                 max_page_rows: 15
                 default_sort:
-                  column: username
-                  order: asc
+                  column: last_activity
+                  order: desc
                 columns:
                     username: ~
                     email: ~

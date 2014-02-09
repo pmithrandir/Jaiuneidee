@@ -1,0 +1,41 @@
+JaiUneIdee\SiteBundle\Entity\ActionElu:
+  type: entity
+  repositoryClass: JaiUneIdee\SiteBundle\Repository\ActionEluRepository
+  table: action_elu
+  fields:
+    id:
+      type: integer
+      id: true
+      generator:
+        strategy: AUTO
+    date_jaime:
+      type: datetime
+      notnull: false
+    jaime:
+      type: boolean
+      notnull: true
+      options:
+        default: false
+    date_jemengage:
+      type: datetime
+      notnull: false
+    jemengage:
+      type: boolean
+      notnull: true
+      options:
+        default: false
+    date_jairealise:
+      type: datetime
+      notnull: false
+    jairealise:
+      type: boolean
+      notnull: true
+      options:
+        default: false
+  manyToOne:
+    idee:
+      targetEntity: Idee
+    user:
+      targetEntity: JaiUneIdee\UtilisateurBundle\Entity\User
+      joinColumn:
+        onDelete: CASCADE

@@ -1,0 +1,25 @@
+JaiUneIdee\SiteBundle\Entity\Mandat:
+  type: entity
+  repositoryClass: JaiUneIdee\SiteBundle\Repository\MandatRepository
+  table: mandat
+  fields:
+    id:
+      type: integer
+      id: true
+      generator:
+        strategy: AUTO
+    date_election:
+      type: date
+      notnull: false
+    date_prise_de_fonction:
+      type: date
+      notnull: false
+  manyToOne:
+    localisation:
+      targetEntity: JaiUneIdee\LocalisationBundle\Entity\Localisation
+    type_mandat:
+      targetEntity: TypeMandat
+    user:
+      targetEntity: JaiUneIdee\UtilisateurBundle\Entity\User
+      joinColumn:
+        onDelete: CASCADE

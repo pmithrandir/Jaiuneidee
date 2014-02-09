@@ -34,6 +34,7 @@ security:
       - { path: ^/alerte, roles: ROLE_USER }
       - { path: ^/vote, roles: ROLE_USER }
       - { path: ^/profile, roles: ROLE_USER }
+      - { path: ^/elu, roles: ROLE_CANDIDAT }
       
     providers:
       fos_userbundle:
@@ -43,5 +44,7 @@ security:
       FOS\UserBundle\Model\UserInterface: sha512
 
     role_hierarchy:
+      ROLE_CANDIDAT:    ROLE_USER
+      ROLE_ELU:         ROLE_CANDIDAT
       ROLE_ADMIN:       ROLE_USER
       ROLE_SUPER_ADMIN: ROLE_ADMIN

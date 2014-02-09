@@ -581,4 +581,42 @@ class Idee
     {
         return $this->is_moderated;
     }
+    /**
+     * @var \Doctrine\Common\Collections\Collection
+     */
+    private $actionsElus;
+
+
+    /**
+     * Add actionsElus
+     *
+     * @param \JaiUneIdee\SiteBundle\Entity\ActionElu $actionsElus
+     * @return Idee
+     */
+    public function addActionsElu(\JaiUneIdee\SiteBundle\Entity\ActionElu $actionsElus)
+    {
+        $this->actionsElus[] = $actionsElus;
+    
+        return $this;
+    }
+
+    /**
+     * Remove actionsElus
+     *
+     * @param \JaiUneIdee\SiteBundle\Entity\ActionElu $actionsElus
+     */
+    public function removeActionsElu(\JaiUneIdee\SiteBundle\Entity\ActionElu $actionsElus)
+    {
+        $this->actionsElus->removeElement($actionsElus);
+    }
+
+    /**
+     * Get actionsElus
+     *
+     * @return \Doctrine\Common\Collections\Collection 
+     */
+    public function getActionsElus()
+    {
+        return $this->actionsElus;
+    }
 }

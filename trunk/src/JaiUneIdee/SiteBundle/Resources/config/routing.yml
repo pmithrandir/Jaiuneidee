@@ -157,4 +157,9 @@ JaiUneIdeeSiteBundle_statistiques_index:
     pattern:  /stats/index
     defaults: { _controller: JaiUneIdeeSiteBundle:Statistique:index }
         
-        
+JaiUneIdeeSiteBundle_elu_action:
+    pattern:  /elu/idee/action/{type}/{idee_id}
+    defaults: { _controller: JaiUneIdeeSiteBundle:Elu:action }
+    requirements:
+        _method:  GET
+        idee_id: \d+
