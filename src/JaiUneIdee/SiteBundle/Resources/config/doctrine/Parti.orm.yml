@@ -1,0 +1,14 @@
+JaiUneIdee\SiteBundle\Entity\Parti:
+  type: entity
+  repositoryClass: JaiUneIdee\SiteBundle\Repository\PartiRepository
+  table: parti
+  fields:
+    id:
+      type: integer
+      id: true
+      generator:
+        strategy: AUTO
+    nom:
+      type: string
+      lenght: 255
+      notnull: true

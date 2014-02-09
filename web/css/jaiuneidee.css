@@ -668,6 +668,15 @@ select.theme{
 .idee_commentaires_liste .box{
     margin-top: 20px;
 }
+.action_tag{
+    width:30px;
+    vertical-align: middle;
+}
+.avatar_elu{
+    max-width: 45px;
+    max-height: 45px;
+    vertical-align: middle;
+}
 /*******************************PROFILE INVITATION ***************************************/
 .table{
   border: 1px solid #83BEF5;

@@ -16,10 +16,11 @@ class IdeeRepository extends EntityRepository {
 
     public function getIdee($id) {
         $qb = $this->createQueryBuilder('i');
-        $qb->select('i', 'c', 't', 'l')
+        $qb->select('i', 'c', 't', 'l','ae')
                 ->join('i.theme', 't')
                 ->join('i.localisations', 'l')
                 ->leftJoin('i.commentaires', 'c', Expr\Join::WITH, 'c.is_removed=false AND (c.life > 0 OR c.is_validated_by_admin = true)')
+                ->leftJoin('i.actionsElus', 'ae')
                 ->where('i.id = :id')
                 ->orderBy('c.created_at')
                 ->setParameter('id', $id);

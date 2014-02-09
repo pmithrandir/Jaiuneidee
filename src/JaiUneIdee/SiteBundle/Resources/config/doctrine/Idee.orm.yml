@@ -63,6 +63,9 @@ JaiUneIdee\SiteBundle\Entity\Idee:
     commentaires:
       targetEntity: Commentaire
       mappedBy: idee
+    actionsElus:
+      targetEntity: ActionElu
+      mappedBy: idee
   manyToOne:
     theme:
       targetEntity: Theme
