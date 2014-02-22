@@ -47,11 +47,17 @@
         <section id="wrapper">
             <header id="header">
                 {% block login %}{% endblock %}
+                <div id="promo_elu">
+                    <a href="{{ path('JaiUneIdeeSiteBundle_contact') }}">
+                        <span>Candidats ou Elus ? </span>
+                        <br /> Contactez-nous pour un <br />compte avancé !
+                    </a>
+            	</div>
                 <hgroup>
-            	  <a href="{{ path('JaiUneIdeeSiteBundle_homepage') }}">
+                    <a href="{{ path('JaiUneIdeeSiteBundle_homepage') }}">
                       <h1 class="accessibilite">J'ai Une Idée</h1>
                       <img class="logo" src="/images/logo_orange.png" alt="J'ai Une Idée" title="J'ai Une Idée"/>
-            	  </a>
+            	    </a>
                     <h2>{% block blog_tagline %}La&nbsp;démocratie&nbsp;participative&nbsp;autrement{% endblock %}</h2>
                 </hgroup>
                 <div id="bandeau" class="separation gradient2">

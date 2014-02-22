@@ -60,6 +60,7 @@ class ActionElu
         $this->setJaime(false);
         $this->setJemengage(false);
         $this->setJairealise(false);
+        $this->setJenaimepas(false);
     }
     /**
      * Get id
@@ -253,5 +254,61 @@ class ActionElu
     public function getUser()
     {
         return $this->user;
+    }
+    /**
+     * @var \DateTime
+     */
+    private $date_jenaimepas;
+
+    /**
+     * @var boolean
+     */
+    private $jenaimepas;
+
+
+    /**
+     * Set date_jenaimepas
+     *
+     * @param \DateTime $dateJenaimepas
+     * @return ActionElu
+     */
+    public function setDateJenaimepas($dateJenaimepas)
+    {
+        $this->date_jenaimepas = $dateJenaimepas;
+    
+        return $this;
+    }
+
+    /**
+     * Get date_jenaimepas
+     *
+     * @return \DateTime 
+     */
+    public function getDateJenaimepas()
+    {
+        return $this->date_jenaimepas;
+    }
+
+    /**
+     * Set jenaimepas
+     *
+     * @param boolean $jenaimepas
+     * @return ActionElu
+     */
+    public function setJenaimepas($jenaimepas)
+    {
+        $this->jenaimepas = $jenaimepas;
+    
+        return $this;
+    }
+
+    /**
+     * Get jenaimepas
+     *
+     * @return boolean 
+     */
+    public function getJenaimepas()
+    {
+        return $this->jenaimepas;
     }
 }
