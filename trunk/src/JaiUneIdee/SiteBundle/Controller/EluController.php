@@ -31,6 +31,12 @@ class EluController extends Controller
 
                 }
                 break;
+            case "jenaimepas":
+                if (true === $this->get('security.context')->isGranted('ROLE_CANDIDAT')) {
+                    $action->setJenaimepas(true);
+                    $action->setDateJenaimepas(new DateTime());
+                }
+                break;
             case "jemengage":
                 if (true === $this->get('security.context')->isGranted('ROLE_CANDIDAT')) {
                     $action->setJemengage(true);

@@ -32,6 +32,14 @@ JaiUneIdee\SiteBundle\Entity\ActionElu:
       notnull: true
       options:
         default: false
+    date_jenaimepas:
+      type: datetime
+      notnull: false
+    jenaimepas:
+      type: boolean
+      notnull: true
+      options:
+        default: false
   manyToOne:
     idee:
       targetEntity: Idee

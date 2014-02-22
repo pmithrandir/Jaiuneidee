@@ -319,6 +319,20 @@ select{
     display: block;
     margin: auto;
 }
+#promo_elu{
+    background: none repeat scroll 0 0 #FBFBFB;
+    box-shadow: 0 0 6px 3px #F0F0F0;
+    color: #538ED5;
+    font-size: 16px;
+    margin: 30px 20px;
+    padding: 2px;
+    position: absolute;
+    text-align: center;
+    width: 245px;
+}
+#promo_elu span{
+    font-size: 30px;
+}
 /********************************* FOOTER *************************************/
 #footer {
     position: relative;
@@ -668,9 +682,15 @@ select.theme{
 .idee_commentaires_liste .box{
     margin-top: 20px;
 }
-.action_tag{
+.action_tag,
+.action_url{
     width:30px;
     vertical-align: middle;
+    margin-right: 5px;
+}
+.action_tag{
+    float:right;
+    margin-top: 10px;
 }
 .avatar_elu{
     max-width: 45px;
