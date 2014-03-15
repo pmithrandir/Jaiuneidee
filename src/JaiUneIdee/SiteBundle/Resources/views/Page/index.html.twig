@@ -1,6 +1,6 @@
 {# src/JaiUneIdee/SiteBundle/Resources/views/Page/index.html.twig #}
 {% extends 'JaiUneIdeeSiteBundle::layout_2_col.html.twig' %}
-{% block title %}Accueil{% endblock %}
+{% block title %}Accueil{% if page>1 %} (page {{ page }}) {% endif %} {% endblock %}
 {% block mainCol %}
 <fieldset id="cadre_filtre">
     <legend>
@@ -82,7 +82,9 @@
                 </a></li>
             <li><a href="{{ path('JaiUneIdeeSiteBundle_commentaires_moderation_admin') }}">Commentaires à modérer
                 ({% render "JaiUneIdeeSiteBundle:Idee:countModerationCommentaire" %})
-                </a></li>
+                </a>
+                </li>
+            <li><a href="{{ path('message') }}">Mes messages</a></li>
     </ul><br /> <br />
         {% endif %}
     Vous aimez ce site, faites le savoir autour de vous ! <br /> <br />

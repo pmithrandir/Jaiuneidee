@@ -70,7 +70,30 @@ class PageController extends Controller
                 $ideesLues[$idee[0]->getId()] = $em->getRepository('JaiUneIdeeSiteBundle:IdeeLue')->estLue($idee[0],$this->get('security.context')->getToken()->getUser()->getId());
             }
         }
-        
+        foreach($idees as &$idee){
+            $idee['votes'] = $em->getRepository('JaiUneIdeeSiteBundle:Vote')->getVotesByIdee($idee[0]);
+            if(!isset($idee['votes']["1"])){
+                    $idee['votes']["1"] = 0;
+            }
+            if(!isset($idee['votes']["0"])){
+                    $idee['votes']["0"] = 0;
+            }
+            if(!isset($idee['votes']["-1"])){
+                    $idee['votes']["-1"] = 0;
+            }
+            $idee['votes']["max"] = max($idee['votes']);
+            $idee['votes']["total"] = $idee['votes']["1"] + $idee['votes']["-1"] + $idee['votes']["0"];
+            if($idee['votes']["total"]>0){
+                    $idee['votes']["pourcent_1"] = round($idee['votes']["1"]*100/$idee['votes']["total"],2);
+                    $idee['votes']["pourcent_-1"] = round($idee['votes']["-1"]*100/$idee['votes']["total"],2);
+                    $idee['votes']["pourcent_0"] = round($idee['votes']["0"]*100/$idee['votes']["total"],2);
+            }
+            else{
+                    $idee['votes']["pourcent_1"] = 0;
+                    $idee['votes']["pourcent_-1"] = 0;
+                    $idee['votes']["pourcent_0"] = 0;
+            }
+        }
         $qb_news = $em->getRepository('JaiUneIdeeSiteBundle:News')->getNewsPublicQb();
         $adapter_news = new DoctrineORMAdapter($qb_news);
         $pagerfanta_news = new Pagerfanta($adapter_news);

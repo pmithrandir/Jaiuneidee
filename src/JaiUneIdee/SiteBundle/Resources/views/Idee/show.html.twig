@@ -1,6 +1,6 @@
 {% extends 'JaiUneIdeeSiteBundle::layout_2_col.html.twig' %}
 
-{% block title %}{{ idee.title }}{% endblock %}
+{% block title %}{{ idee.title }}{% if page>1 %} (page {{ page }}) {% endif %} {% endblock %}
 {% block javascript %}
     {{ parent() }}
 <script>(function(d, s, id) {
@@ -90,7 +90,6 @@
             <li><u>Zone(s) concernée(s) :</u> {{ idee.localisations|join(', ') }}</li>
             <li><u>Thème :</u> {{ idee.theme }}
        </ul>
-    {% if is_granted('ROLE_USER') %}
         <br />
         <hr />
         <h3>Votes ({{votes["total"]}})</h3>
@@ -104,6 +103,7 @@
             {% endif %}
         </div> 
         <br />
+    {% if is_granted('ROLE_USER') %}
         <span>
             {% if voteExistant.note is defined %}
                 <span><img src="/images/pouce_vert" alt="Pour" title="Pour" class="idee_vote {{ (voteExistant.note == 1)?'mon_vote':'gris' }}" /></span>
@@ -127,7 +127,7 @@
             <a href="{{ path('JaiUneIdeeSiteBundle_alerte_desactiver', { 'idee_id': idee.id}) }}" >Désactiver les alertes</a>
         {% endif %}
     {% else %}
-        Désolé, vous devez être identifié pour voir les votes.
+        Désolé, vous devez être identifié pour voter.
     {% endif %}
 
         <br />
