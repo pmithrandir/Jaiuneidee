@@ -12,7 +12,7 @@ class SitemapsController extends Controller
      */
     public function sitemapAction() 
     {
-        $em = $this->getDoctrine()->getEntityManager();
+        $em = $this->getDoctrine()->getManager();
         
         $urls = array();
         $hostname = $this->getRequest()->getHost();

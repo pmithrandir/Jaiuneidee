@@ -1,3 +1,5 @@
+0742fc7167a4deedaabc8639849a3e71082999f1	not-for-merge	branch '1.0' of git://github.com/doctrine/migrations
+663136ea296e7823a2b5160155af728f76b0961d	not-for-merge	branch 'Rewrite' of git://github.com/doctrine/migrations
 e4ac6da7c28b9e6b9b012c14dc423bc3866ba5a8	not-for-merge	branch 'feature/migrations3.0' of git://github.com/doctrine/migrations
-e1f6efcd94993b493de5c6a413cbc327ea9c0caa	not-for-merge	branch 'master' of git://github.com/doctrine/migrations
+46a031ddaea47d0685200027cfe8c83b02aee6f6	not-for-merge	branch 'master' of git://github.com/doctrine/migrations
 3dd738b2a709f4d5185c144292189c6e708ca37d	not-for-merge	branch 'support_old' of git://github.com/doctrine/migrations

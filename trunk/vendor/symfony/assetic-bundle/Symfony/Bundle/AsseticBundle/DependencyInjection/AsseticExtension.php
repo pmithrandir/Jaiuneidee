@@ -11,8 +11,8 @@
 
 namespace Symfony\Bundle\AsseticBundle\DependencyInjection;
 
-use Symfony\Component\Config\FileLocator;
 use Symfony\Component\Config\Definition\Processor;
+use Symfony\Component\Config\FileLocator;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\DefinitionDecorator;
 use Symfony\Component\DependencyInjection\Loader\XmlFileLoader;
@@ -129,6 +129,10 @@ class AsseticExtension extends Extension
             'Symfony\\Bundle\\AsseticBundle\\Twig\\AsseticExtension',
             */
         ));
+
+        if ($config['workers']['cache_busting']['enabled']) {
+            $container->getDefinition('assetic.worker.cache_busting')->addTag('assetic.factory_worker');
+        }
     }
 
     /**

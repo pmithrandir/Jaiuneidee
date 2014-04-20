@@ -18,6 +18,3 @@ JaiUneIdeeSiteBundle:
 #_internal:
 #   resource: "@FrameworkBundle/Resources/config/routing/internal.xml"
 #   prefix:   /_internal
-
-LyraAdminBundle:
-    resource: "@LyraAdminBundle/Resources/config/routing.yml"

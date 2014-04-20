@@ -3,7 +3,7 @@
 /*
  * This file is part of the Assetic package, an OpenSky project.
  *
- * (c) 2010-2013 OpenSky Project Inc
+ * (c) 2010-2014 OpenSky Project Inc
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
@@ -15,6 +15,15 @@ use Assetic\Util\VarUtils;
 
 class VarUtilsTest extends \PHPUnit_Framework_TestCase
 {
+    public function testResolve()
+    {
+        $template = '{foo}bar';
+        $vars = array('foo');
+        $values = array('foo' => 'foo');
+
+        $this->assertEquals('foobar', VarUtils::resolve($template, $vars, $values));
+    }
+
     /**
      * @dataProvider getCombinationTests
      */

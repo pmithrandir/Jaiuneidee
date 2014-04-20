@@ -16,7 +16,7 @@ class PageController extends Controller
     public function indexAction($page = 1, $page_news = 1, $requester = "idee")
     {
         $request = $this->getRequest();
-        $em = $this->getDoctrine()->getEntityManager();
+        $em = $this->getDoctrine()->getManager();
         if ((true === $this->get('security.context')->isGranted('ROLE_USER'))&&($request->get("localisation")=="local")){
             $localisation = $this->get('security.context')->getToken()->getUser()->getLocalisation();
             $withLocChildren = true;
@@ -29,10 +29,10 @@ class PageController extends Controller
             $localisation = $em->getRepository('JaiUneIdeeLocalisationBundle:Localisation')->findOneBy(array("nom"=>"France"));
             $withLocChildren = true;
         }
-        $liste_themes = $this->getDoctrine()->getEntityManager()->getRepository('JaiUneIdeeSiteBundle:Theme')->findAll();
+        $liste_themes = $this->getDoctrine()->getManager()->getRepository('JaiUneIdeeSiteBundle:Theme')->findAll();
         $theme = null;
         if(($request->get("theme")!==null) &&($request->get("theme")!="all")){
-            $theme = $this->getDoctrine()->getEntityManager()->getRepository('JaiUneIdeeSiteBundle:Theme')->find($request->get("theme"));
+            $theme = $this->getDoctrine()->getManager()->getRepository('JaiUneIdeeSiteBundle:Theme')->find($request->get("theme"));
         }
         $withIdeesLues = false;
         if (true === $this->get('security.context')->isGranted('ROLE_USER')){
@@ -150,7 +150,7 @@ class PageController extends Controller
             $form->bind($request);
             if ($form->isValid()) {
                 // Perform some action, such as sending an email
-                $em = $this->getDoctrine()->getEntityManager();
+                $em = $this->getDoctrine()->getManager();
                 $entity  = new Message();
                 $param = $this->getRequest()->get("contact");
                 $entity->setNom($param["name"]);

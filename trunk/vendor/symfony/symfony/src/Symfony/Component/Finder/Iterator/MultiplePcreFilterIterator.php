@@ -11,6 +11,8 @@
 
 namespace Symfony\Component\Finder\Iterator;
 
+use Symfony\Component\Finder\Expression\Expression;
+
 /**
  * MultiplePcreFilterIterator filters files using patterns (regexps, globs or strings).
  *
@@ -18,8 +20,8 @@ namespace Symfony\Component\Finder\Iterator;
  */
 abstract class MultiplePcreFilterIterator extends FilterIterator
 {
-    protected $matchRegexps;
-    protected $noMatchRegexps;
+    protected $matchRegexps = array();
+    protected $noMatchRegexps = array();
 
     /**
      * Constructor.
@@ -30,12 +32,10 @@ abstract class MultiplePcreFilterIterator extends FilterIterator
      */
     public function __construct(\Iterator $iterator, array $matchPatterns, array $noMatchPatterns)
     {
-        $this->matchRegexps = array();
         foreach ($matchPatterns as $pattern) {
             $this->matchRegexps[] = $this->toRegex($pattern);
         }
 
-        $this->noMatchRegexps = array();
         foreach ($noMatchPatterns as $pattern) {
             $this->noMatchRegexps[] = $this->toRegex($pattern);
         }
@@ -52,20 +52,7 @@ abstract class MultiplePcreFilterIterator extends FilterIterator
      */
     protected function isRegex($str)
     {
-        if (preg_match('/^(.{3,}?)[imsxuADU]*$/', $str, $m)) {
-            $start = substr($m[1], 0, 1);
-            $end = substr($m[1], -1);
-
-            if ($start === $end) {
-                return !preg_match('/[*?[:alnum:] \\\\]/', $start);
-            }
-
-            if ($start === '{' && $end === '}') {
-                return true;
-            }
-        }
-
-        return false;
+        return Expression::create($str)->isRegex();
     }
 
     /**

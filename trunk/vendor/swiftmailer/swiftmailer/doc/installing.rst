@@ -4,6 +4,16 @@ Installing the Library
 Installing Swift Mailer is trivial. Usually it's just a case of uploading the
 extracted source files to your web server.
 
+Installing with Composer
+------------------------
+
+If you use Composer to manage your project dependencies, you can install
+Swiftmailer like this:
+
+.. code-block:: bash
+
+    $ php composer.phar require swiftmailer/swiftmailer @stable
+
 Installing from PEAR
 --------------------
 
@@ -50,7 +60,7 @@ the ``tar`` command.
 
     $ ls
     Swift-4.0.0-dev.tar.gz
-    $ tar xvzf Swift-4.0.0-dev.tar.gz 
+    $ tar xvzf Swift-4.0.0-dev.tar.gz
     Swift-4.0.0-dev/
     Swift-4.0.0-dev/lib/
     Swift-4.0.0-dev/lib/classes/
@@ -68,7 +78,7 @@ the ``tar`` command.
     Swift-4.0.0-dev/tests/unit/Swift/Transport/StreamBufferTest.php
     $ cd Swift-4.0.0-dev
     $ ls
-    CHANGES		LICENSE.GPL	LICENSE.LGPL	README		VERSION		examples	lib		test-suite	tests
+    CHANGES LICENSE ...
     $
 
 Installing from Git
@@ -82,8 +92,8 @@ can get the source directly from the repository.
 
 .. note::
 
-    You do not need to have git installed to use Swift Mailer from github. If
-    you don't have git installed, go to `github`_ and click the "Download"
+    You do not need to have git installed to use Swift Mailer from GitHub. If
+    you don't have git installed, go to `GitHub`_ and click the "Download"
     button.
 
 Cloning the Repository
@@ -122,8 +132,7 @@ OS X.
     Checking out files: 100% (1847/1847), done.
     $ cd swiftmailer/
     $ ls
-    CHANGES		LICENSE.LGPL	README.git	VERSION		docs		lib		test-suite	util
-    LICENSE.GPL	README		TODO		build.xml	examples	notes		tests
+    CHANGES LICENSE ...
     $
 
 Uploading to your Host
@@ -133,7 +142,7 @@ You only need to upload the "lib/" directory to your web host for production
 use. All other files and directories are support files not needed in
 production.
 
-You will need FTP, ``rsync`` or similar software installed in order to upload 
+You will need FTP, ``rsync`` or similar software installed in order to upload
 the "lib/" directory to your web host.
 
 To upload Swift Mailer:
@@ -150,7 +159,7 @@ The following example shows show you can upload the files using
 
 .. note::
 
-    You do not need to place the files inside your web root. They only need to 
+    You do not need to place the files inside your web root. They only need to
     be in a place where your PHP scripts can "include" them.
 
     .. code-block:: bash
@@ -176,7 +185,7 @@ The following example shows show you can upload the files using
         total size is 401405  speedup is 2.60
         $
 
-.. _`github`: http://github.com/swiftmailer/swiftmailer
+.. _`GitHub`: http://github.com/swiftmailer/swiftmailer
 
 Troubleshooting
 ---------------

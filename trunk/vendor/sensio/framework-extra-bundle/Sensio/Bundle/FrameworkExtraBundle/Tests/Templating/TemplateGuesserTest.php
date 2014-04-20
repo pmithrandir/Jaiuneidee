@@ -5,11 +5,12 @@ namespace Sensio\Bundle\FrameworkExtraBundle\Tests\Templating;
 use Sensio\Bundle\FrameworkExtraBundle\Templating\TemplateGuesser;
 use Sensio\Bundle\FrameworkExtraBundle\Tests\Templating\Fixture;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpKernel\KernelInterface;
 
 class TemplateGuesserTest extends \PHPUnit_Framework_TestCase
 {
     /**
-     * @var Symfony\Component\HttpKernel\KernelInterface
+     * @var KernelInterface
      */
     private $kernel;
 
@@ -39,7 +40,6 @@ class TemplateGuesserTest extends \PHPUnit_Framework_TestCase
             new Fixture\FooBundle\Controller\FooController(),
             'indexAction',
         ), new Request());
-
 
         $this->assertEquals('FooBundle:Foo:index.html.twig', (string) $templateReference);;
     }

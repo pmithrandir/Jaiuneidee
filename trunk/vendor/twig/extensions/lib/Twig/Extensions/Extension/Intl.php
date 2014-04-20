@@ -26,7 +26,7 @@ class Twig_Extensions_Extension_Intl extends Twig_Extension
     public function getFilters()
     {
         return array(
-            'localizeddate' => new Twig_Filter_Function('twig_localized_date_filter', array('needs_environment' => true)),
+            new Twig_SimpleFilter('localizeddate', 'twig_localized_date_filter', array('needs_environment' => true)),
         );
     }
 
@@ -54,7 +54,7 @@ function twig_localized_date_filter(Twig_Environment $env, $date, $dateFormat = 
     );
 
     $formatter = IntlDateFormatter::create(
-        $locale !== null ? $locale : Locale::getDefault(),
+        $locale,
         $formatValues[$dateFormat],
         $formatValues[$timeFormat],
         $date->getTimezone()->getName(),

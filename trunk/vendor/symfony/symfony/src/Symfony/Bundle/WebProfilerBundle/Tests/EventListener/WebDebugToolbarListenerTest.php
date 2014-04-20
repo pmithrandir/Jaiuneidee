@@ -23,7 +23,7 @@ class WebDebugToolbarListenerTest extends \PHPUnit_Framework_TestCase
      */
     public function testInjectToolbar($content, $expected)
     {
-        $listener = new WebDebugToolbarListener($this->getTemplatingMock());
+        $listener = new WebDebugToolbarListener($this->getTwigMock());
         $m = new \ReflectionMethod($listener, 'injectToolbar');
         $m->setAccessible(true);
 
@@ -60,7 +60,7 @@ class WebDebugToolbarListenerTest extends \PHPUnit_Framework_TestCase
         $response->headers->set('X-Debug-Token', 'xxxxxxxx');
         $event = new FilterResponseEvent($this->getKernelMock(), $this->getRequestMock(false, 'html', $hasSession), HttpKernelInterface::MASTER_REQUEST, $response);
 
-        $listener = new WebDebugToolbarListener($this->getTemplatingMock('Redirection'), true);
+        $listener = new WebDebugToolbarListener($this->getTwigMock('Redirection'), true);
         $listener->onKernelResponse($event);
 
         $this->assertEquals(200, $response->getStatusCode());
@@ -74,7 +74,7 @@ class WebDebugToolbarListenerTest extends \PHPUnit_Framework_TestCase
 
         $event = new FilterResponseEvent($this->getKernelMock(), $this->getRequestMock(), HttpKernelInterface::MASTER_REQUEST, $response);
 
-        $listener = new WebDebugToolbarListener($this->getTemplatingMock());
+        $listener = new WebDebugToolbarListener($this->getTwigMock());
         $listener->onKernelResponse($event);
 
         $this->assertEquals("<html><head></head><body>\nWDT\n</body></html>", $response->getContent());
@@ -90,7 +90,7 @@ class WebDebugToolbarListenerTest extends \PHPUnit_Framework_TestCase
         $response->headers->set('X-Debug-Token', 'xxxxxxxx');
         $event = new FilterResponseEvent($this->getKernelMock(), $this->getRequestMock(false, 'html', $hasSession), HttpKernelInterface::MASTER_REQUEST, $response);
 
-        $listener = new WebDebugToolbarListener($this->getTemplatingMock());
+        $listener = new WebDebugToolbarListener($this->getTwigMock());
         $listener->onKernelResponse($event);
 
         $this->assertEquals('<html><head></head><body></body></html>', $response->getContent());
@@ -115,7 +115,7 @@ class WebDebugToolbarListenerTest extends \PHPUnit_Framework_TestCase
 
         $event = new FilterResponseEvent($this->getKernelMock(), $this->getRequestMock(), HttpKernelInterface::MASTER_REQUEST, $response);
 
-        $listener = new WebDebugToolbarListener($this->getTemplatingMock());
+        $listener = new WebDebugToolbarListener($this->getTwigMock());
         $listener->onKernelResponse($event);
 
         $this->assertEquals('<html><head></head><body></body></html>', $response->getContent());
@@ -131,7 +131,7 @@ class WebDebugToolbarListenerTest extends \PHPUnit_Framework_TestCase
 
         $event = new FilterResponseEvent($this->getKernelMock(), $this->getRequestMock(), HttpKernelInterface::SUB_REQUEST, $response);
 
-        $listener = new WebDebugToolbarListener($this->getTemplatingMock());
+        $listener = new WebDebugToolbarListener($this->getTwigMock());
         $listener->onKernelResponse($event);
 
         $this->assertEquals('<html><head></head><body></body></html>', $response->getContent());
@@ -147,7 +147,7 @@ class WebDebugToolbarListenerTest extends \PHPUnit_Framework_TestCase
 
         $event = new FilterResponseEvent($this->getKernelMock(), $this->getRequestMock(), HttpKernelInterface::MASTER_REQUEST, $response);
 
-        $listener = new WebDebugToolbarListener($this->getTemplatingMock());
+        $listener = new WebDebugToolbarListener($this->getTwigMock());
         $listener->onKernelResponse($event);
 
         $this->assertEquals('<div>Some content</div>', $response->getContent());
@@ -163,7 +163,7 @@ class WebDebugToolbarListenerTest extends \PHPUnit_Framework_TestCase
 
         $event = new FilterResponseEvent($this->getKernelMock(), $this->getRequestMock(true), HttpKernelInterface::MASTER_REQUEST, $response);
 
-        $listener = new WebDebugToolbarListener($this->getTemplatingMock());
+        $listener = new WebDebugToolbarListener($this->getTwigMock());
         $listener->onKernelResponse($event);
 
         $this->assertEquals('<html><head></head><body></body></html>', $response->getContent());
@@ -179,10 +179,31 @@ class WebDebugToolbarListenerTest extends \PHPUnit_Framework_TestCase
 
         $event = new FilterResponseEvent($this->getKernelMock(), $this->getRequestMock(false, 'json'), HttpKernelInterface::MASTER_REQUEST, $response);
 
-        $listener = new WebDebugToolbarListener($this->getTemplatingMock());
+        $listener = new WebDebugToolbarListener($this->getTwigMock());
         $listener->onKernelResponse($event);
 
         $this->assertEquals('<html><head></head><body></body></html>', $response->getContent());
+    }
+
+    public function testXDebugUrlHeader()
+    {
+        $response = new Response();
+        $response->headers->set('X-Debug-Token', 'xxxxxxxx');
+
+        $urlGenerator = $this->getUrlGeneratorMock();
+        $urlGenerator
+            ->expects($this->once())
+            ->method('generate')
+            ->with('_profiler', array('token' => 'xxxxxxxx'))
+            ->will($this->returnValue('/_profiler/xxxxxxxx'))
+        ;
+
+        $event = new FilterResponseEvent($this->getKernelMock(), $this->getRequestMock(), HttpKernelInterface::MASTER_REQUEST, $response);
+
+        $listener = new WebDebugToolbarListener($this->getTwigMock(), false, WebDebugToolbarListener::ENABLED, 'bottom', $urlGenerator);
+        $listener->onKernelResponse($event);
+
+        $this->assertEquals('/_profiler/xxxxxxxx', $response->headers->get('X-Debug-Token-Link'));
     }
 
     protected function getRequestMock($isXmlHttpRequest = false, $requestFormat = 'html', $hasSession = true)
@@ -209,14 +230,19 @@ class WebDebugToolbarListenerTest extends \PHPUnit_Framework_TestCase
         return $request;
     }
 
-    protected function getTemplatingMock($render = 'WDT')
+    protected function getTwigMock($render = 'WDT')
     {
-        $templating = $this->getMock('Symfony\Bundle\TwigBundle\TwigEngine', array(), array(), '', false);
+        $templating = $this->getMock('Twig_Environment', array(), array(), '', false);
         $templating->expects($this->any())
             ->method('render')
             ->will($this->returnValue($render));
 
         return $templating;
+    }
+
+    protected function getUrlGeneratorMock()
+    {
+        return $this->getMock('Symfony\Component\Routing\Generator\UrlGeneratorInterface');
     }
 
     protected function getKernelMock()

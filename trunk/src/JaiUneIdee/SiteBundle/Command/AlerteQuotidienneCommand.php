@@ -23,7 +23,7 @@ class AlerteQuotidienneCommand extends ContainerAwareCommand
 
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        $em = $this->getContainer()->get('doctrine')->getEntityManager();
+        $em = $this->getContainer()->get('doctrine')->getManager();
         //récupérer les idées crées dans la journée.
         $news = $em->getRepository('JaiUneIdeeSiteBundle:News')->getNewsPublicToday();
         $idees = $em->getRepository('JaiUneIdeeSiteBundle:Idee')->getLatestIdees24h();

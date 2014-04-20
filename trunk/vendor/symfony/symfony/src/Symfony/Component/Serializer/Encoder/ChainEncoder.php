@@ -11,8 +11,6 @@
 
 namespace Symfony\Component\Serializer\Encoder;
 
-use Symfony\Component\Serializer\Encoder\EncoderInterface;
-use Symfony\Component\Serializer\Encoder\NormalizationAwareInterface;
 use Symfony\Component\Serializer\Exception\RuntimeException;
 
 /**
@@ -35,9 +33,9 @@ class ChainEncoder implements EncoderInterface
     /**
      * {@inheritdoc}
      */
-    final public function encode($data, $format)
+    final public function encode($data, $format, array $context = array())
     {
-        return $this->getEncoder($format)->encode($data, $format);
+        return $this->getEncoder($format)->encode($data, $format, $context);
     }
 
     /**

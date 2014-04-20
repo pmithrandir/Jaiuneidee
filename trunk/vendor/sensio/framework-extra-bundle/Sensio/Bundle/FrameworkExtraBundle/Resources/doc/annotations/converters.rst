@@ -54,7 +54,7 @@ To detect which converter is run on a parameter the following process is run:
 Built-in Converters
 -------------------
 
-The bundle has two built-in converter, the Doctrine one and a DateTime
+The bundle has two built-in converters, the Doctrine one and a DateTime
 converter.
 
 Doctrine Converter
@@ -65,7 +65,7 @@ Converter Name: ``doctrine.orm``
 The Doctrine Converter attempts to convert request attributes to Doctrine
 entities fetched from the database. Two different approaches are possible:
 
-- Fetch object by primary key
+- Fetch object by primary key.
 - Fetch object by one or several fields which contain unique values in the
   database.
 
@@ -102,6 +102,11 @@ option::
     {
     }
 
+.. tip::
+
+   The ``id`` option specifies which placeholder from the route gets passed to the repository
+   method used. If no repository method is specified, ``find()`` is used by default.
+
 This also allows you to have multiple converters in one action::
 
     /**
@@ -112,15 +117,17 @@ This also allows you to have multiple converters in one action::
     {
     }
 
-In the example above, the post parameter is handled automatically, but the comment is 
+In the example above, the ``$post`` parameter is handled automatically, but ``$comment`` is
 configured with the annotation since they can not both follow the default convention.
 
-If you want to match an entity using multiple fields use ``mapping``::
+If you want to match an entity using multiple fields use the ``mapping`` hash
+option: the key is route placeholder name and the value is the Doctrine
+field name::
 
     /**
      * @Route("/blog/{date}/{slug}/comments/{comment_slug}")
-     * @ParamConverter("post", options={"mapping": {"date": "date", "slug": "slug"})
-     * @ParamConverter("comment", options={"mapping": {"comment_slug": "slug"})
+     * @ParamConverter("post", options={"mapping": {"date": "date", "slug": "slug"}})
+     * @ParamConverter("comment", options={"mapping": {"comment_slug": "slug"}})
      */
     public function showAction(Post $post, Comment $comment)
     {
@@ -131,9 +138,20 @@ route parameter from being part of the criteria::
 
     /**
      * @Route("/blog/{date}/{slug}")
-     * @ParamConverter("post", options={"exclude": ["date"]})
+     * @ParamConverter("post", options={"exclude": {"date"}})
      */
     public function showAction(Post $post, \DateTime $date)
+    {
+    }
+
+If you want to specify the repository method to use to find the entity (for example,
+to add joins to the query), you can add the ``repository_method`` option::
+
+    /**
+     * @Route("/blog/{id}")
+     * @ParamConverter("post", class="SensioBlogBundle:Post", options={"repository_method" = "findWithJoins"})
+     */
+    public function showAction(Post $post)
     {
     }
 
@@ -167,8 +185,7 @@ is accepted. You can be stricter with input given through the options::
 Creating a Converter
 --------------------
 
-All converters must implement the
-:class:`Sensio\\Bundle\\FrameworkExtraBundle\\Request\\ParamConverter\\ParamConverterInterface`::
+All converters must implement the ``ParamConverterInterface``::
 
     namespace Sensio\Bundle\FrameworkExtraBundle\Request\ParamConverter;
 
@@ -190,20 +207,29 @@ The ``ParamConverter`` instance has three information about the annotation:
 * ``name``: The attribute name;
 * ``class``: The attribute class name (can be any string representing a class
   name);
-* ``options``: An array of options
+* ``options``: An array of options.
 
 The ``apply()`` method is called whenever a configuration is supported. Based
 on the request attributes, it should set an attribute named
 ``$configuration->getName()``, which stores an object of class
 ``$configuration->getClass()``.
 
-To register your converter service you must add a tag to your service
+To register your converter service you must add a tag to your service:
 
 .. configuration-block::
 
+    .. code-block:: yaml
+
+        # app/config/config.yml
+        services:
+            my_converter:
+                class:        MyBundle\Request\ParamConverter\MyConverter
+                tags:
+                    - { name: request.param_converter, priority: -2, converter: my_converter }
+
     .. code-block:: xml
 
-        <service id="my_converter" class="MyBundle/Request/ParamConverter/MyConverter">
+        <service id="my_converter" class="MyBundle\Request\ParamConverter\MyConverter">
             <tag name="request.param_converter" priority="-2" converter="my_converter" />
         </service>
 

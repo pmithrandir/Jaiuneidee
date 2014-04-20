@@ -15,7 +15,6 @@ use Assetic\Asset\AssetInterface;
 use Assetic\Factory\LazyAssetManager;
 use Symfony\Bundle\AsseticBundle\Config\AsseticResource;
 use Symfony\Component\Config\Loader\Loader;
-use Symfony\Component\Config\Resource\FileResource;
 use Symfony\Component\Routing\Route;
 use Symfony\Component\Routing\RouteCollection;
 
@@ -39,10 +38,12 @@ use Symfony\Component\Routing\RouteCollection;
 class AsseticLoader extends Loader
 {
     protected $am;
+    private $varValues;
 
-    public function __construct(LazyAssetManager $am)
+    public function __construct(LazyAssetManager $am, array $varValues = array())
     {
         $this->am = $am;
+        $this->varValues = $varValues;
     }
 
     public function load($routingResource, $type = null)
@@ -99,6 +100,7 @@ class AsseticLoader extends Loader
             'name'        => $name,
             'pos'         => $pos,
         );
+        $requirements = array();
 
         // remove the fake front controller
         $pattern = str_replace('_controller/', '', $asset->getTargetPath());
@@ -112,7 +114,21 @@ class AsseticLoader extends Loader
             $route .= '_'.$pos;
         }
 
-        $routes->add($route, new Route($pattern, $defaults));
+        foreach ($asset->getVars() as $var) {
+            if (empty($this->varValues[$var])) {
+                throw new \UnexpectedValueException(sprintf('The possible values for the asset variable "%s" are not known', $var));
+            }
+
+            $values = array();
+
+            foreach ($this->varValues[$var] as $value) {
+                $values[] = preg_quote($value, '#');
+            }
+
+            $requirements[$var] = implode('|', $values);
+        }
+
+        $routes->add($route, new Route($pattern, $defaults, $requirements));
     }
 
     public function supports($resource, $type = null)

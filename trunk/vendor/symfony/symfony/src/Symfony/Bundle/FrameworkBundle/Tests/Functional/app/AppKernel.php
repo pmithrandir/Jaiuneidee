@@ -9,7 +9,7 @@
  * file that was distributed with this source code.
  */
 
-namespace Symfony\Bundle\FrameworkBundle\Tests\Functional;
+namespace Symfony\Bundle\FrameworkBundle\Tests\Functional\app;
 
 // get the autoload file
 $dir = __DIR__;
@@ -24,6 +24,11 @@ while ($dir !== $lastDir) {
 
     if (file_exists($dir.'/autoload.php.dist')) {
         require_once $dir.'/autoload.php.dist';
+        break;
+    }
+
+    if (file_exists($dir.'/vendor/autoload.php')) {
+        require_once $dir.'/vendor/autoload.php';
         break;
     }
 

@@ -11,7 +11,7 @@
 
 namespace Symfony\Component\Routing\Tests\Loader;
 
-use Symfony\Component\Routing\Loader\AnnotationClassLoader;
+use Symfony\Component\Routing\Annotation\Route;
 
 class AnnotationClassLoaderTest extends AbstractAnnotationLoaderTest
 {
@@ -21,7 +21,8 @@ class AnnotationClassLoaderTest extends AbstractAnnotationLoaderTest
     {
         parent::setUp();
 
-        $this->loader = $this->getClassLoader($this->getReader());
+        $this->reader = $this->getReader();
+        $this->loader = $this->getClassLoader($this->reader);
     }
 
     /**
@@ -41,7 +42,6 @@ class AnnotationClassLoaderTest extends AbstractAnnotationLoaderTest
     }
 
     /**
-     * @covers Symfony\Component\Routing\Loader\AnnotationClassLoader::supports
      * @dataProvider provideTestSupportsChecksResource
      */
     public function testSupportsChecksResource($resource, $expectedSupports)
@@ -62,13 +62,71 @@ class AnnotationClassLoaderTest extends AbstractAnnotationLoaderTest
         );
     }
 
-    /**
-     * @covers Symfony\Component\Routing\Loader\AnnotationClassLoader::supports
-     */
     public function testSupportsChecksTypeIfSpecified()
     {
         $this->assertTrue($this->loader->supports('class', 'annotation'), '->supports() checks the resource type if specified');
         $this->assertFalse($this->loader->supports('class', 'foo'), '->supports() checks the resource type if specified');
     }
 
+    public function getLoadTests()
+    {
+        return array(
+            array(
+                'Symfony\Component\Routing\Tests\Fixtures\AnnotatedClasses\BarClass',
+                array('name' => 'route1'),
+                array('arg2' => 'defaultValue2', 'arg3' => 'defaultValue3')
+            ),
+            array(
+                'Symfony\Component\Routing\Tests\Fixtures\AnnotatedClasses\BarClass',
+                array('name' => 'route1', 'defaults' => array('arg2' => 'foo')),
+                array('arg2' => 'defaultValue2', 'arg3' => 'defaultValue3')
+            ),
+            array(
+                'Symfony\Component\Routing\Tests\Fixtures\AnnotatedClasses\BarClass',
+                array('name' => 'route1', 'defaults' => array('arg2' => 'foobar')),
+                array('arg2' => 'defaultValue2', 'arg3' =>'defaultValue3')
+            ),
+            array(
+                'Symfony\Component\Routing\Tests\Fixtures\AnnotatedClasses\BarClass',
+                array('name' => 'route1', 'defaults' => array('arg2' => 'foo'), 'condition' => 'context.getMethod() == "GET"'),
+                array('arg2' => 'defaultValue2', 'arg3' =>'defaultValue3')
+            ),
+        );
+    }
+
+    /**
+     * @dataProvider getLoadTests
+     */
+    public function testLoad($className, $routeDatas = array(), $methodArgs = array())
+    {
+        $routeDatas = array_replace(array(
+            'name'         => 'route',
+            'path'         => '/',
+            'requirements' => array(),
+            'options'      => array(),
+            'defaults'     => array(),
+            'schemes'      => array(),
+            'methods'      => array(),
+            'condition'    => null,
+        ), $routeDatas);
+
+        $this->reader
+            ->expects($this->once())
+            ->method('getMethodAnnotations')
+            ->will($this->returnValue(array($this->getAnnotatedRoute($routeDatas))))
+        ;
+        $routeCollection = $this->loader->load($className);
+        $route = $routeCollection->get($routeDatas['name']);
+
+        $this->assertSame($routeDatas['path'], $route->getPath(), '->load preserves path annotation');
+        $this->assertSame($routeDatas['requirements'],$route->getRequirements(), '->load preserves requirements annotation');
+        $this->assertCount(0, array_intersect($route->getOptions(), $routeDatas['options']), '->load preserves options annotation');
+        $this->assertSame(array_replace($methodArgs, $routeDatas['defaults']), $route->getDefaults(), '->load preserves defaults annotation');
+        $this->assertEquals($routeDatas['condition'], $route->getCondition(), '->load preserves condition annotation');
+    }
+
+    private function getAnnotatedRoute($datas)
+    {
+        return new Route($datas);
+    }
 }

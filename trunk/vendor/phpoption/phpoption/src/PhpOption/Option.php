@@ -18,12 +18,14 @@
 
 namespace PhpOption;
 
+use IteratorAggregate;
+
 /**
  * Base Option Class.
  *
  * @author Johannes M. Schmitt <schmittjoh@gmail.com>
  */
-abstract class Option
+abstract class Option implements IteratorAggregate
 {
     /**
      * Creates an option given a return value.
@@ -158,14 +160,29 @@ abstract class Option
      *     });
      * ```
      *
-     * If you're looking for something like ``whenEmpty``, you can use ``getOrCall``
+     * If you're looking for something like ``ifEmpty``, you can use ``getOrCall``
      * and ``getOrElse`` in these cases.
+     *
+     * @deprecated Use forAll() instead.
      *
      * @param callable $callable
      *
      * @return void
      */
     abstract public function ifDefined($callable);
+
+    /**
+     * This is similar to map() except that the return value of the callable has no meaning.
+     *
+     * The passed callable is simply executed if the option is non-empty, and ignored if the
+     * option is empty. This method is preferred for callables with side-effects, while map()
+     * is intended for callables without side-effects.
+     *
+     * @param callable $callable
+     *
+     * @return Option
+     */
+    abstract public function forAll($callable);
 
     /**
      * Applies the callable to the value of the option if it is non-empty,

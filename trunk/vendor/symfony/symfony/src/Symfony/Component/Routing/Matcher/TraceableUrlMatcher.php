@@ -14,7 +14,6 @@ namespace Symfony\Component\Routing\Matcher;
 use Symfony\Component\Routing\Exception\ExceptionInterface;
 use Symfony\Component\Routing\Route;
 use Symfony\Component\Routing\RouteCollection;
-use Symfony\Component\Routing\Matcher\UrlMatcher;
 
 /**
  * TraceableUrlMatcher helps debug path info matching by tracing the match.
@@ -44,28 +43,20 @@ class TraceableUrlMatcher extends UrlMatcher
     protected function matchCollection($pathinfo, RouteCollection $routes)
     {
         foreach ($routes as $name => $route) {
-            if ($route instanceof RouteCollection) {
-                if (!$ret = $this->matchCollection($pathinfo, $route)) {
-                    continue;
-                }
-
-                return true;
-            }
-
             $compiledRoute = $route->compile();
 
             if (!preg_match($compiledRoute->getRegex(), $pathinfo, $matches)) {
                 // does it match without any requirements?
-                $r = new Route($route->getPattern(), $route->getDefaults(), array(), $route->getOptions());
+                $r = new Route($route->getPath(), $route->getDefaults(), array(), $route->getOptions());
                 $cr = $r->compile();
                 if (!preg_match($cr->getRegex(), $pathinfo)) {
-                    $this->addTrace(sprintf('Pattern "%s" does not match', $route->getPattern()), self::ROUTE_DOES_NOT_MATCH, $name, $route);
+                    $this->addTrace(sprintf('Path "%s" does not match', $route->getPath()), self::ROUTE_DOES_NOT_MATCH, $name, $route);
 
                     continue;
                 }
 
                 foreach ($route->getRequirements() as $n => $regex) {
-                    $r = new Route($route->getPattern(), $route->getDefaults(), array($n => $regex), $route->getOptions());
+                    $r = new Route($route->getPath(), $route->getDefaults(), array($n => $regex), $route->getOptions());
                     $cr = $r->compile();
 
                     if (in_array($n, $cr->getVariables()) && !preg_match($cr->getRegex(), $pathinfo)) {
@@ -74,6 +65,14 @@ class TraceableUrlMatcher extends UrlMatcher
                         continue 2;
                     }
                 }
+
+                continue;
+            }
+
+            // check host requirement
+            $hostMatches = array();
+            if ($compiledRoute->getHostRegex() && !preg_match($compiledRoute->getHostRegex(), $this->context->getHost(), $hostMatches)) {
+                $this->addTrace(sprintf('Host "%s" does not match the requirement ("%s")', $this->context->getHost(), $route->getHost()), self::ROUTE_ALMOST_MATCHES, $name, $route);
 
                 continue;
             }
@@ -89,6 +88,15 @@ class TraceableUrlMatcher extends UrlMatcher
                     $this->allow = array_merge($this->allow, $req);
 
                     $this->addTrace(sprintf('Method "%s" does not match the requirement ("%s")', $this->context->getMethod(), implode(', ', $req)), self::ROUTE_ALMOST_MATCHES, $name, $route);
+
+                    continue;
+                }
+            }
+
+            // check condition
+            if ($condition = $route->getCondition()) {
+                if (!$this->getExpressionLanguage()->evaluate($condition, array('context' => $this->context, 'request' => $this->request))) {
+                    $this->addTrace(sprintf('Condition "%s" does not evaluate to "true"', $condition), self::ROUTE_ALMOST_MATCHES, $name, $route);
 
                     continue;
                 }
@@ -112,10 +120,10 @@ class TraceableUrlMatcher extends UrlMatcher
     private function addTrace($log, $level = self::ROUTE_DOES_NOT_MATCH, $name = null, $route = null)
     {
         $this->traces[] = array(
-            'log'     => $log,
-            'name'    => $name,
-            'level'   => $level,
-            'pattern' => null !== $route ? $route->getPattern() : null,
+            'log'   => $log,
+            'name'  => $name,
+            'level' => $level,
+            'path'  => null !== $route ? $route->getPath() : null,
         );
     }
 }

@@ -2,13 +2,13 @@
 
 /*
  * Copyright 2013 Johannes M. Schmitt <schmittjoh@gmail.com>
- * 
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * 
+ *
  *     http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -45,6 +45,8 @@ class ClassMetadata extends MergeableClassMetadata
     public $postDeserializeMethods = array();
 
     public $xmlRootName;
+    public $xmlRootNamespace;
+    public $xmlNamespaces = array();
     public $accessorOrder;
     public $customOrder;
     public $handlerCallbacks = array();
@@ -138,6 +140,8 @@ class ClassMetadata extends MergeableClassMetadata
         $this->postSerializeMethods = array_merge($this->postSerializeMethods, $object->postSerializeMethods);
         $this->postDeserializeMethods = array_merge($this->postDeserializeMethods, $object->postDeserializeMethods);
         $this->xmlRootName = $object->xmlRootName;
+        $this->xmlRootNamespace = $object->xmlRootNamespace;
+        $this->xmlNamespaces = array_merge($this->xmlNamespaces, $object->xmlNamespaces);
 
         // Handler methods are taken from the outer class completely.
         $this->handlerCallbacks = $object->handlerCallbacks;
@@ -157,7 +161,7 @@ class ClassMetadata extends MergeableClassMetadata
         }
 
         if ($this->discriminatorMap && ! $this->reflection->isAbstract()) {
-            if (false == $typeValue = array_search($this->name, $this->discriminatorMap, true)) {
+            if (false === $typeValue = array_search($this->name, $this->discriminatorMap, true)) {
                 throw new \LogicException(sprintf(
                     'The sub-class "%s" is not listed in the discriminator of the base class "%s".',
                     $this->name,
@@ -189,6 +193,24 @@ class ClassMetadata extends MergeableClassMetadata
         $this->sortProperties();
     }
 
+    public function registerNamespace($uri, $prefix = null)
+    {
+        if (!is_string($uri)) {
+            throw new InvalidArgumentException(sprintf('$uri is expected to be a strings, but got value %s.', json_encode($uri)));
+        }
+
+        if ($prefix !== null ) {
+            if (!is_string($prefix)) {
+                throw new InvalidArgumentException(sprintf('$prefix is expected to be a strings, but got value %s.', json_encode($prefix)));
+            }
+        } else {
+            $prefix = "";
+        }
+
+        $this->xmlNamespaces[$prefix] = $uri;
+
+    }
+
     public function serialize()
     {
         $this->sortProperties();
@@ -198,6 +220,8 @@ class ClassMetadata extends MergeableClassMetadata
             $this->postSerializeMethods,
             $this->postDeserializeMethods,
             $this->xmlRootName,
+            $this->xmlRootNamespace,
+            $this->xmlNamespaces,
             $this->accessorOrder,
             $this->customOrder,
             $this->handlerCallbacks,
@@ -217,6 +241,8 @@ class ClassMetadata extends MergeableClassMetadata
             $this->postSerializeMethods,
             $this->postDeserializeMethods,
             $this->xmlRootName,
+            $this->xmlRootNamespace,
+            $this->xmlNamespaces,
             $this->accessorOrder,
             $this->customOrder,
             $this->handlerCallbacks,

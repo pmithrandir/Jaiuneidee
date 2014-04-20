@@ -30,7 +30,7 @@ class IdeeController extends Controller
     public function listAction()
     {
     	
-    	$idees = $this->getDoctrine()->getEntityManager()
+    	$idees = $this->getDoctrine()->getManager()
     			->getRepository('JaiUneIdeeSiteBundle:Idee')->getLatestIdeesQb()
     			->addSelect('t')->leftJoin('i.theme', 't')
     			->addSelect('u')->leftJoin('i.user', 'u')
@@ -55,7 +55,7 @@ class IdeeController extends Controller
 				)
         	);
         
-        $themes = $this->getDoctrine()->getEntityManager()->getRepository('JaiUneIdeeSiteBundle:Theme')->findAll();
+        $themes = $this->getDoctrine()->getManager()->getRepository('JaiUneIdeeSiteBundle:Theme')->findAll();
         $datagrid->getField('theme')->addOption('select_options', $themes);
         $datagrid->getField('created_at')->setProperty('createdAt');
         $datagrid->getField('created_at')->setType('date');
@@ -69,7 +69,7 @@ class IdeeController extends Controller
         if ($this->getRequest()->getMethod() == 'POST') {
         	$params = $this->getRequest()->request->all();
         	if((isset($params["_gp"]["f"]["v"]["localisation"]))&&($params["_gp"]["f"]["v"]["localisation"]>0)){
-        		$localisation = $this->getDoctrine()->getEntityManager()->getRepository('JaiUneIdeeLocalisationBundle:Localisation')->find($params["_gp"]["f"]["v"]["localisation"]);
+        		$localisation = $this->getDoctrine()->getManager()->getRepository('JaiUneIdeeLocalisationBundle:Localisation')->find($params["_gp"]["f"]["v"]["localisation"]);
         		if($localisation){
         			$datagrid->getField('localisation')->addOption('selected_localisation', $localisation->getNom());
         		}
@@ -90,7 +90,7 @@ class IdeeController extends Controller
             return $this->listeCommentaireAction($id, $page);
         }
         else{ 
-            $em = $this->getDoctrine()->getEntityManager();
+            $em = $this->getDoctrine()->getManager();
             $idee = $this->getIdee($id);
             $votes = $em->getRepository('JaiUneIdeeSiteBundle:Vote')->getVotesByIdee($idee);
             if(!isset($votes["1"])){
@@ -147,7 +147,7 @@ class IdeeController extends Controller
         ));
     }
     public function createAction(){
-        $em = $this->getDoctrine()->getEntityManager();
+        $em = $this->getDoctrine()->getManager();
         $idee = new Idee();
         $request = $this->getRequest();
         $form   = $this->createForm(new IdeeType(),$idee);
@@ -197,7 +197,7 @@ class IdeeController extends Controller
         $form->bind($request);
         if ($form->isValid()) {
             $em = $this->getDoctrine()
-                       ->getEntityManager();
+                       ->getManager();
             $em->persist($comment);
             $em->flush();
             //récupération de tous les abonnés
@@ -238,7 +238,7 @@ class IdeeController extends Controller
     }
     
     protected function getIdee($id){
-        $em = $this->getDoctrine()->getEntityManager();
+        $em = $this->getDoctrine()->getManager();
 		//$idee = $em->getRepository('JaiUneIdeeSiteBundle:Idee')->find($id);
         $idee = $em->getRepository('JaiUneIdeeSiteBundle:Idee')->getIdee($id);
         //$idee = $em->getRepository('JaiUneIdeeSiteBundle:Idee')->getIdeeWithVote($id);
@@ -261,7 +261,7 @@ class IdeeController extends Controller
     
     public function moderateAction($id){
     	$idee = $this->getIdee($id);
-	    $em = $this->getDoctrine()->getEntityManager();
+	    $em = $this->getDoctrine()->getManager();
     	$moderationExistant = $em->getRepository('JaiUneIdeeSiteBundle:Moderation')->getModerationByIdeeAndUser($idee, $this->get('security.context')->getToken()->getUser());
     	if(!$moderationExistant ){
 	    	$dommages = $this->get('security.context')->getToken()->getUser()->getDommage()->getValue();
@@ -269,7 +269,7 @@ class IdeeController extends Controller
 	    	$moderation = new Moderation();
 	    	$moderation->setIdee($idee);
 	    	$moderation->setUser($this->get('security.context')->getToken()->getUser());
-	        $em = $this->getDoctrine()->getEntityManager();
+	        $em = $this->getDoctrine()->getManager();
 	        $em->persist($moderation);
 	        $em->flush();
     	}
@@ -279,7 +279,7 @@ class IdeeController extends Controller
             );
     }
     public function moderateCommentaireAction($id){
-        $em = $this->getDoctrine()->getEntityManager();
+        $em = $this->getDoctrine()->getManager();
         $commentaire = $em->getRepository('JaiUneIdeeSiteBundle:Commentaire')->find($id);
     	$moderationCommentaireExistant = $em->getRepository('JaiUneIdeeSiteBundle:ModerationCommentaire')->getModerationByCommentaireAndUser($commentaire, $this->get('security.context')->getToken()->getUser());
     	if(!$moderationCommentaireExistant ){
@@ -288,7 +288,7 @@ class IdeeController extends Controller
 	    	$moderation = new ModerationCommentaire();
 	    	$moderation->setCommentaire($commentaire);
 	    	$moderation->setUser($this->get('security.context')->getToken()->getUser());
-	        $em = $this->getDoctrine()->getEntityManager();
+	        $em = $this->getDoctrine()->getManager();
 	        $em->persist($moderation);
 	        $em->flush();
     	}
@@ -300,7 +300,7 @@ class IdeeController extends Controller
     public function adminModerateAction($id){
         if (true === $this->get('security.context')->isGranted('ROLE_ADMIN')) {
         	$idee = $this->getIdee($id);
-	    	$em = $this->getDoctrine()->getEntityManager();
+	    	$em = $this->getDoctrine()->getManager();
         	$idee->setIsRemoved(true);
         	$idee->setIsValidatedByAdmin(false);
         	$idee->setIsModerated(true);
@@ -313,7 +313,7 @@ class IdeeController extends Controller
     public function adminValidateAction($id){
         if (true === $this->get('security.context')->isGranted('ROLE_ADMIN')) {
         	$idee = $this->getIdee($id);
-	    	$em = $this->getDoctrine()->getEntityManager();
+	    	$em = $this->getDoctrine()->getManager();
         	$idee->setIsRemoved(false);
         	$idee->setIsValidatedByAdmin(true);
         	$idee->setIsModerated(true);
@@ -325,7 +325,7 @@ class IdeeController extends Controller
     }
     public function adminModerateCommentaireAction($id){
         if (true === $this->get('security.context')->isGranted('ROLE_ADMIN')) {
-        	$em = $this->getDoctrine()->getEntityManager();
+        	$em = $this->getDoctrine()->getManager();
 	        $commentaire = $em->getRepository('JaiUneIdeeSiteBundle:Commentaire')->find($id);
         	$commentaire->setIsRemoved(true);
         	$commentaire->setIsValidatedByAdmin(false);
@@ -341,7 +341,7 @@ class IdeeController extends Controller
     }
     public function adminValidateCommentaireAction($id){
         if (true === $this->get('security.context')->isGranted('ROLE_ADMIN')) {
-        	$em = $this->getDoctrine()->getEntityManager();
+        	$em = $this->getDoctrine()->getManager();
 	        $commentaire = $em->getRepository('JaiUneIdeeSiteBundle:Commentaire')->find($id);
         	$commentaire->setIsRemoved(false);
         	$commentaire->setIsValidatedByAdmin(true);
@@ -356,7 +356,7 @@ class IdeeController extends Controller
 	    );
     }
     private function amelioreDommage($moderationExistantes){
-    	$em = $this->getDoctrine()->getEntityManager();
+    	$em = $this->getDoctrine()->getManager();
     	foreach($moderationExistantes as $moderation){
     		$levelCourant = $moderation->getUser()->getDommage()->getLevel();
     		$nouveauDommage = $em->getRepository('JaiUneIdeeUtilisateurBundle:Dommage')->getUserNextDommage($levelCourant);
@@ -364,7 +364,7 @@ class IdeeController extends Controller
     	}
     }
     private function diminueDommage($moderationExistantes){
-    	$em = $this->getDoctrine()->getEntityManager();
+    	$em = $this->getDoctrine()->getManager();
     	foreach($moderationExistantes as $moderation){
     		$levelCourant = $moderation->getUser()->getDommage()->getLevel();
     		$nouveauDommage = $em->getRepository('JaiUneIdeeUtilisateurBundle:Dommage')->getUserPreviousDommage($levelCourant);
@@ -372,14 +372,14 @@ class IdeeController extends Controller
     	}
     }
     public function moderationIdeesAdminAction(){
-    	$idees = $this->getDoctrine()->getEntityManager()
+    	$idees = $this->getDoctrine()->getManager()
     			->getRepository('JaiUneIdeeSiteBundle:Idee')->getIdeesModeration();
     	return $this->render('JaiUneIdeeSiteBundle:Idee:moderation_idees_admin.html.twig', array(
             'idees'      => $idees,
         ));
     }
     public function moderationCommentairesAdminAction(){
-    	$idees = $this->getDoctrine()->getEntityManager()
+    	$idees = $this->getDoctrine()->getManager()
     			->getRepository('JaiUneIdeeSiteBundle:Idee')->getCommentairesModeration();
     	return $this->render('JaiUneIdeeSiteBundle:Idee:moderation_commentaires_admin.html.twig', array(
             'idees'      => $idees,
@@ -388,7 +388,7 @@ class IdeeController extends Controller
     public function adminPublishAction($id){
         if (true === $this->get('security.context')->isGranted('ROLE_ADMIN')) {
         	$idee = $this->getIdee($id);
-	    	$em = $this->getDoctrine()->getEntityManager();
+	    	$em = $this->getDoctrine()->getManager();
         	$idee->setIsPublished(true);
         	$idee->setIsRemoved(false);
 	        $em->flush();
@@ -398,7 +398,7 @@ class IdeeController extends Controller
     public function adminRemoveAction($id){
         if (true === $this->get('security.context')->isGranted('ROLE_ADMIN')) {
         	$idee = $this->getIdee($id);
-	    	$em = $this->getDoctrine()->getEntityManager();
+	    	$em = $this->getDoctrine()->getManager();
         	$idee->setIsPublished(false);
         	$idee->setIsRemoved(true);
 	        $em->flush();
@@ -406,18 +406,18 @@ class IdeeController extends Controller
 	    return $this->redirect($this->generateUrl('JaiUneIdeeSiteBundle_idees_moderation_admin', array()));
     }
     public function countModerationAction(){
-    	$nb = $this->getDoctrine()->getEntityManager()
+    	$nb = $this->getDoctrine()->getManager()
     			->getRepository('JaiUneIdeeSiteBundle:Idee')->countIdeesModeration();
     	return new Response($nb);
     }
     public function countModerationCommentaireAction(){
-    	$nb = $this->getDoctrine()->getEntityManager()
+    	$nb = $this->getDoctrine()->getManager()
     			->getRepository('JaiUneIdeeSiteBundle:Idee')->countIdeesModerationCommentaire();
     	return new Response($nb);
     }
     public function listeCommentaireAction($idee_id, $page = 1)
     {
-        $em = $this->getDoctrine()->getEntityManager();
+        $em = $this->getDoctrine()->getManager();
         $options['routeName'] = "JaiUneIdeeSiteBundle_idee_show";
         $idee = $this->getIdee($idee_id);
         $options['routeParams'] = Array("id"=>$idee_id, "slug"=>$idee->getSlug());

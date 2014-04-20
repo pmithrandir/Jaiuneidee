@@ -12,8 +12,8 @@
 namespace Symfony\Bundle\AsseticBundle\Tests\DependencyInjection;
 
 use Symfony\Bundle\AsseticBundle\DependencyInjection\AsseticExtension;
-use Symfony\Bundle\AsseticBundle\DependencyInjection\Compiler\CheckYuiFilterPass;
 use Symfony\Bundle\AsseticBundle\DependencyInjection\Compiler\CheckClosureFilterPass;
+use Symfony\Bundle\AsseticBundle\DependencyInjection\Compiler\CheckYuiFilterPass;
 use Symfony\Component\DependencyInjection\Container;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Definition;
@@ -26,7 +26,7 @@ class AsseticExtensionTest extends \PHPUnit_Framework_TestCase
     private $kernel;
     private $container;
 
-    static public function assertSaneContainer(Container $container, $message = '')
+    public static function assertSaneContainer(Container $container, $message = '')
     {
         $errors = array();
         foreach ($container->getServiceIds() as $id) {
@@ -163,6 +163,28 @@ class AsseticExtensionTest extends \PHPUnit_Framework_TestCase
         return array(
             array(true, array('assetic.routing_loader', 'assetic.controller'), array()),
             array(false, array(), array('assetic.routing_loader', 'assetic.controller')),
+        );
+    }
+
+    /**
+     * @dataProvider getCacheBustingWorkerKeys
+     */
+    public function testCacheBustingWorker($enabled)
+    {
+        $extension = new AsseticExtension();
+        $extension->load(array(array('workers' => array('cache_busting' => array('enabled' => $enabled)))), $this->container);
+
+        $def = $this->container->getDefinition('assetic.worker.cache_busting');
+        $this->assertSame($enabled, $def->hasTag('assetic.factory_worker'));
+
+        $this->assertSaneContainer($this->getDumpedContainer());
+    }
+
+    public function getCacheBustingWorkerKeys()
+    {
+        return array(
+            array(true),
+            array(false),
         );
     }
 

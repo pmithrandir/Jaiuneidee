@@ -8,6 +8,7 @@ use stdClass;
 
 class SequenceTest extends \PHPUnit_Framework_TestCase
 {
+    /** @var Sequence */
     private $seq;
     private $a;
     private $b;
@@ -32,6 +33,39 @@ class SequenceTest extends \PHPUnit_Framework_TestCase
         $this->assertSame(1, $this->seq->lastIndexOf($this->a));
         $this->assertSame(2, $this->seq->lastIndexOf($this->b));
         $this->assertSame(-1, $this->seq->lastIndexOf(1));
+    }
+
+    public function testFilter()
+    {
+        $seq = new Sequence(array(1, 2, 3));
+        $newSeq = $seq->filter(function($n) { return $n === 2; });
+
+        $this->assertNotSame($newSeq, $seq);
+        $this->assertCount(3, $seq);
+        $this->assertCount(1, $newSeq);
+        $this->assertSame(2, $newSeq->get(0));
+    }
+
+    public function testFilterNot()
+    {
+        $seq = new Sequence(array(1, 2, 3));
+        $newSeq = $seq->filterNot(function($n) { return $n === 2; });
+
+        $this->assertNotSame($newSeq, $seq);
+        $this->assertCount(3, $seq);
+        $this->assertCount(2, $newSeq);
+        $this->assertSame(1, $newSeq->get(0));
+        $this->assertSame(3, $newSeq->get(1));
+    }
+
+    public function testFoldLeftRight()
+    {
+        $seq = new Sequence(array('a', 'b', 'c'));
+        $rsLeft = $seq->foldLeft('', function($a, $b) { return $a.$b; });
+        $rsRight = $seq->foldRight('', function($a, $b) { return $a.$b; });
+
+        $this->assertEquals('abc', $rsLeft);
+        $this->assertEquals('abc', $rsRight);
     }
 
     public function testAddSequence()
@@ -88,6 +122,17 @@ class SequenceTest extends \PHPUnit_Framework_TestCase
         $this->assertTrue($this->seq->contains($this->a));
         $this->assertFalse($this->seq->contains(9999));
         $this->assertFalse($this->seq->contains(new stdClass()));
+    }
+
+    public function testExists()
+    {
+        $this->assertTrue($this->seq->exists(function($v) { return $v === 0; }));
+
+        $a = $this->a;
+        $this->assertTrue($this->seq->exists(function($v) use ($a) { return $v === $a; }));
+
+        $this->assertFalse($this->seq->exists(function($v) { return $v === 9999; }));
+        $this->assertFalse($this->seq->exists(function($v) { return $v === new \stdClass; }));
     }
 
     public function testFind()
@@ -252,6 +297,31 @@ class SequenceTest extends \PHPUnit_Framework_TestCase
     public function testRemoveWithInvalidIndex()
     {
         $this->seq->remove(9999);
+    }
+
+    public function testMap()
+    {
+        $seq = new Sequence();
+        $seq->add('a');
+        $seq->add('b');
+
+        $self = $this;
+        $newSeq = $seq->map(function($elem) use ($self) {
+            switch ($elem) {
+                case 'a':
+                    return 'c';
+
+                case 'b':
+                    return 'd';
+
+                default:
+                    $self->fail('Unexpected element: ' . var_export($elem, true));
+            }
+        });
+
+        $this->assertInstanceOf('PhpCollection\Sequence', $newSeq);
+        $this->assertNotSame($newSeq, $seq);
+        $this->assertEquals(array('c', 'd'), $newSeq->all());
     }
 
     protected function setUp()

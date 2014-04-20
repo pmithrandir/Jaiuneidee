@@ -14,7 +14,7 @@ class VoteController extends Controller
 {
     public function voteAction($idee_id, $note)
     {
-        $em = $this->getDoctrine()->getEntityManager();
+        $em = $this->getDoctrine()->getManager();
         if (true === $this->get('security.context')->isGranted('ROLE_USER')) {
 	        $user = $this->get('security.context')->getToken()->getUser();
 	        $idee = $em->getRepository('JaiUneIdeeSiteBundle:Idee')->find($idee_id);
@@ -52,7 +52,7 @@ class VoteController extends Controller
     
     public function cancelVoteAction($idee_id)
     {
-        $em = $this->getDoctrine()->getEntityManager();
+        $em = $this->getDoctrine()->getManager();
         if (true === $this->get('security.context')->isGranted('ROLE_USER')) {
             $user = $this->get('security.context')->getToken()->getUser();
             $idee = $em->getRepository('JaiUneIdeeSiteBundle:Idee')->find($idee_id);

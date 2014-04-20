@@ -12,22 +12,42 @@
 namespace Symfony\Component\Serializer\Tests\Normalizer;
 
 use Symfony\Component\Serializer\Normalizer\GetSetMethodNormalizer;
+use Symfony\Component\Serializer\SerializerInterface;
+use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
 class GetSetMethodNormalizerTest extends \PHPUnit_Framework_TestCase
 {
     protected function setUp()
     {
-        $this->normalizer = new GetSetMethodNormalizer;
-        $this->normalizer->setSerializer($this->getMock('Symfony\Component\Serializer\Serializer'));
+        $this->serializer = $this->getMock(__NAMESPACE__.'\SerializerNormalizer');
+        $this->normalizer = new GetSetMethodNormalizer();
+        $this->normalizer->setSerializer($this->serializer);
     }
 
     public function testNormalize()
     {
-        $obj = new GetSetDummy;
+        $obj = new GetSetDummy();
+        $object = new \stdClass();
         $obj->setFoo('foo');
         $obj->setBar('bar');
+        $obj->setCamelCase('camelcase');
+        $obj->setObject($object);
+
+        $this->serializer
+            ->expects($this->once())
+            ->method('normalize')
+            ->with($object, 'any')
+            ->will($this->returnValue('string_object'))
+        ;
+
         $this->assertEquals(
-            array('foo' => 'foo', 'bar' => 'bar', 'fooBar' => 'foobar'),
+            array(
+                'foo' => 'foo',
+                'bar' => 'bar',
+                'fooBar' => 'foobar',
+                'camelCase' => 'camelcase',
+                'object' => 'string_object',
+            ),
             $this->normalizer->normalize($obj, 'any')
         );
     }
@@ -41,6 +61,39 @@ class GetSetMethodNormalizerTest extends \PHPUnit_Framework_TestCase
         );
         $this->assertEquals('foo', $obj->getFoo());
         $this->assertEquals('bar', $obj->getBar());
+    }
+
+    public function testDenormalizeOnCamelCaseFormat()
+    {
+        $this->normalizer->setCamelizedAttributes(array('camel_case'));
+        $obj = $this->normalizer->denormalize(
+            array('camel_case' => 'camelCase'),
+            __NAMESPACE__.'\GetSetDummy'
+        );
+        $this->assertEquals('camelCase', $obj->getCamelCase());
+    }
+
+    /**
+     * @dataProvider attributeProvider
+     */
+    public function testFormatAttribute($attribute, $camelizedAttributes, $result)
+    {
+        $r = new \ReflectionObject($this->normalizer);
+        $m = $r->getMethod('formatAttribute');
+        $m->setAccessible(true);
+
+        $this->normalizer->setCamelizedAttributes($camelizedAttributes);
+        $this->assertEquals($m->invoke($this->normalizer, $attribute, $camelizedAttributes), $result);
+    }
+
+    public function attributeProvider()
+    {
+        return array(
+            array('attribute_test', array('attribute_test'),'AttributeTest'),
+            array('attribute_test', array('any'),'attribute_test'),
+            array('attribute', array('attribute'),'Attribute'),
+            array('attribute', array(), 'attribute'),
+        );
     }
 
     public function testConstructorDenormalize()
@@ -82,9 +135,9 @@ class GetSetMethodNormalizerTest extends \PHPUnit_Framework_TestCase
 
     public function testIgnoredAttributes()
     {
-        $this->normalizer->setIgnoredAttributes(array('foo', 'bar'));
+        $this->normalizer->setIgnoredAttributes(array('foo', 'bar', 'camelCase', 'object'));
 
-        $obj = new GetSetDummy;
+        $obj = new GetSetDummy();
         $obj->setFoo('foo');
         $obj->setBar('bar');
 
@@ -154,12 +207,30 @@ class GetSetMethodNormalizerTest extends \PHPUnit_Framework_TestCase
             ),
         );
     }
+
+    /**
+     * @expectedException \LogicException
+     * @expectedExceptionMessage Cannot normalize attribute "object" because injected serializer is not a normalizer
+     */
+    public function testUnableToNormalizeObjectAttribute()
+    {
+        $serializer = $this->getMock('Symfony\Component\Serializer\SerializerInterface');
+        $this->normalizer->setSerializer($serializer);
+
+        $obj    = new GetSetDummy();
+        $object = new \stdClass();
+        $obj->setObject($object);
+
+        $this->normalizer->normalize($obj, 'any');
+    }
 }
 
 class GetSetDummy
 {
     protected $foo;
     private $bar;
+    protected $camelCase;
+    protected $object;
 
     public function getFoo()
     {
@@ -183,12 +254,32 @@ class GetSetDummy
 
     public function getFooBar()
     {
-        return $this->foo . $this->bar;
+        return $this->foo.$this->bar;
+    }
+
+    public function getCamelCase()
+    {
+        return $this->camelCase;
+    }
+
+    public function setCamelCase($camelCase)
+    {
+        $this->camelCase = $camelCase;
     }
 
     public function otherMethod()
     {
         throw new \RuntimeException("Dummy::otherMethod() should not be called");
+    }
+
+    public function setObject($object)
+    {
+        $this->object = $object;
+    }
+
+    public function getObject()
+    {
+        return $this->object;
     }
 }
 
@@ -217,4 +308,8 @@ class GetConstructorDummy
     {
         throw new \RuntimeException("Dummy::otherMethod() should not be called");
     }
+}
+
+abstract class SerializerNormalizer implements SerializerInterface, NormalizerInterface
+{
 }

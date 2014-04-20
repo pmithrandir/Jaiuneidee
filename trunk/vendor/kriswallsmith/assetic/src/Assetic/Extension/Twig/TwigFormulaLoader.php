@@ -3,7 +3,7 @@
 /*
  * This file is part of the Assetic package, an OpenSky project.
  *
- * (c) 2010-2013 OpenSky Project Inc
+ * (c) 2010-2014 OpenSky Project Inc
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
@@ -90,6 +90,12 @@ class TwigFormulaLoader implements FormulaLoaderInterface
 
         foreach ($node as $child) {
             if ($child instanceof \Twig_Node) {
+                $formulae += $this->loadNode($child);
+            }
+        }
+
+        if ($node->hasAttribute('embedded_templates')) {
+            foreach ($node->getAttribute('embedded_templates') as $child) {
                 $formulae += $this->loadNode($child);
             }
         }

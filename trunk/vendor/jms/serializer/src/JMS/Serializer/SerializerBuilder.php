@@ -2,13 +2,13 @@
 
 /*
  * Copyright 2013 Johannes M. Schmitt <schmittjoh@gmail.com>
- * 
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * 
+ *
  *     http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -18,8 +18,12 @@
 
 namespace JMS\Serializer;
 
+use JMS\Serializer\Builder\DefaultDriverFactory;
+use JMS\Serializer\Builder\DriverFactoryInterface;
 use JMS\Serializer\Handler\PhpCollectionHandler;
+use JMS\Serializer\Handler\PropelCollectionHandler;
 use JMS\Serializer\Exception\RuntimeException;
+use Metadata\Driver\DriverInterface;
 use Metadata\MetadataFactory;
 use JMS\Serializer\Metadata\Driver\AnnotationDriver;
 use JMS\Serializer\Handler\HandlerRegistry;
@@ -36,6 +40,7 @@ use JMS\Serializer\Construction\ObjectConstructorInterface;
 use JMS\Serializer\EventDispatcher\Subscriber\DoctrineProxySubscriber;
 use JMS\Serializer\Naming\CamelCaseNamingStrategy;
 use JMS\Serializer\Naming\PropertyNamingStrategyInterface;
+use Doctrine\Common\Annotations\Reader;
 use Doctrine\Common\Annotations\AnnotationReader;
 use Doctrine\Common\Annotations\FileCacheReader;
 use Metadata\Cache\FileCache;
@@ -66,6 +71,7 @@ class SerializerBuilder
     private $cacheDir;
     private $annotationReader;
     private $includeInterfaceMetadata = false;
+    private $driverFactory;
 
     public static function create()
     {
@@ -76,11 +82,12 @@ class SerializerBuilder
     {
         $this->handlerRegistry = new HandlerRegistry();
         $this->eventDispatcher = new EventDispatcher();
+        $this->driverFactory = new DefaultDriverFactory();
         $this->serializationVisitors = new Map();
         $this->deserializationVisitors = new Map();
     }
 
-    public function setAnnotationReader(AnnotationReader $reader)
+    public function setAnnotationReader(Reader $reader)
     {
         $this->annotationReader = $reader;
 
@@ -114,6 +121,7 @@ class SerializerBuilder
         $this->handlerRegistry->registerSubscribingHandler(new DateHandler());
         $this->handlerRegistry->registerSubscribingHandler(new PhpCollectionHandler());
         $this->handlerRegistry->registerSubscribingHandler(new ArrayCollectionHandler());
+        $this->handlerRegistry->registerSubscribingHandler(new PropelCollectionHandler());
 
         return $this;
     }
@@ -318,6 +326,11 @@ class SerializerBuilder
         return $this;
     }
 
+    public function setMetadataDriverFactory(DriverFactoryInterface $driverFactory)
+    {
+        $this->driverFactory = $driverFactory;
+    }
+
     public function build()
     {
         $annotationReader = $this->annotationReader;
@@ -330,17 +343,7 @@ class SerializerBuilder
             }
         }
 
-        if ( ! empty($this->metadataDirs)) {
-            $fileLocator = new FileLocator($this->metadataDirs);
-            $metadataDriver = new DriverChain(array(
-                new YamlDriver($fileLocator),
-                new XmlDriver($fileLocator),
-                new AnnotationDriver($annotationReader),
-            ));
-        } else {
-            $metadataDriver = new AnnotationDriver($annotationReader);
-        }
-
+        $metadataDriver = $this->driverFactory->createDriver($this->metadataDirs, $annotationReader);
         $metadataFactory = new MetadataFactory($metadataDriver, null, $this->debug);
 
         $metadataFactory->setIncludeInterfaces($this->includeInterfaceMetadata);

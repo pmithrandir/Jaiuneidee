@@ -1,6 +1,2 @@
-0000000000000000000000000000000000000000 a15367768d8bbf0b5eac135adf31880ed99cc12d Pierre Bonneau <pmithrandir@localhost.(none)> 1370692952 +0300	clone: from git://github.com/schmittjoh/JMSDiExtraBundle
-a15367768d8bbf0b5eac135adf31880ed99cc12d ba280298bc4b0d03b18cff7f72e69a6af37de466 Pierre Bonneau <pmithrandir@localhost.(none)> 1370692962 +0300	checkout: moving from master to 1.1.1
-ba280298bc4b0d03b18cff7f72e69a6af37de466 a15367768d8bbf0b5eac135adf31880ed99cc12d Pierre Bonneau <pmithrandir@localhost.(none)> 1370697052 +0300	checkout: moving from ba280298bc4b0d03b18cff7f72e69a6af37de466 to master
-a15367768d8bbf0b5eac135adf31880ed99cc12d 7fffdb6c96fb922a131af06d773e1e6c5301d070 Pierre Bonneau <pmithrandir@localhost.(none)> 1370697761 +0300	checkout: moving from master to 1.4.0
-7fffdb6c96fb922a131af06d773e1e6c5301d070 a15367768d8bbf0b5eac135adf31880ed99cc12d Pierre Bonneau <pmithrandir@localhost.(none)> 1371064680 +0300	checkout: moving from 7fffdb6c96fb922a131af06d773e1e6c5301d070 to master
-a15367768d8bbf0b5eac135adf31880ed99cc12d f4884c12468273445d67855814e51ef3fdaaf27d Pierre Bonneau <pmithrandir@localhost.(none)> 1371064680 +0300	reset: moving to f4884c12468273445d67855814e51ef3fdaaf27d
+0000000000000000000000000000000000000000 4361495ea88d2eccb5c43749168a2c88f3e6476b Pierre Bonneau <pmithrandir@localhost.(none)> 1397908776 +0300	clone: from git://github.com/schmittjoh/JMSDiExtraBundle.git
+4361495ea88d2eccb5c43749168a2c88f3e6476b 4361495ea88d2eccb5c43749168a2c88f3e6476b Pierre Bonneau <pmithrandir@localhost.(none)> 1397908786 +0300	checkout: moving from master to master

@@ -15,12 +15,14 @@ use Symfony\Component\DependencyInjection\Reference;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
 use Symfony\Component\DependencyInjection\Definition;
+use Symfony\Component\HttpKernel\Kernel;
 use Monolog\Logger;
 
 /**
  * Adds the DebugHandler when the profiler is enabled.
  *
  * @author Christophe Coevoet <stof@notk.org>
+ * @author Jordi Boggiano <j.boggiano@seld.be>
  */
 class DebugHandlerPass implements CompilerPassInterface
 {

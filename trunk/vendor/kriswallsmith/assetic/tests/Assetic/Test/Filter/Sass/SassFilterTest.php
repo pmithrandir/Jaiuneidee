@@ -3,7 +3,7 @@
 /*
  * This file is part of the Assetic package, an OpenSky project.
  *
- * (c) 2010-2013 OpenSky Project Inc
+ * (c) 2010-2014 OpenSky Project Inc
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
@@ -92,6 +92,16 @@ EOF;
         $filters = $children[0]->getFilters();
         $this->assertCount(1, $filters);
         $this->assertInstanceOf('Assetic\Filter\Sass\SassFilter', $filters[0]);
+    }
+
+    public function testGetChildrenCatchesPartialsInSubfolders()
+    {
+        $factory = new AssetFactory('/'); // the factory root isn't used
+
+        $children = $this->filter->getChildren($factory, '@import "import_path/import";', __DIR__.'/../fixtures/sass');
+        $this->assertCount(1, $children);
+        $this->assertEquals(__DIR__.'/../fixtures/sass', $children[0]->getSourceRoot());
+        $this->assertEquals('import_path/_import.scss', $children[0]->getSourcePath());
     }
 
     public function testGetChildrenIgnoresCssImports()

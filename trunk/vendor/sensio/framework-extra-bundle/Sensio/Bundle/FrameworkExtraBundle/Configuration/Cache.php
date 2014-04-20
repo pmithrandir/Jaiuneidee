@@ -57,6 +57,20 @@ class Cache extends ConfigurationAnnotation
     protected $vary = array();
 
     /**
+     * An expression to compute the Last-Modified HTTP header.
+     *
+     * @var string
+     */
+    protected $lastModified;
+
+    /**
+     * An expression to compute the ETag HTTP header.
+     *
+     * @var string
+     */
+    protected $etag;
+
+    /**
      * Returns the expiration date for the Expires header field.
      *
      * @return string
@@ -159,6 +173,46 @@ class Cache extends ConfigurationAnnotation
     }
 
     /**
+     * Sets the "Last-Modified"-header expression.
+     *
+     * @param string $expression
+     */
+    public function setLastModified($expression)
+    {
+        $this->lastModified = $expression;
+    }
+
+    /**
+     * Returns the "Last-Modified"-header expression.
+     *
+     * @return string
+     */
+    public function getLastModified()
+    {
+        return $this->lastModified;
+    }
+
+    /**
+     * Sets the "ETag"-header expression.
+     *
+     * @param string $expression
+     */
+    public function setETag($expression)
+    {
+        $this->etag = $expression;
+    }
+
+    /**
+     * Returns the "ETag"-header expression.
+     *
+     * @return string
+     */
+    public function getETag()
+    {
+        return $this->etag;
+    }
+
+    /**
      * Returns the annotation alias name.
      *
      * @return string
@@ -167,5 +221,16 @@ class Cache extends ConfigurationAnnotation
     public function getAliasName()
     {
         return 'cache';
+    }
+
+    /**
+     * Only one cache directive is allowed
+     *
+     * @return Boolean
+     * @see ConfigurationInterface
+     */
+    public function allowArray()
+    {
+        return false;
     }
 }

@@ -3,6 +3,7 @@
 namespace Sensio\Bundle\FrameworkExtraBundle\Request\ParamConverter;
 
 use Symfony\Component\HttpFoundation\Request;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\ConfigurationInterface;
 
 /*
  * This file is part of the Symfony framework.
@@ -52,10 +53,10 @@ class ParamConverterManager
     /**
      * Apply converter on request based on the given configuration.
      *
-     * @param Request $request
+     * @param Request                $request
      * @param ConfigurationInterface $configuration
      */
-    protected function applyConverter(Request $request, $configuration)
+    protected function applyConverter(Request $request, ConfigurationInterface $configuration)
     {
         $value     = $request->attributes->get($configuration->getName());
         $className = $configuration->getClass();
@@ -84,6 +85,7 @@ class ParamConverterManager
             }
 
             $converter->apply($request, $configuration);
+
             return;
         }
 

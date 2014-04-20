@@ -16,6 +16,7 @@ use Sensio\Bundle\GeneratorBundle\Command\Helper\DialogHelper;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
+use Symfony\Component\DependencyInjection\Container;
 use Doctrine\DBAL\Types\Type;
 
 /**
@@ -25,8 +26,6 @@ use Doctrine\DBAL\Types\Type;
  */
 class GenerateDoctrineEntityCommand extends GenerateDoctrineCommand
 {
-    private $generator;
-
     protected function configure()
     {
         $this
@@ -116,8 +115,10 @@ EOT
             ''
         ));
 
+        $bundleNames = array_keys($this->getContainer()->get('kernel')->getBundles());
+
         while (true) {
-            $entity = $dialog->askAndValidate($output, $dialog->getQuestion('The Entity shortcut name', $input->getOption('entity')), array('Sensio\Bundle\GeneratorBundle\Command\Validators', 'validateEntityName'), false, $input->getOption('entity'));
+            $entity = $dialog->askAndValidate($output, $dialog->getQuestion('The Entity shortcut name', $input->getOption('entity')), array('Sensio\Bundle\GeneratorBundle\Command\Validators', 'validateEntityName'), false, $input->getOption('entity'), $bundleNames);
 
             list($bundle, $entity) = $this->parseShortcutNotation($entity);
 
@@ -147,7 +148,10 @@ EOT
             'Determine the format to use for the mapping information.',
             '',
         ));
-        $format = $dialog->askAndValidate($output, $dialog->getQuestion('Configuration format (yml, xml, php, or annotation)', $input->getOption('format')), array('Sensio\Bundle\GeneratorBundle\Command\Validators', 'validateFormat'), false, $input->getOption('format'));
+
+        $formats = array('yml', 'xml', 'php', 'annotation');
+
+        $format = $dialog->askAndValidate($output, $dialog->getQuestion('Configuration format (yml, xml, php, or annotation)', $input->getOption('format')), array('Sensio\Bundle\GeneratorBundle\Command\Validators', 'validateFormat'), false, $input->getOption('format'), $formats);
         $input->setOption('format', $format);
 
         // fields
@@ -247,66 +251,52 @@ EOT
 
         while (true) {
             $output->writeln('');
-            $self = $this;
-            $name = $dialog->askAndValidate($output, $dialog->getQuestion('New field name (press <return> to stop adding fields)', null), function ($name) use ($fields, $self) {
+            $generator = $this->getGenerator();
+            $columnName = $dialog->askAndValidate($output, $dialog->getQuestion('New field name (press <return> to stop adding fields)', null), function ($name) use ($fields, $generator) {
                 if (isset($fields[$name]) || 'id' == $name) {
                     throw new \InvalidArgumentException(sprintf('Field "%s" is already defined.', $name));
                 }
 
                 // check reserved words
-                if ($self->getGenerator()->isReservedKeyword($name)){
+                if ($generator->isReservedKeyword($name)){
                     throw new \InvalidArgumentException(sprintf('Name "%s" is a reserved word.', $name));
                 }
 
                 return $name;
             });
-            if (!$name) {
+            if (!$columnName) {
                 break;
             }
 
             $defaultType = 'string';
 
-            if (substr($name, -3) == '_at') {
+            // try to guess the type by the column name prefix/suffix
+            if (substr($columnName, -3) == '_at') {
                 $defaultType = 'datetime';
-            } elseif (substr($name, -3) == '_id') {
+            } elseif (substr($columnName, -3) == '_id') {
                 $defaultType = 'integer';
+            } elseif (substr($columnName, 0, 3) == 'is_') {
+                $defaultType = 'boolean';
+            } elseif (substr($columnName, 0, 4) == 'has_') {
+                $defaultType = 'boolean';
             }
 
-            $type = $dialog->askAndValidate($output, $dialog->getQuestion('Field type', $defaultType), $fieldValidator, false, $defaultType);
+            $type = $dialog->askAndValidate($output, $dialog->getQuestion('Field type', $defaultType), $fieldValidator, false, $defaultType, $types);
 
-            $data = array('fieldName' => $name, 'type' => $type);
+            $data = array('columnName' => $columnName, 'fieldName' => lcfirst(Container::camelize($columnName)), 'type' => $type);
 
             if ($type == 'string') {
                 $data['length'] = $dialog->askAndValidate($output, $dialog->getQuestion('Field length', 255), $lengthValidator, false, 255);
             }
 
-            $fields[$name] = $data;
+            $fields[$columnName] = $data;
         }
 
         return $fields;
     }
 
-    public function getGenerator()
+    protected function createGenerator()
     {
-        if (null === $this->generator) {
-            $this->generator = new DoctrineEntityGenerator($this->getContainer()->get('filesystem'), $this->getContainer()->get('doctrine'));
-        }
-
-        return $this->generator;
-    }
-
-    public function setGenerator(DoctrineEntityGenerator $generator)
-    {
-        $this->generator = $generator;
-    }
-
-    protected function getDialogHelper()
-    {
-        $dialog = $this->getHelperSet()->get('dialog');
-        if (!$dialog || get_class($dialog) !== 'Sensio\Bundle\GeneratorBundle\Command\Helper\DialogHelper') {
-            $this->getHelperSet()->set($dialog = new DialogHelper());
-        }
-
-        return $dialog;
+        return new DoctrineEntityGenerator($this->getContainer()->get('filesystem'), $this->getContainer()->get('doctrine'));
     }
 }

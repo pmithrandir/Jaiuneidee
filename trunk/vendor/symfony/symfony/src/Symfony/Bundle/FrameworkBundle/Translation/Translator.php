@@ -24,7 +24,10 @@ use Symfony\Component\Config\ConfigCache;
 class Translator extends BaseTranslator
 {
     protected $container;
-    protected $options;
+    protected $options = array(
+        'cache_dir' => null,
+        'debug'     => false,
+    );
     protected $loaderIds;
 
     /**
@@ -39,16 +42,13 @@ class Translator extends BaseTranslator
      * @param MessageSelector    $selector  The message selector for pluralization
      * @param array              $loaderIds An array of loader Ids
      * @param array              $options   An array of options
+     *
+     * @throws \InvalidArgumentException
      */
     public function __construct(ContainerInterface $container, MessageSelector $selector, $loaderIds = array(), array $options = array())
     {
         $this->container = $container;
         $this->loaderIds = $loaderIds;
-
-        $this->options = array(
-            'cache_dir' => null,
-            'debug'     => false,
-        );
 
         // check option names
         if ($diff = array_diff(array_keys($options), array_keys($this->options))) {
@@ -96,6 +96,8 @@ class Translator extends BaseTranslator
             $fallbackContent = '';
             $current = '';
             foreach ($this->computeFallbackLocales($locale) as $fallback) {
+                $fallbackSuffix = ucfirst(str_replace('-', '_', $fallback));
+
                 $fallbackContent .= sprintf(<<<EOF
 \$catalogue%s = new MessageCatalogue('%s', %s);
 \$catalogue%s->addFallbackCatalogue(\$catalogue%s);
@@ -103,11 +105,11 @@ class Translator extends BaseTranslator
 
 EOF
                     ,
-                    ucfirst($fallback),
+                    $fallbackSuffix,
                     $fallback,
                     var_export($this->catalogues[$fallback]->all(), true),
-                    ucfirst($current),
-                    ucfirst($fallback)
+                    ucfirst(str_replace('-', '_', $current)),
+                    $fallbackSuffix
                 );
                 $current = $fallback;
             }

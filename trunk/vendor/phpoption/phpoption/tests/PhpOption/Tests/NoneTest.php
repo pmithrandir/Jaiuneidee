@@ -57,6 +57,13 @@ class NoneTest extends \PHPUnit_Framework_TestCase
         }));
     }
 
+    public function testForAll()
+    {
+        $this->assertSame($this->none, $this->none->forAll(function() {
+            throw new \LogicException('Should never be called.');
+        }));
+    }
+
     public function testMap()
     {
         $this->assertSame($this->none, $this->none->map(function() {
@@ -93,6 +100,18 @@ class NoneTest extends \PHPUnit_Framework_TestCase
     public function testReject()
     {
         $this->assertSame($this->none, $this->none->reject(null));
+    }
+
+    public function testForeach()
+    {
+        $none = \PhpOption\None::create();
+
+        $called = 0;
+        foreach ($none as $value) {
+            $called++;
+        }
+
+        $this->assertEquals(0, $called);
     }
 
     protected function setUp()

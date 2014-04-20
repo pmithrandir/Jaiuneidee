@@ -11,7 +11,7 @@
 
 namespace Sensio\Bundle\FrameworkExtraBundle\Request\ParamConverter;
 
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\ConfigurationInterface;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use DateTime;
@@ -23,7 +23,12 @@ use DateTime;
  */
 class DateTimeParamConverter implements ParamConverterInterface
 {
-    public function apply(Request $request, ConfigurationInterface $configuration)
+    /**
+     * {@inheritdoc}
+     *
+     * @throws NotFoundHttpException When invalid date given
+     */
+    public function apply(Request $request, ParamConverter $configuration)
     {
         $param = $configuration->getName();
 
@@ -33,6 +38,10 @@ class DateTimeParamConverter implements ParamConverterInterface
 
         $options = $configuration->getOptions();
         $value   = $request->attributes->get($param);
+
+        if (!$value && $configuration->isOptional()) {
+            return false;
+        }
 
         $date = isset($options['format'])
             ? DateTime::createFromFormat($options['format'], $value)
@@ -47,7 +56,10 @@ class DateTimeParamConverter implements ParamConverterInterface
         return true;
     }
 
-    public function supports(ConfigurationInterface $configuration)
+    /**
+     * {@inheritdoc}
+     */
+    public function supports(ParamConverter $configuration)
     {
         if (null === $configuration->getClass()) {
             return false;
@@ -56,4 +68,3 @@ class DateTimeParamConverter implements ParamConverterInterface
         return "DateTime" === $configuration->getClass();
     }
 }
-

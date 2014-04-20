@@ -25,24 +25,10 @@ class PrototypedArrayNode extends ArrayNode
 {
     protected $prototype;
     protected $keyAttribute;
-    protected $removeKeyAttribute;
-    protected $minNumberOfElements;
-    protected $defaultValue;
+    protected $removeKeyAttribute = false;
+    protected $minNumberOfElements = 0;
+    protected $defaultValue = array();
     protected $defaultChildren;
-
-    /**
-     * Constructor.
-     *
-     * @param string        $name   The Node's name
-     * @param NodeInterface $parent The node parent
-     */
-    public function __construct($name, NodeInterface $parent = null)
-    {
-        parent::__construct($name, $parent);
-
-        $this->minNumberOfElements = 0;
-        $this->defaultValue = array();
-    }
 
     /**
      * Sets the minimum number of elements that a prototype based node must
@@ -183,7 +169,7 @@ class PrototypedArrayNode extends ArrayNode
      *
      * @param NodeInterface $node The child node to add
      *
-     * @throws \RuntimeException Prototyped array nodes can't have concrete children.
+     * @throws Exception
      */
     public function addChild(NodeInterface $node)
     {
@@ -233,6 +219,9 @@ class PrototypedArrayNode extends ArrayNode
      * @param mixed $value The value to normalize
      *
      * @return mixed The normalized value
+     *
+     * @throws InvalidConfigurationException
+     * @throws DuplicateKeyException
      */
     protected function normalizeValue($value)
     {

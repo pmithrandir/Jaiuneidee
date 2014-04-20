@@ -13,8 +13,8 @@ namespace Symfony\Bundle\SwiftmailerBundle\EventListener;
 
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\DependencyInjection\IntrospectableContainerInterface;
-use Symfony\Component\HttpKernel\Event\PostResponseEvent;
 use Symfony\Component\HttpKernel\KernelEvents;
+use Symfony\Component\Console\ConsoleEvents;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
 /**
@@ -28,32 +28,41 @@ class EmailSenderListener implements EventSubscriberInterface
 {
     private $container;
 
-    public function __construct(ContainerInterface $container, $autoStart = false)
+    public function __construct(ContainerInterface $container)
     {
         $this->container = $container;
     }
 
-    public function onKernelTerminate(PostResponseEvent $event)
+    public function onTerminate()
     {
-        if ($this->container instanceof IntrospectableContainerInterface && !$this->container->initialized('mailer')) {
+        if (!$this->container->has('mailer')) {
             return;
         }
-
-        $transport = $this->container->get('mailer')->getTransport();
-        if (!$transport instanceof \Swift_Transport_SpoolTransport) {
-            return;
+        $mailers = array_keys($this->container->getParameter('swiftmailer.mailers'));
+        foreach ($mailers as $name) {
+            if ($this->container instanceof IntrospectableContainerInterface ? $this->container->initialized(sprintf('swiftmailer.mailer.%s', $name)) : true) {
+                if ($this->container->getParameter(sprintf('swiftmailer.mailer.%s.spool.enabled', $name))) {
+                    $mailer = $this->container->get(sprintf('swiftmailer.mailer.%s', $name));
+                    $transport = $mailer->getTransport();
+                    if ($transport instanceof \Swift_Transport_SpoolTransport) {
+                        $spool = $transport->getSpool();
+                        if ($spool instanceof \Swift_MemorySpool) {
+                            $spool->flushQueue($this->container->get(sprintf('swiftmailer.mailer.%s.transport.real', $name)));
+                        }
+                    }
+                }
+            }
         }
-
-        $spool = $transport->getSpool();
-        if (!$spool instanceof \Swift_MemorySpool) {
-            return;
-        }
-
-        $spool->flushQueue($this->container->get('swiftmailer.transport.real'));
     }
 
-    static public function getSubscribedEvents()
+    public static function getSubscribedEvents()
     {
-        return array(KernelEvents::TERMINATE => 'onKernelTerminate');
+        $listeners = array(KernelEvents::TERMINATE => 'onTerminate');
+
+        if (class_exists('Symfony\Component\Console\ConsoleEvents')) {
+            $listeners[ConsoleEvents::TERMINATE] = 'onTerminate';
+        }
+
+        return $listeners;
     }
 }

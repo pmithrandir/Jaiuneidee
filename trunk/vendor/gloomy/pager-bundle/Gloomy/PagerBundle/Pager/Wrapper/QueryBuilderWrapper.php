@@ -44,6 +44,9 @@ class QueryBuilderWrapper implements Wrapper
             foreach ($metas->fieldMappings as $property => $infos) {
                 $this->addField(new Field($property, $infos['type'], null, $alias.'.'.$property));
             }
+            foreach ($metas->associationMappings as $property => $infos) {
+                $this->addField(new Field($property, $infos['type'], null, $alias.'.'.$property));
+            }
         }
     }
 
@@ -77,11 +80,14 @@ class QueryBuilderWrapper implements Wrapper
     {
         if (is_null($this->_count)) {
             $builder        = clone $this->_builder;
-            $this->_count   = $builder
+            $count          = $builder
                 ->select('COUNT(DISTINCT '.$builder->getRootAlias().')')
                 ->resetDQLPart('orderBy')
                 ->getQuery()
-                ->getSingleScalarResult();
+                ->getScalarResult()
+                ;
+
+            $this->_count = array_sum(array_map('current', $count));
         }
 
         return $this->_count;

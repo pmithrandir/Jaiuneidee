@@ -66,11 +66,11 @@
         </div>
     </div>
     <div class="idee_commentaires_liste">
-        {% render 'JaiUneIdeeSiteBundle:Idee:listeCommentaire' with { 'idee_id': idee.id, 'page': page  } %}
+        {% render(controller('JaiUneIdeeSiteBundle:Idee:listeCommentaire' , { 'idee_id': idee.id, 'page': page  })) %}
     </div>
         <br />
     {% if is_granted('ROLE_USER') %}
-        {% render 'JaiUneIdeeSiteBundle:Idee:newComment' with { 'idee_id': idee.id } %}
+        {% render(controller('JaiUneIdeeSiteBundle:Idee:newComment',{ 'idee_id': idee.id })) %}
     {% else %}
         Désolé, vous devez être identifié pour répondre à cette idée.
     {% endif %}
