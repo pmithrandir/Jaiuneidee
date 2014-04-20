@@ -1,3 +1,0 @@
-0000000000000000000000000000000000000000 0979c7d9eb7f0031a3c5ffed1d6e1fa4eb846e4e Pierre Bonneau <pmithrandir@localhost.(none)> 1370692734 +0300	clone: from git://github.com/schmittjoh/metadata
-0979c7d9eb7f0031a3c5ffed1d6e1fa4eb846e4e 84088bc4f6e2387ec8b549bffc1e037107572f5a Pierre Bonneau <pmithrandir@localhost.(none)> 1370692744 +0300	checkout: moving from master to 1.1.1
-84088bc4f6e2387ec8b549bffc1e037107572f5a f2ab7883f6f915d40bfc38a70e0ead5f130610dc Pierre Bonneau <pmithrandir@localhost.(none)> 1370697032 +0300	checkout: moving from 84088bc4f6e2387ec8b549bffc1e037107572f5a to 1.3.0
