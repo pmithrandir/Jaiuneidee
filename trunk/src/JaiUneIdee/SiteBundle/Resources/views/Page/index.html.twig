@@ -9,12 +9,12 @@
     <form action="{{ path('JaiUneIdeeSiteBundle_homepage') }}" method="post" id="filtres">
         <div>
             {% if is_granted('IS_AUTHENTICATED_REMEMBERED') %}
+            <label for="localisation_locale">{{app.user.localisation}}</label>
+            <input type="radio" checked="checked" name="localisation" id="localisation_locale" value="local" />
             <label for="localisation_toutes">Toutes les idées</label>
-            <input type="radio" checked="checked" name="localisation" id="localisation_toutes" value="toutes" />
-            <label for="localisation_nationale">Idées générales</label>
+            <input type="radio" name="localisation" id="localisation_toutes" value="toutes" />
+            <label for="localisation_nationale">Idées nationales</label>
             <input type="radio" name="localisation" id="localisation_nationale" value="national" />
-            <label for="localisation_locale">Près de chez vous</label>
-            <input type="radio" name="localisation" id="localisation_locale" value="local" />
             {% endif %}
         </div>
         <div>

@@ -17,8 +17,8 @@ class PageController extends Controller
     {
         $request = $this->getRequest();
         $em = $this->getDoctrine()->getManager();
-        if ((true === $this->get('security.context')->isGranted('ROLE_USER'))&&($request->get("localisation")=="local")){
-            $localisation = $this->get('security.context')->getToken()->getUser()->getLocalisation();
+        if ((true === $this->get('security.context')->isGranted('ROLE_USER'))&&($request->get("localisation")=="toutes")){
+            $localisation = $em->getRepository('JaiUneIdeeLocalisationBundle:Localisation')->findOneBy(array("nom"=>"France"));
             $withLocChildren = true;
         }
         else if($request->get("localisation")=="national"){
@@ -26,7 +26,7 @@ class PageController extends Controller
             $withLocChildren = false;
         }
         else{
-            $localisation = $em->getRepository('JaiUneIdeeLocalisationBundle:Localisation')->findOneBy(array("nom"=>"France"));
+            $localisation = $this->get('security.context')->getToken()->getUser()->getLocalisation();
             $withLocChildren = true;
         }
         $liste_themes = $this->getDoctrine()->getManager()->getRepository('JaiUneIdeeSiteBundle:Theme')->findAll();
