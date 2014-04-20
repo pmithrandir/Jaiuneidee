@@ -11,46 +11,31 @@
 
 namespace WhiteOctober\PagerfantaBundle\View;
 
-use Pagerfanta\PagerfantaInterface;
-use Pagerfanta\View\TwitterBootstrapView;
-use Pagerfanta\View\ViewInterface;
-use Symfony\Component\Translation\TranslatorInterface;
-
 /**
  * This view renders the twitter bootstrap view with texts translated.
  *
  * @author Pablo Díez <pablodip@gmail.com>
  */
-class TwitterBootstrapTranslatedView implements ViewInterface
+class TwitterBootstrapTranslatedView extends TranslatedView
 {
-    private $view;
-    private $translator;
-
-    /**
-     * Constructor.
-     *
-     * @param TwitterBootstrapView $view       A twitter bootstrap view.
-     * @param TranslatorInterface  $translator A translator interface.
-     */
-    public function __construct(TwitterBootstrapView $view, TranslatorInterface $translator)
+    protected function previousMessageOption()
     {
-        $this->view = $view;
-        $this->translator = $translator;
+        return 'prev_message';
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function render(PagerfantaInterface $pagerfanta, $routeGenerator, array $options = array())
+    protected function nextMessageOption()
     {
-        if (!isset($options['prev_message'])) {
-            $options['prev_message'] = '&larr; '.$this->translator->trans('previous', array(), 'pagerfanta');
-        }
-        if (!isset($options['next_message'])) {
-            $options['next_message'] = $this->translator->trans('next', array(), 'pagerfanta').' &rarr;';
-        }
+        return 'next_message';
+    }
 
-        return $this->view->render($pagerfanta, $routeGenerator, $options);
+    protected function buildPreviousMessage($text)
+    {
+        return sprintf('&larr; %s', $text);
+    }
+
+    protected function buildNextMessage($text)
+    {
+        return sprintf('%s &rarr;', $text);
     }
 
     /**

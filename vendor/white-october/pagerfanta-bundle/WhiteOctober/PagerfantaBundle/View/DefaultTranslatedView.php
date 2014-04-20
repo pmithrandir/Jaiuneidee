@@ -11,11 +11,6 @@
 
 namespace WhiteOctober\PagerfantaBundle\View;
 
-use Pagerfanta\PagerfantaInterface;
-use Pagerfanta\View\DefaultView;
-use Pagerfanta\View\ViewInterface;
-use Symfony\Component\Translation\TranslatorInterface;
-
 /**
  * Translated view.
  *
@@ -23,36 +18,26 @@ use Symfony\Component\Translation\TranslatorInterface;
  *
  * @author Jérôme Tamarelle <jerome@tamarelle.net>
  */
-class DefaultTranslatedView implements ViewInterface
+class DefaultTranslatedView extends TranslatedView
 {
-    private $view;
-    private $translator;
-
-    /**
-     * Constructor.
-     *
-     * @param DefaultViewInterface       $view       A default view.
-     * @param TranslatorInterface $translator A translator interface.
-     */
-    public function __construct(DefaultView $view, TranslatorInterface $translator)
+    protected function previousMessageOption()
     {
-        $this->view = $view;
-        $this->translator = $translator;
+        return 'previous_message';
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function render(PagerfantaInterface $pagerfanta, $routeGenerator, array $options = array())
+    protected function nextMessageOption()
     {
-        if (!isset($options['previous_message'])) {
-            $options['previous_message'] = '&#171; '.$this->translator->trans('previous', array(), 'pagerfanta');
-        }
-        if (!isset($options['next_message'])) {
-            $options['next_message'] = $this->translator->trans('next', array(), 'pagerfanta').' &#187;';
-        }
+        return 'next_message';
+    }
 
-        return $this->view->render($pagerfanta, $routeGenerator, $options);
+    protected function buildPreviousMessage($text)
+    {
+        return sprintf('&#171; %s', $text);
+    }
+
+    protected function buildNextMessage($text)
+    {
+        return sprintf('%s &#187;', $text);
     }
 
     /**

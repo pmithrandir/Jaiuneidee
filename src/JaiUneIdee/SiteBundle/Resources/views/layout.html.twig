@@ -15,7 +15,7 @@
     <div id="login">
     {% if not is_granted('IS_AUTHENTICATED_REMEMBERED') %}
         {% if not ("login" in app.request.requesturi)%}
-            {% render 'FOSUserBundle:Security:login' %}
+            {% render(controller("FOSUserBundle:Security:login")) %}
         {% endif %}
     {%else %}
         <a href="{{ path('avatar') }}">

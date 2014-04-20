@@ -11,10 +11,11 @@
 
 namespace Symfony\Bridge\Doctrine\Form\ChoiceList;
 
-use Symfony\Component\Form\Exception\FormException;
+use Symfony\Component\Form\Exception\RuntimeException;
 use Symfony\Component\Form\Exception\StringCastException;
 use Symfony\Component\Form\Extension\Core\ChoiceList\ObjectChoiceList;
 use Doctrine\Common\Persistence\ObjectManager;
+use Symfony\Component\PropertyAccess\PropertyAccessorInterface;
 
 /**
  * A choice list presenting a list of Doctrine entities as choices
@@ -86,17 +87,18 @@ class EntityChoiceList extends ObjectChoiceList
     /**
      * Creates a new entity choice list.
      *
-     * @param ObjectManager         $manager           An EntityManager instance
-     * @param string                $class             The class name
-     * @param string                $labelPath         The property path used for the label
-     * @param EntityLoaderInterface $entityLoader      An optional query builder
-     * @param array                 $entities          An array of choices
-     * @param array                 $preferredEntities An array of preferred choices
-     * @param string                $groupPath         A property path pointing to the property used
-     *                                                 to group the choices. Only allowed if
-     *                                                 the choices are given as flat array.
+     * @param ObjectManager             $manager           An EntityManager instance
+     * @param string                    $class             The class name
+     * @param string                    $labelPath         The property path used for the label
+     * @param EntityLoaderInterface     $entityLoader      An optional query builder
+     * @param array                     $entities          An array of choices
+     * @param array                     $preferredEntities An array of preferred choices
+     * @param string                    $groupPath         A property path pointing to the property used
+     *                                                     to group the choices. Only allowed if
+     *                                                     the choices are given as flat array.
+     * @param PropertyAccessorInterface $propertyAccessor  The reflection graph for reading property paths.
      */
-    public function __construct(ObjectManager $manager, $class, $labelPath = null, EntityLoaderInterface $entityLoader = null, $entities = null,  array $preferredEntities = array(), $groupPath = null)
+    public function __construct(ObjectManager $manager, $class, $labelPath = null, EntityLoaderInterface $entityLoader = null, $entities = null,  array $preferredEntities = array(), $groupPath = null, PropertyAccessorInterface $propertyAccessor = null)
     {
         $this->em = $manager;
         $this->entityLoader = $entityLoader;
@@ -122,7 +124,7 @@ class EntityChoiceList extends ObjectChoiceList
             $entities = array();
         }
 
-        parent::__construct($entities, $labelPath, $preferredEntities, $groupPath);
+        parent::__construct($entities, $labelPath, $preferredEntities, $groupPath, null, $propertyAccessor);
     }
 
     /**
@@ -202,15 +204,40 @@ class EntityChoiceList extends ObjectChoiceList
      */
     public function getChoicesForValues(array $values)
     {
+        // Performance optimization
+        // Also prevents the generation of "WHERE id IN ()" queries through the
+        // entity loader. At least with MySQL and on the development machine
+        // this was tested on, no exception was thrown for such invalid
+        // statements, consequently no test fails when this code is removed.
+        // https://github.com/symfony/symfony/pull/8981#issuecomment-24230557
+        if (empty($values)) {
+            return array();
+        }
+
         if (!$this->loaded) {
             // Optimize performance in case we have an entity loader and
             // a single-field identifier
             if ($this->idAsValue && $this->entityLoader) {
-                if (empty($values)) {
-                    return array();
+                $unorderedEntities = $this->entityLoader->getEntitiesByIds($this->idField, $values);
+                $entitiesByValue = array();
+                $entities = array();
+
+                // Maintain order and indices from the given $values
+                // An alternative approach to the following loop is to add the
+                // "INDEX BY" clause to the Doctrine query in the loader,
+                // but I'm not sure whether that's doable in a generic fashion.
+                foreach ($unorderedEntities as $entity) {
+                    $value = $this->fixValue(current($this->getIdentifierValues($entity)));
+                    $entitiesByValue[$value] = $entity;
                 }
 
-                return $this->entityLoader->getEntitiesByIds($this->idField, $values);
+                foreach ($values as $i => $value) {
+                    if (isset($entitiesByValue[$value])) {
+                        $entities[$i] = $entitiesByValue[$value];
+                    }
+                }
+
+                return $entities;
             }
 
             $this->load();
@@ -230,6 +257,11 @@ class EntityChoiceList extends ObjectChoiceList
      */
     public function getValuesForChoices(array $entities)
     {
+        // Performance optimization
+        if (empty($entities)) {
+            return array();
+        }
+
         if (!$this->loaded) {
             // Optimize performance for single-field identifiers. We already
             // know that the IDs are used as values
@@ -238,10 +270,10 @@ class EntityChoiceList extends ObjectChoiceList
             if ($this->idAsValue) {
                 $values = array();
 
-                foreach ($entities as $entity) {
+                foreach ($entities as $i => $entity) {
                     if ($entity instanceof $this->class) {
                         // Make sure to convert to the right format
-                        $values[] = $this->fixValue(current($this->getIdentifierValues($entity)));
+                        $values[$i] = $this->fixValue(current($this->getIdentifierValues($entity)));
                     }
                 }
 
@@ -262,9 +294,16 @@ class EntityChoiceList extends ObjectChoiceList
      * @return array
      *
      * @see Symfony\Component\Form\Extension\Core\ChoiceList\ChoiceListInterface
+     *
+     * @deprecated Deprecated since version 2.4, to be removed in 3.0.
      */
     public function getIndicesForChoices(array $entities)
     {
+        // Performance optimization
+        if (empty($entities)) {
+            return array();
+        }
+
         if (!$this->loaded) {
             // Optimize performance for single-field identifiers. We already
             // know that the IDs are used as indices
@@ -273,10 +312,10 @@ class EntityChoiceList extends ObjectChoiceList
             if ($this->idAsIndex) {
                 $indices = array();
 
-                foreach ($entities as $entity) {
+                foreach ($entities as $i => $entity) {
                     if ($entity instanceof $this->class) {
                         // Make sure to convert to the right format
-                        $indices[] = $this->fixIndex(current($this->getIdentifierValues($entity)));
+                        $indices[$i] = $this->fixIndex(current($this->getIdentifierValues($entity)));
                     }
                 }
 
@@ -297,9 +336,16 @@ class EntityChoiceList extends ObjectChoiceList
      * @return array
      *
      * @see Symfony\Component\Form\Extension\Core\ChoiceList\ChoiceListInterface
+     *
+     * @deprecated Deprecated since version 2.4, to be removed in 3.0.
      */
     public function getIndicesForValues(array $values)
     {
+        // Performance optimization
+        if (empty($values)) {
+            return array();
+        }
+
         if (!$this->loaded) {
             // Optimize performance for single-field identifiers.
 
@@ -404,12 +450,12 @@ class EntityChoiceList extends ObjectChoiceList
      *
      * @return array          The identifier values
      *
-     * @throws FormException  If the entity does not exist in Doctrine's identity map
+     * @throws RuntimeException If the entity does not exist in Doctrine's identity map
      */
     private function getIdentifierValues($entity)
     {
         if (!$this->em->contains($entity)) {
-            throw new FormException(
+            throw new RuntimeException(
                 'Entities passed to the choice field must be managed. Maybe ' .
                 'persist them in the entity manager?'
             );

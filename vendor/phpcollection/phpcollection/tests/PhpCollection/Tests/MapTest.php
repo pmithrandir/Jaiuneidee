@@ -6,7 +6,16 @@ use PhpCollection\Map;
 
 class MapTest extends \PHPUnit_Framework_TestCase
 {
+    /** @var Map */
     private $map;
+
+    public function testExists()
+    {
+        $this->assertFalse($this->map->exists(function($k) { return $k === 0; }));
+
+        $this->map->set('foo', 'bar');
+        $this->assertTrue($this->map->exists(function($k, $v) { return $k === 'foo' && $v === 'bar'; }));
+    }
 
     public function testSet()
     {
@@ -88,6 +97,38 @@ class MapTest extends \PHPUnit_Framework_TestCase
         $this->assertFalse($this->map->isEmpty());
         $this->map->clear();
         $this->assertTrue($this->map->isEmpty());
+    }
+
+    public function testFilter()
+    {
+        $map = new Map(array('a' => 'b', 'c' => 'd', 'e' => 'f'));
+        $newMap = $map->filter(function($v) { return $v === 'd'; });
+
+        $this->assertNotSame($newMap, $map);
+        $this->assertCount(3, $map);
+        $this->assertCount(1, $newMap);
+        $this->assertEquals(array('c' => 'd'), iterator_to_array($newMap));
+    }
+
+    public function testFilterNot()
+    {
+        $map = new Map(array('a' => 'b', 'c' => 'd', 'e' => 'f'));
+        $newMap = $map->filterNot(function($v) { return $v === 'd'; });
+
+        $this->assertNotSame($newMap, $map);
+        $this->assertCount(3, $map);
+        $this->assertCount(2, $newMap);
+        $this->assertEquals(array('a' => 'b', 'e' => 'f'), iterator_to_array($newMap));
+    }
+
+    public function testFoldLeftRight()
+    {
+        $map = new Map(array('a' => 'b', 'c' => 'd', 'e' => 'f'));
+        $rsLeft = $map->foldLeft('', function($a, $b) { return $a.$b; });
+        $rsRight = $map->foldRight('', function($a, $b) { return $a.$b; });
+
+        $this->assertEquals('bdf', $rsLeft);
+        $this->assertEquals('bdf', $rsRight);
     }
 
     public function testDropWhile()

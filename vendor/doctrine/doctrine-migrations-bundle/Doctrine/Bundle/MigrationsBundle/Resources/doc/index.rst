@@ -23,6 +23,7 @@ Standard edition. Add the following to your ``composer.json`` file:
 
     {
         "require": {
+            "doctrine/migrations": "dev-master",
             "doctrine/doctrine-migrations-bundle": "dev-master"
         }
     }
@@ -55,6 +56,20 @@ following:
             new Doctrine\Bundle\MigrationsBundle\DoctrineMigrationsBundle(),
         );
     }
+    
+Configuration
+-------------
+
+You can configure the path, namespace, table_name and name in your `config.yml`. The examples below are the default values.
+
+.. code-block:: yaml
+
+    // app/config/config.yml
+    doctrine_migrations:
+        dir_name: %kernel.root_dir%/DoctrineMigrations
+        namespace: Application\Migrations
+        table_name: migration_versions
+        name: Application Migrations   
 
 Usage
 -----
@@ -126,7 +141,7 @@ migration to execute:
 
 .. code-block:: bash
 
-    php app/console doctrine:migrations:status
+    php app/console doctrine:migrations:status --show-versions
 
      == Configuration
 
@@ -150,7 +165,7 @@ finally migrate when you're ready:
 
 .. code-block:: bash
 
-    php app/console doctrine:migrations:migrate
+    php app/console doctrine:migrations:migrate 20100621140655
 
 For more information on how to write the migrations themselves (i.e. how to
 fill in the ``up()`` and ``down()`` methods), see the official Doctrine Migrations
@@ -281,13 +296,15 @@ In some cases you might need access to the container to ensure the proper update
 your data structure. This could be necessary to update relations with some specific
 logic or to create new entities. 
 
-Therefore you can just implement the ContainerAwareInterface with it's needed methods
+Therefore you can just implement the ContainerAwareInterface with its needed methods
 to get full access to the container.
 
 .. code-block:: php
 
     // ...
-    
+    use Symfony\Component\DependencyInjection\ContainerAwareInterface;
+    use Symfony\Component\DependencyInjection\ContainerInterface;
+
     class Version20130326212938 extends AbstractMigration implements ContainerAwareInterface
     {
     
@@ -309,6 +326,45 @@ to get full access to the container.
             // ... update the entities
         }
     }
+
+Manual Tables
+-------------
+
+It is a common use case, that in addition to your generated database structure 
+based on your doctrine entities you might need custom tables. By default such 
+tables will be removed by the doctrine:migrations:diff command.
+
+If you follow a specific scheme you can configure doctrine/dbal to ignore those 
+tables. Let's say all custom tables will be prefixed by ``t_``. In this case you 
+just have to add the following configuration option to your doctrine configuration:
+
+.. configuration-block::
+
+    .. code-block:: yaml
+    
+        doctrine:
+            dbal:        
+                schema_filter: ~^(?!t_)~
+                
+    .. code-block:: xml
+    
+        <doctrine:dbal schema-filter="~^(?!t_)~" ... />
+
+    
+    .. code-block:: php
+    
+        $container->loadFromExtension('doctrine', array(
+            'dbal' => array(
+                'schema_filter'  => '~^(?!t_)~',
+                // ...
+            ),
+            // ...
+        ));
+
+This ignores the tables on the DBAL level and they will be ignored by the diff command.
+
+Note that if you have multiple connections configured then the ``schema_filter`` configuration
+will need to be placed per-connection.
 
 .. _documentation: http://docs.doctrine-project.org/projects/doctrine-migrations/en/latest/index.html
 .. _DoctrineMigrationsBundle: https://github.com/doctrine/DoctrineMigrationsBundle

@@ -1,5 +1,6 @@
-WhiteOctoberPagerfantaBundle
-============================
+# WhiteOctoberPagerfantaBundle
+
+[![Build Status](https://travis-ci.org/whiteoctober/WhiteOctoberPagerfantaBundle.png?branch=master)](https://travis-ci.org/whiteoctober/WhiteOctoberPagerfantaBundle) [![Scrutinizer Quality Score](https://scrutinizer-ci.com/g/whiteoctober/WhiteOctoberPagerfantaBundle/badges/quality-score.png?s=5bbc990b8c05b7dcc69cd0cfe7d8d46e9944c530)](https://scrutinizer-ci.com/g/whiteoctober/WhiteOctoberPagerfantaBundle/) [![SensioLabsInsight](https://insight.sensiolabs.com/projects/e0838383-1c8d-406f-9874-a76c08b7d217/mini.png)](https://insight.sensiolabs.com/projects/e0838383-1c8d-406f-9874-a76c08b7d217)
 
 Bundle to use [Pagerfanta](https://github.com/whiteoctober/Pagerfanta) with [Symfony2](https://github.com/symfony/symfony).
 
@@ -15,22 +16,15 @@ The bundle includes:
 Installation
 ------------
 
-Add Pagerfanta and WhiteOctoberPagerfantaBundle to your vendors:
+Add the bundle to your `composer.json`:
 
-    git submodule add http://github.com/whiteoctober/Pagerfanta.git vendor/pagerfanta
-    git submodule add http://github.com/whiteoctober/WhiteOctoberPagerfantaBundle.git vendor/bundles/WhiteOctober/PagerfantaBundle
+    "white-october/pagerfanta-bundle": "dev-master"
 
-Add both to your autoload:
+and run:
 
-    // app/autoload.php
-    $loader->registerNamespaces(array(
-        // ...
-        'WhiteOctober\PagerfantaBundle' => __DIR__.'/../vendor/bundles',
-        'Pagerfanta'                    => __DIR__.'/../vendor/pagerfanta/src',
-        // ...
-    ));
+    php composer.phar install
 
-Add the WhiteOctoberPagerfantaBundle to your application kernel:
+Then add the WhiteOctoberPagerfantaBundle to your application kernel:
 
     // app/AppKernel.php
     public function registerBundles()
@@ -41,6 +35,15 @@ Add the WhiteOctoberPagerfantaBundle to your application kernel:
             // ...
         );
     }
+
+Right now when the page is out of range or not a number the server returns 500. You can set the parameter to show 404 exception when requested page is not valid.
+It is set to "false" by defauly to provide BC (before it was 500).
+
+    // app/config/config.yml
+    white_october_pagerfanta:
+        exceptions_strategy:
+            out_of_range_page:        to_http_not_found
+            not_valid_current_page:   to_http_not_found
 
 Rendering pagerfantas
 ---------------------
@@ -55,7 +58,24 @@ The routes are generated automatically for the current route using the variable
         {{ pagerfanta(my_pager) }}
     </div>
 
-The bundle also has the *TwitterBootstrapView* with the *twitter_bootstrap* name.
+### Twitter Bootstrap
+
+The bundle also has TwitterBootstrapView.
+
+For Bootstrap 2:
+
+    <div class="pagerfanta">
+        {{ pagerfanta(my_pager, 'twitter_bootstrap') }}
+    </div>
+
+For Bootstrap 3:
+
+    <div class="pagerfanta">
+        {{ pagerfanta(my_pager, 'twitter_bootstrap3') }}
+    </div>
+
+### Custom template
+
 
 If you want to use a custom template, add another argument
 
@@ -148,6 +168,11 @@ good paginator faster. Of course you can change it, use another one or
 create your own view.
 
     <link rel="stylesheet" href="{{ asset('bundles/whiteoctoberpagerfanta/css/pagerfantaDefault.css') }}" type="text/css" media="all" />
+
+More information
+----------------
+
+For more advanced documentation, check the [Pagerfanta documentation](https://github.com/whiteoctober/Pagerfanta/blob/master/README.md).
 
 Author
 ------

@@ -12,7 +12,7 @@ class AlerteIdeeController extends Controller
 {
     public function activerAction($idee_id)
     {
-        $em = $this->getDoctrine()->getEntityManager();
+        $em = $this->getDoctrine()->getManager();
         if (true === $this->get('security.context')->isGranted('ROLE_USER')) {
 	        $user = $this->get('security.context')->getToken()->getUser();
 	        $idee = $em->getRepository('JaiUneIdeeSiteBundle:Idee')->find($idee_id);
@@ -39,7 +39,7 @@ class AlerteIdeeController extends Controller
     
     public function desactiverAction($idee_id)
     {
-        $em = $this->getDoctrine()->getEntityManager();
+        $em = $this->getDoctrine()->getManager();
         if (true === $this->get('security.context')->isGranted('ROLE_USER')) {
 	        $user = $this->get('security.context')->getToken()->getUser();
 	        $idee = $em->getRepository('JaiUneIdeeSiteBundle:Idee')->find($idee_id);

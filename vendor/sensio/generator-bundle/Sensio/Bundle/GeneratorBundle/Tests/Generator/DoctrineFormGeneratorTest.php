@@ -17,7 +17,8 @@ class DoctrineFormGeneratorTest extends GeneratorTest
 {
     public function testGenerate()
     {
-        $generator = new DoctrineFormGenerator($this->filesystem, __DIR__.'/../../Resources/skeleton/form');
+        $generator = new DoctrineFormGenerator($this->filesystem);
+        $generator->setSkeletonDirs(__DIR__.'/../../Resources/skeleton');
 
         $bundle = $this->getMock('Symfony\Component\HttpKernel\Bundle\BundleInterface');
         $bundle->expects($this->any())->method('getPath')->will($this->returnValue($this->tmpDir));
@@ -35,6 +36,6 @@ class DoctrineFormGeneratorTest extends GeneratorTest
         $this->assertContains('->add(\'title\')', $content);
         $this->assertContains('class PostType extends AbstractType', $content);
         $this->assertContains("'data_class' => 'Foo\BarBundle\Entity\Post'", $content);
-        $this->assertContains("'foo_barbundle_posttype'", $content);
+        $this->assertContains("'foo_barbundle_post'", $content);
     }
 }

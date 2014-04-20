@@ -12,7 +12,6 @@
 namespace Symfony\Component\Config\Definition\Builder;
 
 use Symfony\Component\Config\Definition\EnumNode;
-use Symfony\Component\Config\Definition\Builder\ScalarNodeDefinition;
 
 /**
  * Enum Node Definition.
@@ -40,6 +39,8 @@ class EnumNodeDefinition extends ScalarNodeDefinition
      * Instantiate a Node
      *
      * @return EnumNode The node
+     *
+     * @throws \RuntimeException
      */
     protected function instantiateNode()
     {

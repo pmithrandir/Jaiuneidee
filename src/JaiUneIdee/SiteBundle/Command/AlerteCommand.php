@@ -23,7 +23,7 @@ class AlerteCommand extends ContainerAwareCommand
 
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        $em = $this->getContainer()->get('doctrine')->getEntityManager();
+        $em = $this->getContainer()->get('doctrine')->getManager();
         //pour toutes les idées ajouter une alerte a l'auteur
         $idees = $em->getRepository('JaiUneIdeeSiteBundle:Idee')->findAll();
         foreach($idees as $idee){

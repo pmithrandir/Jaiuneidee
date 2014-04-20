@@ -75,13 +75,13 @@
 </div>
         {% if is_granted('ROLE_ADMIN') %}
     <ul>
-            <li><a href="{{ path('lyra_admin_idees_index') }}">Admin</a></li>
+            <li><a href="{{ path('sonata_admin_dashboard') }}">Admin</a></li>
             <li><a href="{{ path('JaiUneIdeeSiteBundle_statistiques_index') }}">Stats</a></li>
             <li><a href="{{ path('JaiUneIdeeSiteBundle_idees_moderation_admin') }}">Idées à modérer 
-                ({% render "JaiUneIdeeSiteBundle:Idee:countModeration" %})
+                ({% render(controller("JaiUneIdeeSiteBundle:Idee:countModeration" ))%})
                 </a></li>
             <li><a href="{{ path('JaiUneIdeeSiteBundle_commentaires_moderation_admin') }}">Commentaires à modérer
-                ({% render "JaiUneIdeeSiteBundle:Idee:countModerationCommentaire" %})
+                ({% render(controller("JaiUneIdeeSiteBundle:Idee:countModerationCommentaire" ))%})
                 </a>
                 </li>
             <li><a href="{{ path('message') }}">Mes messages</a></li>

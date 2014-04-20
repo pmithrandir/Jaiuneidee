@@ -258,7 +258,7 @@ class ChoiceFormFieldTest extends FormFieldTestCase
         $node = $this->createNode('input', '', array('type' => 'checkbox', 'name' => 'name', 'checked' => 'checked'));
         $field = new ChoiceFormField($node);
         $field->untick();
-        $this->assertNull($field->getValue(), '->untick() unticks checkoxes');
+        $this->assertNull($field->getValue(), '->untick() unticks checkboxes');
     }
 
     public function testSelect()
@@ -282,6 +282,21 @@ class ChoiceFormFieldTest extends FormFieldTestCase
         $field = new ChoiceFormField($node);
         $field->select('foo');
         $this->assertEquals('foo', $field->getValue(), '->select() changes the selected option');
+    }
+
+    public function testDisableValidation()
+    {
+        $node = $this->createSelectNode(array('foo' => false, 'bar' => false));
+        $field = new ChoiceFormField($node);
+        $field->disableValidation();
+        $field->setValue('foobar');
+        $this->assertEquals('foobar', $field->getValue(), '->disableValidation() allows to set a value which is not in the selected options.');
+
+        $node = $this->createSelectNode(array('foo' => false, 'bar' => false), array('multiple' => 'multiple'));
+        $field = new ChoiceFormField($node);
+        $field->disableValidation();
+        $field->setValue(array('foobar'));
+        $this->assertEquals(array('foobar'), $field->getValue(), '->disableValidation() allows to set a value which is not in the selected options.');
     }
 
     protected function createSelectNode($options, $attributes = array())

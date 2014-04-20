@@ -18,9 +18,20 @@
     "require": {
         "php": ">=5.3.3"
     },
+    "require-dev": {
+        "psr/log": "~1.0"
+    },
+    "suggest": {
+        "psr/log": "For using debug logging in loaders"
+    },
     "autoload": {
-        "psr-0": { "Symfony\\Component\\Templating": "" }
+        "psr-0": { "Symfony\\Component\\Templating\\": "" }
     },
     "target-dir": "Symfony/Component/Templating",
-    "minimum-stability": "dev"
+    "minimum-stability": "dev",
+    "extra": {
+        "branch-alias": {
+            "dev-master": "2.4-dev"
+        }
+    }
 }

@@ -77,3 +77,27 @@ If your controller has any of the above properties, or methods, then you do not 
 to add an @Inject annotation anymore, but we will automatically inject the configured
 services for you. However, if you do declare an @Inject annotation it will automatically
 overwrite whatever you have configured in the above section.
+
+Disabling the usage of ``grep``
+-------------------------------
+The bundle uses different methods to find the annotations in your files, depending on
+your Operating System and available software. If you are using a Linux distribution
+with ``grep`` installed, ``grep`` will be used by default instead of the Symfony Finder 
+to increase performance.
+
+Sometimes, you might not want to let the bundle use ``grep``, for example if your
+version of grep is too old and therefore does not support some of the more recent options.
+In this case, you can disable the usage of ``grep`` with the following configuration.
+
+.. configuration-block ::
+
+    .. code-block :: yaml
+
+        jms_di_extra:
+            disable_grep: true
+                    
+    .. code-block :: xml
+    
+        <jms-di-extra disable_grep="false">
+            ...
+        </jms-di-extra>

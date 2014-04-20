@@ -1,1 +1,3 @@
-4d5f15a3700a769bd0af364ccd7ecadb07d91d78	not-for-merge	tag 'v1.0.0' of git://github.com/whiteoctober/Pagerfanta
+b51b71e96ee5dc7d9a318e4065646ef42054d3a6	not-for-merge	branch 'doctrine_dbal_adapter' of git://github.com/whiteoctober/Pagerfanta
+90766bc6571841fd2b5fad9b96d73b5a9d31fb44	not-for-merge	branch 'limit_subquery_walker' of git://github.com/whiteoctober/Pagerfanta
+c41473a84768ac18ec107033dbfa87229cdefafa	not-for-merge	branch 'master' of git://github.com/whiteoctober/Pagerfanta

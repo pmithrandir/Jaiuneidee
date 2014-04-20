@@ -58,10 +58,10 @@ class ChoicesToBooleanArrayTransformer implements DataTransformerInterface
             throw new TransformationFailedException('Can not get the choice list', $e->getCode(), $e);
         }
 
-        $indexMap = array_flip($this->choiceList->getIndicesForChoices($array));
+        $valueMap = array_flip($this->choiceList->getValuesForChoices($array));
 
         foreach ($values as $i => $value) {
-            $values[$i] = isset($indexMap[$i]);
+            $values[$i] = isset($valueMap[$value]);
         }
 
         return $values;
@@ -109,9 +109,7 @@ class ChoicesToBooleanArrayTransformer implements DataTransformerInterface
         }
 
         if (count($unknown) > 0) {
-            throw new TransformationFailedException(
-                sprintf('The choices "%s" were not found', implode('", "', $unknown))
-            );
+            throw new TransformationFailedException(sprintf('The choices "%s" were not found', implode('", "', $unknown)));
         }
 
         return $result;

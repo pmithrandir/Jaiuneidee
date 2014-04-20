@@ -5,8 +5,7 @@ namespace JaiUneIdee\SiteBundle\Entity;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Mapping\ClassMetadata;
 use Symfony\Component\Validator\Constraints\NotBlank;
-use Symfony\Component\Validator\Constraints\MinLength;
-use Symfony\Component\Validator\Constraints\MaxLength;
+use Symfony\Component\Validator\Constraints\Length;
 
 /**
  * JaiUneIdee\SiteBundle\Entity\Idee
@@ -83,12 +82,12 @@ class Idee
         $metadata->addPropertyConstraint('content', new NotBlank());
         $metadata->addPropertyConstraint('theme', new NotBlank());
 
-        $metadata->addPropertyConstraint('title', new MinLength(8));
-        $metadata->addPropertyConstraint('title', new MaxLength(80));
-        $metadata->addPropertyConstraint('description', new MinLength(20));
-        $metadata->addPropertyConstraint('description', new MaxLength(110));
-        $metadata->addPropertyConstraint('content', new MinLength(50));
-        $metadata->addPropertyConstraint('content', new MaxLength(10000));
+        $metadata->addPropertyConstraint('title', new Length(array('min'=>8)));
+        $metadata->addPropertyConstraint('title', new Length(array('max'=>80)));
+        $metadata->addPropertyConstraint('description', new Length(array('min'=>20)));
+        $metadata->addPropertyConstraint('description', new Length(array('max'=>110)));
+        $metadata->addPropertyConstraint('content', new Length(array('min'=>20)));
+        $metadata->addPropertyConstraint('content', new Length(array('max'=>10000)));
         
         $metadata->addPropertyConstraint('title', new NotBlank(array(
             'message' => 'Vous devez entrer un titre'

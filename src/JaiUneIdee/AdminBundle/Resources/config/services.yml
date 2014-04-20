@@ -5,3 +5,56 @@ services:
 #    jai_une_idee_admin.example:
 #        class: %jai_une_idee_admin.example.class%
 #        arguments: [@service_id, "plain_value", %parameter%]
+    jai_une_idee_admin.admin.idee:
+        class: JaiUneIdee\AdminBundle\Admin\IdeeAdmin
+        arguments: [~, JaiUneIdee\SiteBundle\Entity\Idee, SonataAdminBundle:CRUD]
+        tags:
+            - {name: sonata.admin, manager_type: orm, group: admin, label: Idee}
+
+    jai_une_idee_admin.admin.commentaire:
+        class: JaiUneIdee\AdminBundle\Admin\CommentaireAdmin
+        arguments: [~, JaiUneIdee\SiteBundle\Entity\Commentaire, SonataAdminBundle:CRUD]
+        tags:
+            - {name: sonata.admin, manager_type: orm, group: admin, label: Commentaire}
+
+    jai_une_idee_admin.admin.news:
+        class: JaiUneIdee\AdminBundle\Admin\NewsAdmin
+        arguments: [~, JaiUneIdee\SiteBundle\Entity\News, SonataAdminBundle:CRUD]
+        tags:
+            - {name: sonata.admin, manager_type: orm, group: default, label: News}
+
+    jai_une_idee_admin.admin.theme:
+        class: JaiUneIdee\AdminBundle\Admin\ThemeAdmin
+        arguments: [~, JaiUneIdee\SiteBundle\Entity\Theme, SonataAdminBundle:CRUD]
+        tags:
+            - {name: sonata.admin, manager_type: orm, group: siteconfig, label: Theme}
+
+    jai_une_idee_admin.admin.user:
+        class: JaiUneIdee\AdminBundle\Admin\UserAdmin
+        arguments: [~, JaiUneIdee\UtilisateurBundle\Entity\User, SonataAdminBundle:CRUD]
+        tags:
+            - {name: sonata.admin, manager_type: orm, group: admin, label: User}
+
+    jai_une_idee_admin.admin.dommage:
+        class: JaiUneIdee\AdminBundle\Admin\DommageAdmin
+        arguments: [~, JaiUneIdee\UtilisateurBundle\Entity\Dommage, SonataAdminBundle:CRUD]
+        tags:
+            - {name: sonata.admin, manager_type: orm, group: siteconfig, label: Dommage}
+
+    jai_une_idee_admin.admin.tendance_politique:
+        class: JaiUneIdee\AdminBundle\Admin\TendancePolitiqueAdmin
+        arguments: [~, JaiUneIdee\UtilisateurBundle\Entity\TendancePolitique, SonataAdminBundle:CRUD]
+        tags:
+            - {name: sonata.admin, manager_type: orm, group: siteconfig, label: TendancePolitique}
+
+    jai_une_idee_admin.admin.invitation:
+        class: JaiUneIdee\AdminBundle\Admin\InvitationAdmin
+        arguments: [~, JaiUneIdee\UtilisateurBundle\Entity\Invitation, SonataAdminBundle:CRUD]
+        tags:
+            - {name: sonata.admin, manager_type: orm, group: admin, label: Invitation}
+
+    jai_une_idee_admin.admin.localisation:
+        class: JaiUneIdee\AdminBundle\Admin\LocalisationAdmin
+        arguments: [~, JaiUneIdee\LocalisationBundle\Entity\Localisation, SonataAdminBundle:CRUD]
+        tags:
+            - {name: sonata.admin, manager_type: orm, group: siteconfig, label: Localisation}

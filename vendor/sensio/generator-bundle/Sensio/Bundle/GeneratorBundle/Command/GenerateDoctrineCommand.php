@@ -11,10 +11,9 @@
 
 namespace Sensio\Bundle\GeneratorBundle\Command;
 
-use Doctrine\Bundle\DoctrineBundle\Mapping\MetadataFactory;
-use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
+use Doctrine\Bundle\DoctrineBundle\Mapping\DisconnectedMetadataFactory;
 
-abstract class GenerateDoctrineCommand extends ContainerAwareCommand
+abstract class GenerateDoctrineCommand extends GeneratorCommand
 {
     public function isEnabled()
     {
@@ -34,7 +33,7 @@ abstract class GenerateDoctrineCommand extends ContainerAwareCommand
 
     protected function getEntityMetadata($entity)
     {
-        $factory = new MetadataFactory($this->getContainer()->get('doctrine'));
+        $factory = new DisconnectedMetadataFactory($this->getContainer()->get('doctrine'));
 
         return $factory->getClassMetadata($entity)->getMetadata();
     }

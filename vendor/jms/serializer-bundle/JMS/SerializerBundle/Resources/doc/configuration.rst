@@ -29,7 +29,7 @@ The semantics are mainly the same as registering a regular Symfony2 event listen
 except that you can specify some additional attributes:
 
 - *format*: The format that you want to listen to; defaults to all formats.
-- *type*: The type name that you want to listen to; defaults to all types.
+- *class*: The type name that you want to listen to; defaults to all types.
 - *direction*: The direction (serialization, or deserialization); defaults to both.
 
 .. note ::
@@ -64,6 +64,20 @@ is searched for metadata with a path that is under your control.
                            path="%kernel.root_dir%/serializer/FOSUB" />
             </metadata>
         </jms-serializer>
+
+Changing the Object Constructor
+----------------------------------
+A Constructor class is used to construct new objects during deserialization. The 
+default constructor uses the `unserialize` function to construct objects. Other
+constructors are configured as services. You can set the constructor by changing 
+the service alias:
+
+```yaml
+services:
+    jms_serializer.object_constructor:
+        alias: jms_serializer.doctrine_object_constructor
+        public: false
+```
 
 Extension Reference
 -------------------

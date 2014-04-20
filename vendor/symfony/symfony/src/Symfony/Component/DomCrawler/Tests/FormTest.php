@@ -62,6 +62,75 @@ class FormTest extends \PHPUnit_Framework_TestCase
         }
     }
 
+    /**
+     * __construct() should throw \\LogicException if the form attribute is invalid
+     * @expectedException \LogicException
+     */
+    public function testConstructorThrowsExceptionIfNoRelatedForm()
+    {
+        $dom = new \DOMDocument();
+        $dom->loadHTML('
+            <html>
+                <form id="bar">
+                    <input type="submit" form="nonexistent" />
+                </form>
+                <input type="text" form="nonexistent" />
+                <button />
+            </html>
+        ');
+
+        $nodes = $dom->getElementsByTagName('input');
+
+        $form = new Form($nodes->item(0), 'http://example.com');
+        $form = new Form($nodes->item(1), 'http://example.com');
+    }
+
+    public function testConstructorHandlesFormAttribute()
+    {
+        $dom = $this->createTestHtml5Form();
+
+        $inputElements = $dom->getElementsByTagName('input');
+        $buttonElements = $dom->getElementsByTagName('button');
+
+        // Tests if submit buttons are correctly assigned to forms
+        $form1 = new Form($buttonElements->item(1), 'http://example.com');
+        $this->assertSame($dom->getElementsByTagName('form')->item(0), $form1->getFormNode(), 'HTML5-compliant form attribute handled incorrectly');
+
+        $form1 = new Form($inputElements->item(3), 'http://example.com');
+        $this->assertSame($dom->getElementsByTagName('form')->item(0), $form1->getFormNode(), 'HTML5-compliant form attribute handled incorrectly');
+
+        $form2 = new Form($buttonElements->item(0), 'http://example.com');
+        $this->assertSame($dom->getElementsByTagName('form')->item(1), $form2->getFormNode(), 'HTML5-compliant form attribute handled incorrectly');
+    }
+
+    public function testConstructorHandlesFormValues()
+    {
+        $dom = $this->createTestHtml5Form();
+
+        $inputElements = $dom->getElementsByTagName('input');
+        $buttonElements = $dom->getElementsByTagName('button');
+
+        $form1 = new Form($inputElements->item(3), 'http://example.com');
+        $form2 = new Form($buttonElements->item(0), 'http://example.com');
+
+        // Tests if form values are correctly assigned to forms
+        $values1 = array(
+            'apples' => array('1', '2'),
+            'form_name' => 'form-1',
+            'button_1' => 'Capture fields',
+            'outer_field' => 'success'
+        );
+        $values2 = array(
+            'oranges' => array('1', '2', '3'),
+            'form_name' => 'form_2',
+            'button_2' => '',
+            'app_frontend_form_type_contact_form_type' => array('contactType' => '', 'firstName' => 'John')
+        );
+
+        $this->assertEquals($values1, $form1->getPhpValues(), 'HTML5-compliant form attribute handled incorrectly');
+        $this->assertEquals($values2, $form2->getPhpValues(), 'HTML5-compliant form attribute handled incorrectly');
+    }
+
     public function testMultiValuedFields()
     {
         $form = $this->createForm('<form>
@@ -155,6 +224,11 @@ class FormTest extends \PHPUnit_Framework_TestCase
                  array('foobar' => array('InputFormField', 'foobar')),
             ),
             array(
+                'turns an image input into x and y fields',
+                '<input type="image" name="bar" />',
+                array('bar.x' => array('InputFormField', '0'), 'bar.y' => array('InputFormField', '0')),
+            ),
+            array(
                 'returns textareas',
                 '<textarea name="foo">foo</textarea>
                  <input type="submit" />',
@@ -204,6 +278,16 @@ class FormTest extends \PHPUnit_Framework_TestCase
         $this->assertSame($dom->getElementsByTagName('form')->item(0), $form->getFormNode(), '->getFormNode() returns the form node associated with this form');
     }
 
+    public function testGetFormNodeFromNamedForm()
+    {
+        $dom = new \DOMDocument();
+        $dom->loadHTML('<html><form name="my_form"><input type="submit" /></form></html>');
+
+        $form = new Form($dom->getElementsByTagName('form')->item(0), 'http://example.com');
+
+        $this->assertSame($dom->getElementsByTagName('form')->item(0), $form->getFormNode(), '->getFormNode() returns the form node associated with this form');
+    }
+
     public function testGetMethod()
     {
         $form = $this->createForm('<form><input type="submit" /></form>');
@@ -247,6 +331,38 @@ class FormTest extends \PHPUnit_Framework_TestCase
         }
     }
 
+    public function testSetValueOnMultiValuedFieldsWithMalformedName()
+    {
+        $form = $this->createForm('<form><input type="text" name="foo[bar]" value="bar" /><input type="text" name="foo[baz]" value="baz" /><input type="submit" /></form>');
+
+        try {
+            $form['foo[bar'] = 'bar';
+            $this->fail('->offsetSet() throws an \InvalidArgumentException exception if the name is malformed.');
+        } catch (\InvalidArgumentException $e) {
+            $this->assertTrue(true, '->offsetSet() throws an \InvalidArgumentException exception if the name is malformed.');
+        }
+    }
+
+    public function testDisableValidation()
+    {
+        $form = $this->createForm('<form>
+            <select name="foo[bar]">
+                <option value="bar">bar</option>
+            </select>
+            <select name="foo[baz]">
+                <option value="foo">foo</option>
+            </select>
+            <input type="submit" />
+        </form>');
+
+        $form->disableValidation();
+
+        $form['foo[bar]']->select('foo');
+        $form['foo[baz]']->select('bar');
+        $this->assertEquals('foo', $form['foo[bar]']->getValue(), '->disableValidation() disables validation of all ChoiceFormField.');
+        $this->assertEquals('bar', $form['foo[baz]']->getValue(), '->disableValidation() disables validation of all ChoiceFormField.');
+    }
+
     public function testOffsetUnset()
     {
         $form = $this->createForm('<form><input type="text" name="foo" value="foo" /><input type="submit" /></form>');
@@ -288,13 +404,19 @@ class FormTest extends \PHPUnit_Framework_TestCase
     {
         $form = $this->createForm('<form><select multiple="multiple" name="multi"><option value="foo">foo</option><option value="bar">bar</option></select><input type="submit" /></form>');
         $form->setValues(array('multi' => array("foo", "bar")));
-        $this->assertEquals(array('multi' => array('foo', 'bar')), $form->getValues(), '->setValue() sets tehe values of select');
+        $this->assertEquals(array('multi' => array('foo', 'bar')), $form->getValues(), '->setValue() sets the values of select');
     }
 
     public function testGetPhpValues()
     {
         $form = $this->createForm('<form><input type="text" name="foo[bar]" value="foo" /><input type="text" name="bar" value="bar" /><input type="submit" /></form>');
         $this->assertEquals(array('foo' => array('bar' => 'foo'), 'bar' => 'bar'), $form->getPhpValues(), '->getPhpValues() converts keys with [] to arrays');
+
+        $form = $this->createForm('<form><input type="text" name="fo.o[ba.r]" value="foo" /><input type="text" name="ba r" value="bar" /><input type="submit" /></form>');
+        $this->assertEquals(array('fo.o' => array('ba.r' => 'foo'), 'ba r' => 'bar'), $form->getPhpValues(), '->getPhpValues() preserves periods and spaces in names');
+
+        $form = $this->createForm('<form><input type="text" name="fo.o[ba.r][]" value="foo" /><input type="text" name="fo.o[ba.r][ba.z]" value="bar" /><input type="submit" /></form>');
+        $this->assertEquals(array('fo.o' => array('ba.r' => array('foo', 'ba.z' => 'bar'))), $form->getPhpValues(), '->getPhpValues() preserves periods and spaces in names recursively');
     }
 
     public function testGetFiles()
@@ -322,6 +444,12 @@ class FormTest extends \PHPUnit_Framework_TestCase
     {
         $form = $this->createForm('<form method="post"><input type="file" name="foo[bar]" /><input type="text" name="bar" value="bar" /><input type="submit" /></form>');
         $this->assertEquals(array('foo' => array('bar' => array('name' => '', 'type' => '', 'tmp_name' => '', 'error' => 4, 'size' => 0))), $form->getPhpFiles(), '->getPhpFiles() converts keys with [] to arrays');
+
+        $form = $this->createForm('<form method="post"><input type="file" name="f.o o[bar]" /><input type="text" name="bar" value="bar" /><input type="submit" /></form>');
+        $this->assertEquals(array('f.o o' => array('bar' => array('name' => '', 'type' => '', 'tmp_name' => '', 'error' => 4, 'size' => 0))), $form->getPhpFiles(), '->getPhpFiles() preserves periods and spaces in names');
+
+        $form = $this->createForm('<form method="post"><input type="file" name="f.o o[bar][ba.z]" /><input type="file" name="f.o o[bar][]" /><input type="text" name="bar" value="bar" /><input type="submit" /></form>');
+        $this->assertEquals(array('f.o o' => array('bar' => array('ba.z' => array('name' => '', 'type' => '', 'tmp_name' => '', 'error' => 4, 'size' => 0), array('name' => '', 'type' => '', 'tmp_name' => '', 'error' => 4, 'size' => 0)))), $form->getPhpFiles(), '->getPhpFiles() preserves periods and spaces in names recursively');
     }
 
     /**
@@ -488,7 +616,7 @@ class FormTest extends \PHPUnit_Framework_TestCase
     {
         $form = $this->createForm('<form method="post"><input type="text" name="bar" value="bar" /><input type="submit" /></form>');
 
-        $this->assertEquals('Symfony\\Component\\DomCrawler\\Field\\InputFormField', get_class($form->get('bar')), '->get() returns the field object associated with the given name');
+        $this->assertInstanceOf('Symfony\\Component\\DomCrawler\\Field\\InputFormField', $form->get('bar'), '->get() returns the field object associated with the given name');
 
         try {
             $form->get('foo');
@@ -503,8 +631,8 @@ class FormTest extends \PHPUnit_Framework_TestCase
         $form = $this->createForm('<form method="post"><input type="text" name="bar" value="bar" /><input type="submit" /></form>');
 
         $fields = $form->all();
-        $this->assertEquals(1, count($fields), '->all() return an array of form field objects');
-        $this->assertEquals('Symfony\\Component\\DomCrawler\\Field\\InputFormField', get_class($fields['bar']), '->all() return an array of form field objects');
+        $this->assertCount(1, $fields, '->all() return an array of form field objects');
+        $this->assertInstanceOf('Symfony\\Component\\DomCrawler\\Field\\InputFormField', $fields['bar'], '->all() return an array of form field objects');
     }
 
     public function testSubmitWithoutAFormButton()
@@ -687,5 +815,42 @@ class FormTest extends \PHPUnit_Framework_TestCase
         }
 
         return new Form($nodes->item($nodes->length - 1), $currentUri, $method);
+    }
+
+    protected function createTestHtml5Form()
+    {
+        $dom = new \DOMDocument();
+        $dom->loadHTML('
+        <html>
+            <h1>Hello form</h1>
+            <form id="form-1" action="" method="POST">
+                <div><input type="checkbox" name="apples[]" value="1" checked /></div>
+                <input form="form_2" type="checkbox" name="oranges[]" value="1" checked />
+                <div><label></label><input form="form-1" type="hidden" name="form_name" value="form-1" /></div>
+                <input form="form-1" type="submit" name="button_1" value="Capture fields" />
+                <button form="form_2" type="submit" name="button_2">Submit form_2</button>
+            </form>
+            <input form="form-1" type="checkbox" name="apples[]" value="2" checked />
+            <form id="form_2" action="" method="POST">
+                <div><div><input type="checkbox" name="oranges[]" value="2" checked />
+                <input type="checkbox" name="oranges[]" value="3" checked /></div></div>
+                <input form="form_2" type="hidden" name="form_name" value="form_2" />
+                <input form="form-1" type="hidden" name="outer_field" value="success" />
+                <button form="form-1" type="submit" name="button_3">Submit from outside the form</button>
+                <div>
+                    <label for="app_frontend_form_type_contact_form_type_contactType">Message subject</label>
+                    <div>
+                        <select name="app_frontend_form_type_contact_form_type[contactType]" id="app_frontend_form_type_contact_form_type_contactType"><option selected="selected" value="">Please select subject</option><option id="1">Test type</option></select>
+                    </div>
+                </div>
+                <div>
+                    <label for="app_frontend_form_type_contact_form_type_firstName">Firstname</label>
+                    <input type="text" name="app_frontend_form_type_contact_form_type[firstName]" value="John" id="app_frontend_form_type_contact_form_type_firstName"/>
+                </div>
+            </form>
+            <button />
+        </html>');
+
+        return $dom;
     }
 }

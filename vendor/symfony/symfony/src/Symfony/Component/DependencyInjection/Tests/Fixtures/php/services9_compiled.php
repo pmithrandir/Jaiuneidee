@@ -6,8 +6,6 @@ use Symfony\Component\DependencyInjection\Exception\InactiveScopeException;
 use Symfony\Component\DependencyInjection\Exception\InvalidArgumentException;
 use Symfony\Component\DependencyInjection\Exception\LogicException;
 use Symfony\Component\DependencyInjection\Exception\RuntimeException;
-use Symfony\Component\DependencyInjection\Reference;
-use Symfony\Component\DependencyInjection\Parameter;
 use Symfony\Component\DependencyInjection\ParameterBag\FrozenParameterBag;
 
 /**
@@ -33,6 +31,22 @@ class ProjectServiceContainer extends Container
 
         $this->scopes = array();
         $this->scopeChildren = array();
+        $this->methodMap = array(
+            'bar' => 'getBarService',
+            'baz' => 'getBazService',
+            'depends_on_request' => 'getDependsOnRequestService',
+            'factory_service' => 'getFactoryServiceService',
+            'foo' => 'getFooService',
+            'foo.baz' => 'getFoo_BazService',
+            'foo_bar' => 'getFooBarService',
+            'foo_with_inline' => 'getFooWithInlineService',
+            'method_call1' => 'getMethodCall1Service',
+            'request' => 'getRequestService',
+        );
+        $this->aliases = array(
+            'alias_for_alias' => 'foo',
+            'alias_for_foo' => 'foo',
+        );
     }
 
     /**
@@ -70,6 +84,23 @@ class ProjectServiceContainer extends Container
     }
 
     /**
+     * Gets the 'depends_on_request' service.
+     *
+     * This service is shared.
+     * This method always returns the same instance of the service.
+     *
+     * @return stdClass A stdClass instance.
+     */
+    protected function getDependsOnRequestService()
+    {
+        $this->services['depends_on_request'] = $instance = new \stdClass();
+
+        $instance->setRequest($this->get('request', ContainerInterface::NULL_ON_INVALID_REFERENCE));
+
+        return $instance;
+    }
+
+    /**
      * Gets the 'factory_service' service.
      *
      * This service is shared.
@@ -100,6 +131,7 @@ class ProjectServiceContainer extends Container
         $instance->initialize();
         $instance->foo = 'bar';
         $instance->moo = $a;
+        $instance->qux = array('bar' => 'foo is bar', 'foobar' => 'bar');
         sc_configure($instance);
 
         return $instance;
@@ -170,18 +202,32 @@ class ProjectServiceContainer extends Container
 
         $instance->setBar($this->get('foo'));
         $instance->setBar(NULL);
+        $instance->setBar(($this->get("foo")->foo() . $this->getParameter("foo")));
 
         return $instance;
     }
 
     /**
-     * Gets the alias_for_foo service alias.
+     * Gets the 'request' service.
      *
-     * @return FooClass An instance of the foo service
+     * This service is shared.
+     * This method always returns the same instance of the service.
+     *
+     * @throws RuntimeException always since this service is expected to be injected dynamically
      */
-    protected function getAliasForFooService()
+    protected function getRequestService()
     {
-        return $this->get('foo');
+        throw new RuntimeException('You have requested a synthetic service ("request"). The DIC does not know how to construct this service.');
+    }
+
+    /**
+     * Updates the 'request' service.
+     */
+    protected function synchronizeRequestService()
+    {
+        if ($this->initialized('depends_on_request')) {
+            $this->get('depends_on_request')->setRequest($this->get('request', ContainerInterface::NULL_ON_INVALID_REFERENCE));
+        }
     }
 
     /**
@@ -191,7 +237,7 @@ class ProjectServiceContainer extends Container
     {
         $name = strtolower($name);
 
-        if (!array_key_exists($name, $this->parameters)) {
+        if (!(isset($this->parameters[$name]) || array_key_exists($name, $this->parameters))) {
             throw new InvalidArgumentException(sprintf('The parameter "%s" must be defined.', $name));
         }
 
@@ -203,7 +249,9 @@ class ProjectServiceContainer extends Container
      */
     public function hasParameter($name)
     {
-        return array_key_exists(strtolower($name), $this->parameters);
+        $name = strtolower($name);
+
+        return isset($this->parameters[$name]) || array_key_exists($name, $this->parameters);
     }
 
     /**

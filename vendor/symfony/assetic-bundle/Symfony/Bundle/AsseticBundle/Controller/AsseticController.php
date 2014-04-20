@@ -11,12 +11,11 @@
 
 namespace Symfony\Bundle\AsseticBundle\Controller;
 
-use Assetic\ValueSupplierInterface;
-
 use Assetic\Asset\AssetCache;
 use Assetic\Asset\AssetInterface;
-use Assetic\Factory\LazyAssetManager;
 use Assetic\Cache\CacheInterface;
+use Assetic\Factory\LazyAssetManager;
+use Assetic\ValueSupplierInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
@@ -34,7 +33,6 @@ class AsseticController
     protected $cache;
     protected $enableProfiler;
     protected $profiler;
-    protected $valueSupplier;
 
     public function __construct(Request $request, LazyAssetManager $am, CacheInterface $cache, $enableProfiler = false, Profiler $profiler = null)
     {
@@ -47,7 +45,7 @@ class AsseticController
 
     public function setValueSupplier(ValueSupplierInterface $supplier)
     {
-        $this->valueSupplier = $supplier;
+        trigger_error(sprintf('%s is deprecated. The values of asset variables are retrieved from the request after the route matching.', __METHOD__), E_USER_DEPRECATED);
     }
 
     public function render($name, $pos = null)
@@ -68,8 +66,10 @@ class AsseticController
         $response = $this->createResponse();
         $response->setExpires(new \DateTime());
 
+        $this->configureAssetValues($asset);
+
         // last-modified
-        if (null !== $lastModified = $asset->getLastModified()) {
+        if (null !== $lastModified = $this->am->getLastModified($asset)) {
             $date = new \DateTime();
             $date->setTimestamp($lastModified);
             $response->setLastModified($date);
@@ -98,15 +98,16 @@ class AsseticController
 
     protected function cachifyAsset(AssetInterface $asset)
     {
-        if ($vars = $asset->getVars()) {
-            if (null === $this->valueSupplier) {
-                throw new \RuntimeException(sprintf('You must configure a value supplier if you have assets with variables.'));
-            }
+        return new AssetCache($asset, $this->cache);
+    }
 
-            $asset->setValues(array_intersect_key($this->valueSupplier->getValues(), array_flip($vars)));
+    protected function configureAssetValues(AssetInterface $asset)
+    {
+        if ($vars = $asset->getVars()) {
+            $asset->setValues(array_intersect_key($this->request->attributes->all(), array_flip($vars)));
         }
 
-        return new AssetCache($asset, $this->cache);
+        return $this;
     }
 
     private function findAssetLeaf(\Traversable $asset, $pos)

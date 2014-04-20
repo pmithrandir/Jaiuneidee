@@ -11,14 +11,14 @@
 
 namespace Symfony\Bundle\AsseticBundle\Command;
 
-use Assetic\Util\PathUtils;
-
-use Assetic\AssetWriter;
-use Assetic\Asset\AssetInterface;
-use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
+use Spork\Batch\Strategy\ChunkStrategy;
+use Spork\EventDispatcher\WrappedEventDispatcher;
+use Spork\ProcessManager;
+use Symfony\Component\Console\Input\ArrayInput;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
+use Symfony\Component\Console\Output\ConsoleOutputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 
 /**
@@ -26,11 +26,9 @@ use Symfony\Component\Console\Output\OutputInterface;
  *
  * @author Kris Wallsmith <kris@symfony.com>
  */
-class DumpCommand extends ContainerAwareCommand
+class DumpCommand extends AbstractCommand
 {
-    private $basePath;
-    private $verbose;
-    private $am;
+    private $spork;
 
     protected function configure()
     {
@@ -38,215 +36,85 @@ class DumpCommand extends ContainerAwareCommand
             ->setName('assetic:dump')
             ->setDescription('Dumps all assets to the filesystem')
             ->addArgument('write_to', InputArgument::OPTIONAL, 'Override the configured asset root')
-            ->addOption('watch', null, InputOption::VALUE_NONE, 'Check for changes every second, debug mode only')
-            ->addOption('force', null, InputOption::VALUE_NONE, 'Force an initial generation of all assets (used with --watch)')
-            ->addOption('period', null, InputOption::VALUE_REQUIRED, 'Set the polling period in seconds (used with --watch)', 1)
+            ->addOption('forks', null, InputOption::VALUE_REQUIRED, 'Fork work across many processes (requires kriswallsmith/spork)')
+            ->addOption('watch', null, InputOption::VALUE_NONE, 'DEPRECATED: use assetic:watch instead')
+            ->addOption('force', null, InputOption::VALUE_NONE, 'DEPRECATED: use assetic:watch instead')
+            ->addOption('period', null, InputOption::VALUE_REQUIRED, 'DEPRECATED: use assetic:watch instead', 1)
         ;
     }
 
-    protected function initialize(InputInterface $input, OutputInterface $output)
+    protected function initialize(InputInterface $input, OutputInterface $stdout)
     {
-        parent::initialize($input, $output);
+        if (null !== $input->getOption('forks')) {
+            if (!class_exists('Spork\ProcessManager')) {
+                throw new \RuntimeException('The --forks option requires that package kriswallsmith/spork be installed');
+            }
 
-        $this->basePath = $input->getArgument('write_to') ?: $this->getContainer()->getParameter('assetic.write_to');
-        $this->verbose = $input->getOption('verbose');
-        $this->am = $this->getContainer()->get('assetic.asset_manager');
+            if (!is_numeric($input->getOption('forks'))) {
+                throw new \InvalidArgumentException('The --forks options must be numeric');
+            }
+
+            $this->spork = new ProcessManager(
+                new WrappedEventDispatcher($this->getContainer()->get('event_dispatcher')),
+                $this->getContainer()->getParameter('kernel.debug')
+            );
+        }
+
+        parent::initialize($input, $stdout);
     }
 
-    protected function execute(InputInterface $input, OutputInterface $output)
+    protected function execute(InputInterface $input, OutputInterface $stdout)
     {
-        $output->writeln(sprintf('Dumping all <comment>%s</comment> assets.', $input->getOption('env')));
-        $output->writeln(sprintf('Debug mode is <comment>%s</comment>.', $this->am->isDebug() ? 'on' : 'off'));
-        $output->writeln('');
+        // capture error output
+        $stderr = $stdout instanceof ConsoleOutputInterface
+            ? $stdout->getErrorOutput()
+            : $stdout;
 
-        if (!$input->getOption('watch')) {
+        if ($input->getOption('watch')) {
+            $stderr->writeln(
+                '<error>The --watch option is deprecated. Please use the '.
+                'assetic:watch command instead.</error>'
+            );
+
+            // build assetic:watch arguments
+            $arguments = array(
+                'command'  => 'assetic:watch',
+                'write_to' => $this->basePath,
+                '--period' => $input->getOption('period'),
+                '--env'    => $input->getOption('env'),
+            );
+
+            if ($input->getOption('no-debug')) {
+                $arguments['--no-debug'] = true;
+            }
+
+            if ($input->getOption('force')) {
+                $arguments['--force'] = true;
+            }
+
+            $command = $this->getApplication()->find('assetic:watch');
+
+            return $command->run(new ArrayInput($arguments), $stdout);
+        }
+
+        // print the header
+        $stdout->writeln(sprintf('Dumping all <comment>%s</comment> assets.', $input->getOption('env')));
+        $stdout->writeln(sprintf('Debug mode is <comment>%s</comment>.', $this->am->isDebug() ? 'on' : 'off'));
+        $stdout->writeln('');
+
+        if ($this->spork) {
+            $batch = $this->spork->createBatchJob(
+                $this->am->getNames(),
+                new ChunkStrategy($input->getOption('forks'))
+            );
+
+            $self = $this;
+            $batch->execute(function ($name) use ($self, $stdout) {
+                $self->dumpAsset($name, $stdout);
+            });
+        } else {
             foreach ($this->am->getNames() as $name) {
-                $this->dumpAsset($name, $output);
-            }
-
-            return;
-        }
-
-        if (!$this->am->isDebug()) {
-            throw new \RuntimeException('The --watch option is only available in debug mode.');
-        }
-
-        $this->watch($input, $output);
-    }
-
-    /**
-     * Watches a asset manager for changes.
-     *
-     * This method includes an infinite loop the continuously polls the asset
-     * manager for changes.
-     *
-     * @param InputInterface  $input  The command input
-     * @param OutputInterface $output The command output
-     */
-    private function watch(InputInterface $input, OutputInterface $output)
-    {
-        $refl = new \ReflectionClass('Assetic\\AssetManager');
-        $prop = $refl->getProperty('assets');
-        $prop->setAccessible(true);
-
-        $cache = sys_get_temp_dir().'/assetic_watch_'.substr(sha1($this->basePath), 0, 7);
-        if ($input->getOption('force') || !file_exists($cache)) {
-            $previously = array();
-        } else {
-            $previously = unserialize(file_get_contents($cache));
-            if (!is_array($previously)) {
-                $previously = array();
-            }
-        }
-
-        $error = '';
-        while (true) {
-            try {
-                foreach ($this->am->getNames() as $name) {
-                    if ($this->checkAsset($name, $previously)) {
-                        $this->dumpAsset($name, $output);
-                    }
-                }
-
-                // reset the asset manager
-                $prop->setValue($this->am, array());
-                $this->am->load();
-
-                file_put_contents($cache, serialize($previously));
-                $error = '';
-            } catch (\Exception $e) {
-                if ($error != $msg = $e->getMessage()) {
-                    $output->writeln('<error>[error]</error> '.$msg);
-                    $error = $msg;
-                }
-            }
-            sleep($input->getOption('period'));
-        }
-    }
-
-    /**
-     * Checks if an asset should be dumped.
-     *
-     * @param string $name        The asset name
-     * @param array  &$previously An array of previous visits
-     *
-     * @return Boolean Whether the asset should be dumped
-     */
-    private function checkAsset($name, array &$previously)
-    {
-        $formula = $this->am->hasFormula($name) ? serialize($this->am->getFormula($name)) : null;
-        $asset = $this->am->get($name);
-
-        $values = $this->getContainer()->getParameter('assetic.variables');
-        $values = array_intersect_key($values, array_flip($asset->getVars()));
-
-        if (empty($values)) {
-            $mtime = $asset->getLastModified();
-        } else {
-            $writer = new AssetWriter(sys_get_temp_dir(), $this->getContainer()->getParameter('assetic.variables'));
-            $ref = new \ReflectionMethod($writer, 'getCombinations');
-            $ref->setAccessible(true);
-            $combinations = $ref->invoke($writer, $asset->getVars());
-
-            $mtime = 0;
-            foreach ($combinations as $combination) {
-                $asset->setValues($combination);
-                $assetMtime = $asset->getLastModified();
-                if ($assetMtime > $mtime) {
-                    $mtime = $assetMtime;
-                }
-            }
-        }
-
-        if (isset($previously[$name])) {
-            $changed = $previously[$name]['mtime'] != $mtime || $previously[$name]['formula'] != $formula;
-        } else {
-            $changed = true;
-        }
-
-        $previously[$name] = array('mtime' => $mtime, 'formula' => $formula);
-
-        return $changed;
-    }
-
-    /**
-     * Writes an asset.
-     *
-     * If the application or asset is in debug mode, each leaf asset will be
-     * dumped as well.
-     *
-     * @param string          $name   An asset name
-     * @param OutputInterface $output The command output
-     */
-    private function dumpAsset($name, OutputInterface $output)
-    {
-        $asset = $this->am->get($name);
-        $formula = $this->am->getFormula($name);
-
-        // start by dumping the main asset
-        $this->doDump($asset, $output);
-
-        // dump each leaf if debug
-        if (isset($formula[2]['debug']) ? $formula[2]['debug'] : $this->am->isDebug()) {
-            foreach ($asset as $leaf) {
-                $this->doDump($leaf, $output);
-            }
-        }
-    }
-
-    /**
-     * Performs the asset dump.
-     *
-     * @param AssetInterface  $asset  An asset
-     * @param OutputInterface $output The command output
-     *
-     * @throws RuntimeException If there is a problem writing the asset
-     */
-    private function doDump(AssetInterface $asset, OutputInterface $output)
-    {
-        $writer = new AssetWriter(sys_get_temp_dir(), $this->getContainer()->getParameter('assetic.variables'));
-        $ref = new \ReflectionMethod($writer, 'getCombinations');
-        $ref->setAccessible(true);
-        $combinations = $ref->invoke($writer, $asset->getVars());
-
-        foreach ($combinations as $combination) {
-            $asset->setValues($combination);
-
-            $target = rtrim($this->basePath, '/').'/'.str_replace('_controller/', '',
-                PathUtils::resolvePath($asset->getTargetPath(), $asset->getVars(),
-                    $asset->getValues()));
-            if (!is_dir($dir = dirname($target))) {
-                $output->writeln(sprintf(
-                    '<comment>%s</comment> <info>[dir+]</info> %s',
-                    date('H:i:s'),
-                    $dir
-                ));
-                if (false === @mkdir($dir, 0777, true)) {
-                    throw new \RuntimeException('Unable to create directory '.$dir);
-                }
-            }
-
-            $output->writeln(sprintf(
-                '<comment>%s</comment> <info>[file+]</info> %s',
-                date('H:i:s'),
-                $target
-            ));
-            if ($this->verbose) {
-                if ($asset instanceof \Traversable) {
-                    foreach ($asset as $leaf) {
-                        $root = $leaf->getSourceRoot();
-                        $path = $leaf->getSourcePath();
-                        $output->writeln(sprintf('        <comment>%s/%s</comment>', $root ?: '[unknown root]', $path ?: '[unknown path]'));
-                    }
-                } else {
-                    $root = $asset->getSourceRoot();
-                    $path = $asset->getSourcePath();
-                    $output->writeln(sprintf('        <comment>%s/%s</comment>', $root ?: '[unknown root]', $path ?: '[unknown path]'));
-                }
-            }
-
-            if (false === @file_put_contents($target, $asset->dump())) {
-                throw new \RuntimeException('Unable to write file '.$target);
+                $this->dumpAsset($name, $stdout);
             }
         }
     }

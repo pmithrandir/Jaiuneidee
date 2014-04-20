@@ -1,4 +1,4 @@
-# pack-refs with: peeled 
+# pack-refs with: peeled fully-peeled 
 f96221125f2c3e9bdd03d77b4dea164eba5dd56f refs/remotes/origin/alternate-autocomp
 f2100a6e313cb9d1aad3d3f5d54bf4736f93df4a refs/remotes/origin/command_details
 86ab2cf48197271a5fff3394e558c3403f63c272 refs/remotes/origin/handle-dumped-output

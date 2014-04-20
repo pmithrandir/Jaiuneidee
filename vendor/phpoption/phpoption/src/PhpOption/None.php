@@ -18,6 +18,8 @@
 
 namespace PhpOption;
 
+use EmptyIterator;
+
 final class None extends Option
 {
     private static $instance;
@@ -66,9 +68,17 @@ final class None extends Option
         return $else;
     }
 
+    /**
+     * @deprecated Use forAll() instead.
+     */
     public function ifDefined($callable)
     {
         // Just do nothing in that case.
+    }
+
+    public function forAll($callable)
+    {
+        return $this;
     }
 
     public function map($callable)
@@ -99,6 +109,11 @@ final class None extends Option
     public function reject($value)
     {
         return $this;
+    }
+
+    public function getIterator()
+    {
+        return new EmptyIterator();
     }
 
     private function __construct() { }

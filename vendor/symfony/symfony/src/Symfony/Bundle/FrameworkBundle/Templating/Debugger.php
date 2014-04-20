@@ -12,12 +12,14 @@
 namespace Symfony\Bundle\FrameworkBundle\Templating;
 
 use Symfony\Component\Templating\DebuggerInterface;
-use Symfony\Component\HttpKernel\Log\LoggerInterface;
+use Psr\Log\LoggerInterface;
 
 /**
  * Binds the Symfony templating loader debugger to the Symfony logger.
  *
  * @author Fabien Potencier <fabien@symfony.com>
+ *
+ * @deprecated Deprecated in 2.4, to be removed in 3.0. Use Psr\Log\LoggerInterface instead.
  */
 class Debugger implements DebuggerInterface
 {

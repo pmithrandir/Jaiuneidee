@@ -1,2 +1,2 @@
-0000000000000000000000000000000000000000 de7e174440acce7319fb26c3fc23081f962cb98f Pierre Bonneau <pmithrandir@localhost.(none)> 1370693421 +0300	clone: from git://github.com/sensiolabs/SensioGeneratorBundle.git
-de7e174440acce7319fb26c3fc23081f962cb98f 689b26cca0a46dce7aa4b953b0cb1aa39c97d877 Pierre Bonneau <pmithrandir@localhost.(none)> 1370693431 +0300	checkout: moving from master to v2.1.11
+0000000000000000000000000000000000000000 201c75b4ae26e906c26cdfe4db7ac5043cc15743 Pierre Bonneau <pmithrandir@localhost.(none)> 1397908728 +0300	clone: from git://github.com/sensiolabs/SensioGeneratorBundle.git
+201c75b4ae26e906c26cdfe4db7ac5043cc15743 201c75b4ae26e906c26cdfe4db7ac5043cc15743 Pierre Bonneau <pmithrandir@localhost.(none)> 1397908738 +0300	checkout: moving from master to master

@@ -5,6 +5,8 @@ namespace Sensio\Bundle\FrameworkExtraBundle\EventListener;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\HttpKernel\Event\FilterControllerEvent;
 use Symfony\Component\HttpKernel\Event\GetResponseForControllerResultEvent;
+use Symfony\Component\HttpKernel\KernelEvents;
+use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\HttpFoundation\StreamedResponse;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 
@@ -22,10 +24,10 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
  *
  * @author     Fabien Potencier <fabien@symfony.com>
  */
-class TemplateListener
+class TemplateListener implements EventSubscriberInterface
 {
     /**
-     * @var Symfony\Component\DependencyInjection\ContainerInterface
+     * @var ContainerInterface
      */
     protected $container;
 
@@ -119,8 +121,15 @@ class TemplateListener
                 return $templating->stream($template, $parameters);
             };
 
-
             $event->setResponse(new StreamedResponse($callback));
         }
+    }
+
+    public static function getSubscribedEvents()
+    {
+        return array(
+            KernelEvents::CONTROLLER => array('onKernelController', -128),
+            KernelEvents::VIEW => 'onKernelView',
+        );
     }
 }

@@ -33,15 +33,16 @@ security:
                 check_path: /login_check
                 default_target_path: /profile
                 target_path_parameter: "user_login[_target_path]"
+                failure_path_parameter: "user_login[_failure_path]"
                 username_parameter: "user_login[username]"
                 password_parameter: "user_login[password]"
                 csrf_parameter: "user_login[_token]"
-                csrf_provider: form.csrf_provider
+                csrf_provider: security.csrf.token_manager
             anonymous: ~
             logout:
                 path: /logout_path
                 target: /
-                csrf_provider: form.csrf_provider
+                csrf_provider: security.csrf.token_manager
 
     access_control:
         - { path: .*, roles: IS_AUTHENTICATED_FULLY }

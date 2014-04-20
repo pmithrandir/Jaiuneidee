@@ -2,13 +2,13 @@
 
 /*
  * Copyright 2013 Johannes M. Schmitt <schmittjoh@gmail.com>
- * 
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * 
+ *
  *     http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -23,8 +23,13 @@ use JMS\Serializer\DeserializationContext;
 use JMS\Serializer\GraphNavigator;
 use JMS\Serializer\Handler\PhpCollectionHandler;
 use JMS\Serializer\SerializationContext;
+use JMS\Serializer\Tests\Fixtures\DateTimeArraysObject;
 use JMS\Serializer\Tests\Fixtures\Discriminator\Car;
+use JMS\Serializer\Tests\Fixtures\InlineChildEmpty;
+use JMS\Serializer\Tests\Fixtures\NamedDateTimeArraysObject;
+use JMS\Serializer\Tests\Fixtures\Tree;
 use PhpCollection\Sequence;
+use Symfony\Component\Form\FormFactoryBuilder;
 use Symfony\Component\Translation\MessageSelector;
 use Symfony\Component\Translation\IdentityTranslator;
 use JMS\Serializer\EventDispatcher\Subscriber\DoctrineProxySubscriber;
@@ -49,7 +54,9 @@ use JMS\Serializer\XmlSerializationVisitor;
 use JMS\Serializer\YamlSerializationVisitor;
 use JMS\Serializer\Tests\Fixtures\AccessorOrderChild;
 use JMS\Serializer\Tests\Fixtures\AccessorOrderParent;
+use JMS\Serializer\Tests\Fixtures\AccessorOrderMethod;
 use JMS\Serializer\Tests\Fixtures\Author;
+use JMS\Serializer\Tests\Fixtures\Publisher;
 use JMS\Serializer\Tests\Fixtures\AuthorList;
 use JMS\Serializer\Tests\Fixtures\AuthorReadOnly;
 use JMS\Serializer\Tests\Fixtures\BlogPost;
@@ -64,6 +71,7 @@ use JMS\Serializer\Tests\Fixtures\InvalidGroupsObject;
 use JMS\Serializer\Tests\Fixtures\IndexedCommentsBlogPost;
 use JMS\Serializer\Tests\Fixtures\InlineParent;
 use JMS\Serializer\Tests\Fixtures\InitializedObjectConstructor;
+use JMS\Serializer\Tests\Fixtures\InitializedBlogPostConstructor;
 use JMS\Serializer\Tests\Fixtures\Log;
 use JMS\Serializer\Tests\Fixtures\ObjectWithLifecycleCallbacks;
 use JMS\Serializer\Tests\Fixtures\ObjectWithVersionedVirtualProperties;
@@ -82,6 +90,9 @@ use Symfony\Component\Form\FormError;
 use Symfony\Component\Validator\ConstraintViolation;
 use Symfony\Component\Validator\ConstraintViolationList;
 use PhpCollection\Map;
+use JMS\Serializer\Exclusion\DepthExclusionStrategy;
+use JMS\Serializer\Tests\Fixtures\Node;
+use JMS\Serializer\Tests\Fixtures\AuthorReadOnlyPerClass;
 
 abstract class BaseSerializationTest extends \PHPUnit_Framework_TestCase
 {
@@ -246,6 +257,68 @@ abstract class BaseSerializationTest extends \PHPUnit_Framework_TestCase
         }
     }
 
+
+    public function testDateTimeArrays()
+    {
+        $data = array(
+            new \DateTime('2047-01-01 12:47:47', new \DateTimeZone('UTC')),
+            new \DateTime('2013-12-05 00:00:00', new \DateTimeZone('UTC'))
+        );
+
+        $object = new DateTimeArraysObject($data, $data);
+        $serializedObject = $this->serialize( $object );
+
+        $this->assertEquals($this->getContent('array_datetimes_object'), $serializedObject);
+
+        if ($this->hasDeserializer()) {
+            /** @var DateTimeArraysObject $deserializedObject */
+            $deserializedObject = $this->deserialize($this->getContent('array_datetimes_object'), 'Jms\Serializer\Tests\Fixtures\DateTimeArraysObject');
+
+            /** deserialized object has a default timezone set depending on user's timezone settings. That's why we manually set the UTC timezone on the DateTime objects. */
+            foreach ($deserializedObject->getArrayWithDefaultDateTime() as $dateTime) {
+                $dateTime->setTimezone(new \DateTimeZone('UTC'));
+            }
+
+            foreach ($deserializedObject->getArrayWithFormattedDateTime() as $dateTime) {
+                $dateTime->setTimezone(new \DateTimeZone('UTC'));
+            }
+
+            $this->assertEquals($object, $deserializedObject);
+        }
+    }
+
+    public function testNamedDateTimeArrays()
+    {
+        $data = array(
+            new \DateTime('2047-01-01 12:47:47', new \DateTimeZone('UTC')),
+            new \DateTime('2013-12-05 00:00:00', new \DateTimeZone('UTC'))
+        );
+
+        $object = new NamedDateTimeArraysObject(array('testdate1' => $data[0], 'testdate2' => $data[1]));
+        $serializedObject = $this->serialize( $object );
+
+        $this->assertEquals($this->getContent('array_named_datetimes_object'), $serializedObject);
+
+        if ($this->hasDeserializer()) {
+
+            // skip XML deserialization
+            if ($this->getFormat() === 'xml') {
+                return;
+            }
+
+            /** @var NamedDateTimeArraysObject $deserializedObject */
+            $deserializedObject = $this->deserialize($this->getContent('array_named_datetimes_object'), 'Jms\Serializer\Tests\Fixtures\NamedDateTimeArraysObject');
+
+            /** deserialized object has a default timezone set depending on user's timezone settings. That's why we manually set the UTC timezone on the DateTime objects. */
+            foreach ($deserializedObject->getNamedArrayWithFormattedDate() as $dateTime) {
+                $dateTime->setTimezone(new \DateTimeZone('UTC'));
+            }
+
+            $this->assertEquals($object, $deserializedObject);
+        }
+    }
+
+
     public function testArrayMixed()
     {
         $this->assertEquals($this->getContent('array_mixed'), $this->serialize(array('foo', 1, true, new SimpleObject('foo', 'bar'), array(1, 3, true))));
@@ -284,7 +357,7 @@ abstract class BaseSerializationTest extends \PHPUnit_Framework_TestCase
 
     public function testBlogPost()
     {
-        $post = new BlogPost('This is a nice title.', $author = new Author('Foo Bar'), new \DateTime('2011-07-30 00:00', new \DateTimeZone('UTC')));
+        $post = new BlogPost('This is a nice title.', $author = new Author('Foo Bar'), new \DateTime('2011-07-30 00:00', new \DateTimeZone('UTC')), new Publisher('Bar Foo'));
         $post->addComment($comment = new Comment($author, 'foo'));
 
         $this->assertEquals($this->getContent('blog_post'), $this->serialize($post));
@@ -294,6 +367,7 @@ abstract class BaseSerializationTest extends \PHPUnit_Framework_TestCase
             $this->assertEquals('2011-07-30T00:00:00+0000', $this->getField($deserialized, 'createdAt')->format(\DateTime::ISO8601));
             $this->assertAttributeEquals('This is a nice title.', 'title', $deserialized);
             $this->assertAttributeSame(false, 'published', $deserialized);
+            $this->assertAttributeSame('1edf9bf60a32d89afbb85b2be849e3ceed5f5b10', 'etag', $deserialized);
             $this->assertAttributeEquals(new ArrayCollection(array($comment)), 'comments', $deserialized);
             $this->assertAttributeEquals(new Sequence(array($comment)), 'comments2', $deserialized);
             $this->assertAttributeEquals($author, 'author', $deserialized);
@@ -302,12 +376,13 @@ abstract class BaseSerializationTest extends \PHPUnit_Framework_TestCase
 
     public function testDeserializingNull()
     {
-        $objectConstructor = new InitializedObjectConstructor();
+        $objectConstructor = new InitializedBlogPostConstructor();
         $this->serializer = new Serializer($this->factory, $this->handlerRegistry, $objectConstructor, $this->serializationVisitors, $this->deserializationVisitors, $this->dispatcher);
 
-        $post = new BlogPost('This is a nice title.', $author = new Author('Foo Bar'), new \DateTime('2011-07-30 00:00', new \DateTimeZone('UTC')));
+        $post = new BlogPost('This is a nice title.', $author = new Author('Foo Bar'), new \DateTime('2011-07-30 00:00', new \DateTimeZone('UTC')), new Publisher('Bar Foo'));
 
         $this->setField($post, 'author', null);
+        $this->setField($post, 'publisher', null);
 
         $this->assertEquals($this->getContent('blog_post_unauthored'), $this->serialize($post, SerializationContext::create()->setSerializeNull(true)));
 
@@ -325,6 +400,18 @@ abstract class BaseSerializationTest extends \PHPUnit_Framework_TestCase
     public function testReadOnly()
     {
         $author = new AuthorReadOnly(123, 'Ruud Kamphuis');
+        $this->assertEquals($this->getContent('readonly'), $this->serialize($author));
+
+        if ($this->hasDeserializer()) {
+            $deserialized = $this->deserialize($this->getContent('readonly'), get_class($author));
+            $this->assertNull($this->getField($deserialized, 'id'));
+            $this->assertEquals('Ruud Kamphuis', $this->getField($deserialized, 'name'));
+        }
+    }
+
+    public function testReadOnlyClass()
+    {
+        $author = new AuthorReadOnlyPerClass(123, 'Ruud Kamphuis');
         $this->assertEquals($this->getContent('readonly'), $this->serialize($author));
 
         if ($this->hasDeserializer()) {
@@ -398,6 +485,16 @@ abstract class BaseSerializationTest extends \PHPUnit_Framework_TestCase
 
         $result = $this->serialize($inline);
         $this->assertEquals($this->getContent('inline'), $result);
+
+        // no deserialization support
+    }
+
+    public function testInlineEmptyChild()
+    {
+        $inline = new InlineParent(new InlineChildEmpty());
+
+        $result = $this->serialize($inline);
+        $this->assertEquals($this->getContent('inline_child_empty'), $result);
 
         // no deserialization support
     }
@@ -482,6 +579,36 @@ abstract class BaseSerializationTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals($this->getContent('nested_form_errors'), $this->serialize($form));
     }
 
+    public function testFormErrorsWithNonFormComponents()
+    {
+
+        if (!class_exists('Symfony\Component\Form\Extension\Core\Type\SubmitType')) {
+            $this->markTestSkipped('Not using Symfony Form >= 2.3 with submit type');
+        }
+
+        $dispatcher = $this->getMock('Symfony\Component\EventDispatcher\EventDispatcherInterface');
+
+        $factoryBuilder = new FormFactoryBuilder();
+        $factoryBuilder->addType(new \Symfony\Component\Form\Extension\Core\Type\SubmitType);
+        $factoryBuilder->addType(new \Symfony\Component\Form\Extension\Core\Type\ButtonType);
+        $factory = $factoryBuilder->getFormFactory();
+
+        $formConfigBuilder = new \Symfony\Component\Form\FormConfigBuilder('foo', null, $dispatcher);
+        $formConfigBuilder->setFormFactory($factory);
+        $formConfigBuilder->setCompound(true);
+        $formConfigBuilder->setDataMapper($this->getMock('Symfony\Component\Form\DataMapperInterface'));
+        $fooConfig = $formConfigBuilder->getFormConfig();
+
+        $form = new Form($fooConfig);
+        $form->add('save', 'submit');
+
+        try {
+            $this->serialize($form);
+        } catch (\Exception $e) {
+            $this->assertTrue(false, 'Serialization should not throw an exception');
+        }
+    }
+
     public function testConstraintViolation()
     {
         $violation = new ConstraintViolation('Message of violation', array(), null, 'foo', null);
@@ -546,6 +673,7 @@ abstract class BaseSerializationTest extends \PHPUnit_Framework_TestCase
     {
         $this->assertEquals($this->getContent('accessor_order_child'), $this->serialize(new AccessorOrderChild()));
         $this->assertEquals($this->getContent('accessor_order_parent'), $this->serialize(new AccessorOrderParent()));
+        $this->assertEquals($this->getContent('accessor_order_methods'), $this->serialize(new AccessorOrderMethod()));
     }
 
     public function testGroups()
@@ -708,6 +836,56 @@ abstract class BaseSerializationTest extends \PHPUnit_Framework_TestCase
         );
     }
 
+    public function testDepthExclusionStrategy()
+    {
+        $context = SerializationContext::create()
+            ->addExclusionStrategy(new DepthExclusionStrategy())
+        ;
+
+        $data = new Tree(
+            new Node(array(
+                new Node(array(
+                    new Node(array(
+                        new Node(array(
+                            new Node(),
+                        )),
+                    )),
+                )),
+            ))
+        );
+
+        $this->assertEquals($this->getContent('tree'), $this->serializer->serialize($data, $this->getFormat(), $context));
+    }
+
+    public function testDeserializingIntoExistingObject()
+    {
+        if (!$this->hasDeserializer()) {
+            return;
+        }
+
+        $objectConstructor = new InitializedObjectConstructor(new UnserializeObjectConstructor());
+        $serializer = new Serializer(
+            $this->factory, $this->handlerRegistry, $objectConstructor,
+            $this->serializationVisitors, $this->deserializationVisitors, $this->dispatcher
+        );
+
+        $order = new Order(new Price(12));
+
+        $context = new DeserializationContext();
+        $context->attributes->set('target', $order);
+
+        $deseralizedOrder = $serializer->deserialize(
+            $this->getContent('order'),
+            get_class($order),
+            $this->getFormat(),
+            $context
+        );
+
+        $this->assertSame($order, $deseralizedOrder);
+        $this->assertEquals(new Order(new Price(12.34)), $deseralizedOrder);
+        $this->assertAttributeInstanceOf('JMS\Serializer\Tests\Fixtures\Price', 'cost', $deseralizedOrder);
+    }
+
     abstract protected function getContent($key);
     abstract protected function getFormat();
 
@@ -779,7 +957,7 @@ abstract class BaseSerializationTest extends \PHPUnit_Framework_TestCase
         $this->serializer = new Serializer($this->factory, $this->handlerRegistry, $objectConstructor, $this->serializationVisitors, $this->deserializationVisitors, $this->dispatcher);
     }
 
-    private function getField($obj, $name)
+    protected function getField($obj, $name)
     {
         $ref = new \ReflectionProperty($obj, $name);
         $ref->setAccessible(true);

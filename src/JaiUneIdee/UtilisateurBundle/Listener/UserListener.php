@@ -48,7 +48,7 @@ class UserListener implements EventSubscriber
     }
  	public function prePersist(LifecycleEventArgs $args)
     {
-		$entity = $args->getEntity();
+	$entity = $args->getEntity();
         if ($entity instanceof UserInterface) {
             if (null === $this->userManager) {
                 //$this->userManager = $this->container->get('fos_user.user_manager');

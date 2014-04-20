@@ -11,13 +11,11 @@
 
 namespace Symfony\Bundle\FrameworkBundle\Command;
 
+use Symfony\Bundle\FrameworkBundle\Console\Helper\DescriptorHelper;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
-use Symfony\Component\Console\Output\Output;
-use Symfony\Component\DependencyInjection\Alias;
-use Symfony\Component\DependencyInjection\Definition;
 use Symfony\Component\DependencyInjection\Loader\XmlFileLoader;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\Config\FileLocator;
@@ -30,12 +28,12 @@ use Symfony\Component\Config\FileLocator;
 class ContainerDebugCommand extends ContainerAwareCommand
 {
     /**
-     * @var ContainerBuilder
+     * @var ContainerBuilder|null
      */
     protected $containerBuilder;
 
     /**
-     * @see Command
+     * {@inheritdoc}
      */
     protected function configure()
     {
@@ -44,6 +42,12 @@ class ContainerDebugCommand extends ContainerAwareCommand
             ->setDefinition(array(
                 new InputArgument('name', InputArgument::OPTIONAL, 'A service name (foo)'),
                 new InputOption('show-private', null, InputOption::VALUE_NONE, 'Use to show public *and* private services'),
+                new InputOption('tag', null, InputOption::VALUE_REQUIRED, 'Show all services with a specific tag'),
+                new InputOption('tags', null, InputOption::VALUE_NONE, 'Displays tagged services for an application'),
+                new InputOption('parameter', null, InputOption::VALUE_REQUIRED, 'Displays a specific parameter for an application'),
+                new InputOption('parameters', null, InputOption::VALUE_NONE, 'Displays parameters for an application'),
+                new InputOption('format', null, InputOption::VALUE_REQUIRED, 'To output description in other formats', 'txt'),
+                new InputOption('raw', null, InputOption::VALUE_NONE, 'To output raw description'),
             ))
             ->setDescription('Displays current services for an application')
             ->setHelp(<<<EOF
@@ -59,122 +63,85 @@ By default, private services are hidden. You can display all services by
 using the --show-private flag:
 
   <info>php %command.full_name% --show-private</info>
+
+Use the --tags option to display tagged <comment>public</comment> services grouped by tag:
+
+  <info>php %command.full_name% --tags</info>
+
+Find all services with a specific tag by specifying the tag name with the --tag option:
+
+  <info>php %command.full_name% --tag=form.type</info>
+
+Use the --parameters option to display all parameters:
+
+  <info>php %command.full_name% --parameters</info>
+
+Display a specific parameter by specifying his name with the --parameter option:
+
+  <info>php %command.full_name% --parameter=kernel.debug</info>
 EOF
             )
         ;
     }
 
     /**
-     * @see Command
+     * {@inheritdoc}
+     *
+     * @throws \LogicException
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        $name = $input->getArgument('name');
+        $this->validateInput($input);
 
-        $this->containerBuilder = $this->getContainerBuilder();
-        $serviceIds = $this->containerBuilder->getServiceIds();
-
-        // sort so that it reads like an index of services
-        asort($serviceIds);
-
-        if ($name) {
-            $this->outputService($output, $name);
+        if ($input->getOption('parameters')) {
+            $object = $this->getContainerBuilder()->getParameterBag();
+            $options = array();
+        } elseif ($parameter = $input->getOption('parameter')) {
+            $object = $this->getContainerBuilder();
+            $options = array('parameter' => $parameter);
+        } elseif ($input->getOption('tags')) {
+            $object = $this->getContainerBuilder();
+            $options = array('group_by' => 'tags', 'show_private' => $input->getOption('show-private'));
+        } elseif ($tag = $input->getOption('tag')) {
+            $object = $this->getContainerBuilder();
+            $options = array('tag' => $tag, 'show_private' => $input->getOption('show-private'));
+        } elseif ($name = $input->getArgument('name')) {
+            $object = $this->getContainerBuilder();
+            $options = array('id' => $name);
         } else {
-            $this->outputServices($output, $serviceIds, $input->getOption('show-private'));
-        }
-    }
-
-    protected function outputServices(OutputInterface $output, $serviceIds, $showPrivate = false)
-    {
-        // set the label to specify public or public+private
-        if ($showPrivate) {
-            $label = '<comment>Public</comment> and <comment>private</comment> services';
-        } else {
-            $label = '<comment>Public</comment> services';
+            $object = $this->getContainerBuilder();
+            $options = array('show_private' => $input->getOption('show-private'));
         }
 
-        $output->writeln($this->getHelper('formatter')->formatSection('container', $label));
-
-        // loop through to get space needed and filter private services
-        $maxName = 4;
-        $maxScope = 6;
-        foreach ($serviceIds as $key => $serviceId) {
-            $definition = $this->resolveServiceDefinition($serviceId);
-
-            if ($definition instanceof Definition) {
-                // filter out private services unless shown explicitly
-                if (!$showPrivate && !$definition->isPublic()) {
-                    unset($serviceIds[$key]);
-                    continue;
-                }
-
-                if (strlen($definition->getScope()) > $maxScope) {
-                    $maxScope = strlen($definition->getScope());
-                }
-            }
-
-            if (strlen($serviceId) > $maxName) {
-                $maxName = strlen($serviceId);
-            }
-        }
-        $format  = '%-'.$maxName.'s %-'.$maxScope.'s %s';
-
-        // the title field needs extra space to make up for comment tags
-        $format1  = '%-'.($maxName + 19).'s %-'.($maxScope + 19).'s %s';
-        $output->writeln(sprintf($format1, '<comment>Service Id</comment>', '<comment>Scope</comment>', '<comment>Class Name</comment>'));
-
-        foreach ($serviceIds as $serviceId) {
-            $definition = $this->resolveServiceDefinition($serviceId);
-
-            if ($definition instanceof Definition) {
-                $output->writeln(sprintf($format, $serviceId, $definition->getScope(), $definition->getClass()));
-            } elseif ($definition instanceof Alias) {
-                $alias = $definition;
-                $output->writeln(sprintf($format, $serviceId, 'n/a', sprintf('<comment>alias for</comment> <info>%s</info>', (string) $alias)));
-            } else {
-                // we have no information (happens with "service_container")
-                $service = $definition;
-                $output->writeln(sprintf($format, $serviceId, '', get_class($service)));
-            }
-        }
+        $helper = new DescriptorHelper();
+        $options['format'] = $input->getOption('format');
+        $options['raw_text'] = $input->getOption('raw');
+        $helper->describe($output, $object, $options);
     }
 
     /**
-     * Renders detailed service information about one service
+     * Validates input arguments and options.
+     *
+     * @param InputInterface $input
+     *
+     * @throws \InvalidArgumentException
      */
-    protected function outputService(OutputInterface $output, $serviceId)
+    protected function validateInput(InputInterface $input)
     {
-        $definition = $this->resolveServiceDefinition($serviceId);
+        $options = array('tags', 'tag', 'parameters', 'parameter');
 
-        $label = sprintf('Information for service <info>%s</info>', $serviceId);
-        $output->writeln($this->getHelper('formatter')->formatSection('container', $label));
-        $output->writeln('');
+        $optionsCount = 0;
+        foreach ($options as $option) {
+            if ($input->getOption($option)) {
+                $optionsCount++;
+            }
+        }
 
-        if ($definition instanceof Definition) {
-            $output->writeln(sprintf('<comment>Service Id</comment>       %s', $serviceId));
-            $output->writeln(sprintf('<comment>Class</comment>            %s', $definition->getClass()));
-
-            $tags = $definition->getTags() ? implode(', ', array_keys($definition->getTags())) : '-';
-            $output->writeln(sprintf('<comment>Tags</comment>             %s', $tags));
-
-            $output->writeln(sprintf('<comment>Scope</comment>            %s', $definition->getScope()));
-
-            $public = $definition->isPublic() ? 'yes' : 'no';
-            $output->writeln(sprintf('<comment>Public</comment>           %s', $public));
-
-            $synthetic = $definition->isSynthetic() ? 'yes' : 'no';
-            $output->writeln(sprintf('<comment>Synthetic</comment>        %s', $synthetic));
-
-            $file = $definition->getFile() ? $definition->getFile() : '-';
-            $output->writeln(sprintf('<comment>Required File</comment>    %s', $file));
-        } elseif ($definition instanceof Alias) {
-            $alias = $definition;
-            $output->writeln(sprintf('This service is an alias for the service <info>%s</info>', (string) $alias));
-        } else {
-            // edge case (but true for "service_container", all we have is the service itself
-            $service = $definition;
-            $output->writeln(sprintf('<comment>Service Id</comment>   %s', $serviceId));
-            $output->writeln(sprintf('<comment>Class</comment>        %s', get_class($service)));
+        $name = $input->getArgument('name');
+        if ((null !== $name) && ($optionsCount > 0)) {
+            throw new \InvalidArgumentException('The options tags, tag, parameters & parameter can not be combined with the service name argument.');
+        } elseif ((null === $name) && $optionsCount > 1) {
+            throw new \InvalidArgumentException('The options tags, tag, parameters & parameter can not be combined together.');
         }
     }
 
@@ -182,6 +149,8 @@ EOF
      * Loads the ContainerBuilder from the cache.
      *
      * @return ContainerBuilder
+     *
+     * @throws \LogicException
      */
     protected function getContainerBuilder()
     {
@@ -199,28 +168,5 @@ EOF
         $loader->load($cachedFile);
 
         return $container;
-    }
-
-    /**
-     * Given an array of service IDs, this returns the array of corresponding
-     * Definition and Alias objects that those ids represent.
-     *
-     * @param string $serviceId The service id to resolve
-     *
-     * @return \Symfony\Component\DependencyInjection\Definition|\Symfony\Component\DependencyInjection\Alias
-     */
-    protected function resolveServiceDefinition($serviceId)
-    {
-        if ($this->containerBuilder->hasDefinition($serviceId)) {
-            return $this->containerBuilder->getDefinition($serviceId);
-        }
-
-        // Some service IDs don't have a Definition, they're simply an Alias
-        if ($this->containerBuilder->hasAlias($serviceId)) {
-            return $this->containerBuilder->getAlias($serviceId);
-        }
-
-        // the service has been injected in some special way, just return the service
-        return $this->containerBuilder->get($serviceId);
     }
 }

@@ -2,13 +2,13 @@
 
 /*
  * Copyright 2013 Johannes M. Schmitt <schmittjoh@gmail.com>
- * 
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * 
+ *
  *     http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -26,7 +26,18 @@ class JsonSerializationVisitor extends GenericSerializationVisitor
 
     public function getResult()
     {
-        return json_encode($this->getRoot(), $this->options);
+        $result = @json_encode($this->getRoot(), $this->options);
+
+        switch (json_last_error()) {
+            case JSON_ERROR_NONE:
+                return $result;
+
+            case JSON_ERROR_UTF8:
+                throw new \RuntimeException('Your data could not be encoded because it contains invalid UTF8 characters.');
+
+            default:
+                throw new \RuntimeException(sprintf('An error occurred while encoding your data (error code %d).', json_last_error()));
+        }
     }
 
     public function getOptions()
@@ -61,7 +72,7 @@ class JsonSerializationVisitor extends GenericSerializationVisitor
             $rs = new \ArrayObject();
 
             if (array() === $this->getRoot()) {
-                $this->setRoot($rs);
+                $this->setRoot(clone $rs);
             }
         }
 

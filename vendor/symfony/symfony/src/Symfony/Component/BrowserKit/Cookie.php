@@ -81,6 +81,8 @@ class Cookie
      *
      * @return string The HTTP representation of the Cookie
      *
+     * @throws \UnexpectedValueException
+     *
      * @api
      */
     public function __toString()
@@ -88,7 +90,13 @@ class Cookie
         $cookie = sprintf('%s=%s', $this->name, $this->rawValue);
 
         if (null !== $this->expires) {
-            $cookie .= '; expires='.substr(\DateTime::createFromFormat('U', $this->expires, new \DateTimeZone('GMT'))->format(self::$dateFormats[0]), 0, -5);
+            $dateTime = \DateTime::createFromFormat('U', $this->expires, new \DateTimeZone('GMT'));
+
+            if ($dateTime === false) {
+                throw new \UnexpectedValueException(sprintf('The cookie expiration time "%s" is not valid.'), $this->expires);
+            }
+
+            $cookie .= '; expires='.str_replace('+0000', '', $dateTime->format(self::$dateFormats[0]));
         }
 
         if ('' !== $this->domain) {
@@ -118,6 +126,8 @@ class Cookie
      *
      * @return Cookie A Cookie instance
      *
+     * @throws \InvalidArgumentException
+     *
      * @api
      */
     public static function fromString($cookie, $url = null)
@@ -125,7 +135,7 @@ class Cookie
         $parts = explode(';', $cookie);
 
         if (false === strpos($parts[0], '=')) {
-            throw new \InvalidArgumentException('The cookie string "%s" is not valid.');
+            throw new \InvalidArgumentException(sprintf('The cookie string "%s" is not valid.', $parts[0]));
         }
 
         list($name, $value) = explode('=', array_shift($parts), 2);

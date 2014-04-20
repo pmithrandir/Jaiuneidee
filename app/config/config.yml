@@ -1,7 +1,7 @@
 imports:
     - { resource: parameters.ini }
     - { resource: security.yml }
-    - { resource: @JaiUneIdeeAdminBundle/Resources/config/lyra.yml }
+    - { resource: @JaiUneIdeeAdminBundle/Resources/config/config.yml }
 
 framework:
     #esi:             ~
@@ -16,7 +16,7 @@ framework:
         resource: "%kernel.root_dir%/config/routing.yml"
         strict_requirements: "%kernel.debug%"
     session: ~
-    trust_proxy_headers: false
+#    trust_proxy_headers: false
 
 # Twig Configuration
 twig:

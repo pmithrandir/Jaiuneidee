@@ -34,7 +34,8 @@ class HttpCache implements HttpKernelInterface, TerminableInterface
     private $request;
     private $esi;
     private $esiCacheStrategy;
-    private $traces;
+    private $options = array();
+    private $traces = array();
 
     /**
      * Constructor.
@@ -80,6 +81,7 @@ class HttpCache implements HttpKernelInterface, TerminableInterface
     {
         $this->store = $store;
         $this->kernel = $kernel;
+        $this->esi = $esi;
 
         // needed in case there is a fatal error because the backend is too slow to respond
         register_shutdown_function(array($this->store, 'cleanup'));
@@ -93,8 +95,6 @@ class HttpCache implements HttpKernelInterface, TerminableInterface
             'stale_while_revalidate' => 2,
             'stale_if_error'         => 60,
         ), $options);
-        $this->esi = $esi;
-        $this->traces = array();
     }
 
     /**
@@ -135,7 +135,7 @@ class HttpCache implements HttpKernelInterface, TerminableInterface
     /**
      * Gets the Request instance associated with the master request.
      *
-     * @return Symfony\Component\HttpFoundation\Request A Request instance
+     * @return Request A Request instance
      */
     public function getRequest()
     {
@@ -145,7 +145,7 @@ class HttpCache implements HttpKernelInterface, TerminableInterface
     /**
      * Gets the Kernel instance
      *
-     * @return Symfony\Component\HttpKernel\HttpKernelInterface An HttpKernelInterface instance
+     * @return HttpKernelInterface An HttpKernelInterface instance
      */
     public function getKernel()
     {
@@ -156,7 +156,7 @@ class HttpCache implements HttpKernelInterface, TerminableInterface
     /**
      * Gets the Esi instance
      *
-     * @return Symfony\Component\HttpKernel\HttpCache\Esi An Esi instance
+     * @return Esi An Esi instance
      */
     public function getEsi()
     {
@@ -251,6 +251,8 @@ class HttpCache implements HttpKernelInterface, TerminableInterface
      *
      * @return Response A Response instance
      *
+     * @throws \Exception
+     *
      * @see RFC2616 13.10
      */
     protected function invalidate(Request $request, $catch = false)
@@ -265,7 +267,7 @@ class HttpCache implements HttpKernelInterface, TerminableInterface
                 // As per the RFC, invalidate Location and Content-Location URLs if present
                 foreach (array('Location', 'Content-Location') as $header) {
                     if ($uri = $response->headers->get($header)) {
-                        $subRequest = $request::create($uri, 'get', array(), array(), array(), $request->server->all());
+                        $subRequest = Request::create($uri, 'get', array(), array(), array(), $request->server->all());
 
                         $this->store->invalidate($subRequest);
                     }
@@ -297,6 +299,8 @@ class HttpCache implements HttpKernelInterface, TerminableInterface
      * @param Boolean $catch   whether to process exceptions
      *
      * @return Response A Response instance
+     *
+     * @throws \Exception
      */
     protected function lookup(Request $request, $catch = false)
     {
@@ -304,7 +308,7 @@ class HttpCache implements HttpKernelInterface, TerminableInterface
         if ($this->options['allow_reload'] && $request->isNoCache()) {
             $this->record($request, 'reload');
 
-            return $this->fetch($request);
+            return $this->fetch($request, $catch);
         }
 
         try {
@@ -536,7 +540,7 @@ class HttpCache implements HttpKernelInterface, TerminableInterface
 
             // wait for the lock to be released
             $wait = 0;
-            while (is_file($lock) && $wait < 5000000) {
+            while ($this->store->isLocked($request) && $wait < 5000000) {
                 usleep(50000);
                 $wait += 50000;
             }
@@ -570,6 +574,8 @@ class HttpCache implements HttpKernelInterface, TerminableInterface
      *
      * @param Request  $request  A Request instance
      * @param Response $response A Response instance
+     *
+     * @throws \Exception
      */
     protected function store(Request $request, Response $response)
     {
@@ -601,7 +607,7 @@ class HttpCache implements HttpKernelInterface, TerminableInterface
      */
     private function restoreResponseBody(Request $request, Response $response)
     {
-        if ('HEAD' === $request->getMethod() || 304 === $response->getStatusCode()) {
+        if ($request->isMethod('HEAD') || 304 === $response->getStatusCode()) {
             $response->setContent(null);
             $response->headers->remove('X-Body-Eval');
             $response->headers->remove('X-Body-File');

@@ -19,7 +19,7 @@ class LocalisationFormType extends AbstractType
 
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        $builder->prependClientTransformer($this->localisationTransformer);
+        $builder->addViewTransformer($this->localisationTransformer,true);
     }
 
     public function setDefaultOptions(OptionsResolverInterface $resolver)

@@ -11,7 +11,7 @@ class LocalisationController extends Controller
         $request = $this->getRequest();
     	if (null !== $request->getQueryString()) {
 		$param = $request->get('q');
-	        $em = $this->getDoctrine()->getEntityManager();
+	        $em = $this->getDoctrine()->getManager();
 	    	$localisations = $em->getRepository('JaiUneIdeeLocalisationBundle:Localisation')->getListe($param);
 		}
     	$response = new Response(json_encode($localisations));

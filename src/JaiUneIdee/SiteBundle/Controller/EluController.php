@@ -14,7 +14,7 @@ use \DateTime;
 class EluController extends Controller
 {
     public function actionAction($type, $idee_id){
-        $em = $this->getDoctrine()->getEntityManager();
+        $em = $this->getDoctrine()->getManager();
         $idee = $em->getRepository('JaiUneIdeeSiteBundle:Idee')->find($idee_id);
 	$user = $this->get('security.context')->getToken()->getUser();
         $action = $em->getRepository('JaiUneIdeeSiteBundle:ActionElu')->findOneBy(array('idee' => $idee, 'user' => $user));

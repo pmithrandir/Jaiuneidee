@@ -13,7 +13,7 @@ namespace Symfony\Bundle\FrameworkBundle\Test;
 
 use Symfony\Bundle\FrameworkBundle\Client;
 use Symfony\Component\Finder\Finder;
-use Symfony\Component\HttpKernel\HttpKernelInterface;
+use Symfony\Component\HttpKernel\KernelInterface;
 
 /**
  * WebTestCase is the base class for functional tests.
@@ -23,6 +23,10 @@ use Symfony\Component\HttpKernel\HttpKernelInterface;
 abstract class WebTestCase extends \PHPUnit_Framework_TestCase
 {
     protected static $class;
+
+    /**
+     * @var KernelInterface
+     */
     protected static $kernel;
 
     /**
@@ -55,6 +59,8 @@ abstract class WebTestCase extends \PHPUnit_Framework_TestCase
      * If not, override this method in your test classes.
      *
      * @return string The directory where phpunit.xml(.dist) is stored
+     *
+     * @throws \RuntimeException
      */
     protected static function getPhpUnitXmlDir()
     {
@@ -87,7 +93,7 @@ abstract class WebTestCase extends \PHPUnit_Framework_TestCase
      * PHPUnit will use the last configuration argument on the command line, so this only returns
      * the last configuration argument.
      *
-     * @return string The value of the PHPUnit cli configuration option
+     * @return string The value of the PHPUnit CLI configuration option
      */
     private static function getPhpUnitCliConfigArgument()
     {
@@ -113,6 +119,8 @@ abstract class WebTestCase extends \PHPUnit_Framework_TestCase
      * When the Kernel is located, the file is required.
      *
      * @return string The Kernel class name
+     *
+     * @throws \RuntimeException
      */
     protected static function getKernelClass()
     {
@@ -143,7 +151,7 @@ abstract class WebTestCase extends \PHPUnit_Framework_TestCase
      *
      * @param array $options An array of options
      *
-     * @return HttpKernelInterface A HttpKernelInterface instance
+     * @return KernelInterface A KernelInterface instance
      */
     protected static function createKernel(array $options = array())
     {
