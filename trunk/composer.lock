@@ -420,7 +420,7 @@
             "name": "doctrine/doctrine-bundle",
             "version": "v1.2.0",
             "target-dir": "Doctrine/Bundle/DoctrineBundle",
-            "source": {
+            "source": {s
                 "type": "git",
                 "url": "https://github.com/doctrine/DoctrineBundle.git",
                 "reference": "765b0d87fcc3e839c74817b7211258cbef3a4fb9"
