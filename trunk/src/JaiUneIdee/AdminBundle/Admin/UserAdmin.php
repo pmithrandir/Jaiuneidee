@@ -10,6 +10,13 @@ use Sonata\AdminBundle\Show\ShowMapper;
 
 class UserAdmin extends Admin
 {
+    private function getRoles($originRoles) {
+        $roles = array();
+        foreach ($originRoles as $roleParent => $rolesHerit) {
+            $roles[$roleParent] = $roleParent;
+        }
+        return $roles;
+    }
     /**
      * @param DatagridMapper $datagridMapper
      */
@@ -62,7 +69,7 @@ class UserAdmin extends Admin
             ->add('email')
             ->add('enabled','checkbox',array("required"=>false))
             ->add('locked','checkbox',array("required"=>false))
-            ->add('roles','choice',array('choices'=>array_keys($this->getConfigurationPool()->getContainer()->getParameter('security.role_hierarchy.roles')),'expanded'=>true, 'multiple'=>true ))
+            ->add('roles', 'choice', array('choices' => $this->getRoles($this->getConfigurationPool()->getContainer()->getParameter('security.role_hierarchy.roles')), 'multiple' => true, 'expanded' => true))
             ->add('last_activity')
             ->add('date_de_naissance')
             ->add('newsletter','checkbox',array("required"=>false))
