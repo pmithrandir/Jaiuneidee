@@ -91,9 +91,14 @@ bindPagination = function() {
     $(".pagerfanta nav a").unbind( "click" );
     $(".pagerfanta nav a").click(function(event){
         var element = $(this);
+        var data;
+        if($("#filtres")){
+            data = $("#filtres").serialize()
+        }
         $.ajax({
            url: $(this).attr('href'),
            type: "GET",
+           data: data,
            dataType: "html",
            success: function(html){
              element.parents(".pagerfanta").parent().html(html);    
