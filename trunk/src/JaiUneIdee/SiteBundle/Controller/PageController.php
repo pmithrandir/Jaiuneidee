@@ -173,7 +173,7 @@ class PageController extends Controller
                 $em->persist($entity);
                 $em->flush();
                 $this->get('jai_une_idee_site.mailer')->sendContactCopy($param["email"],$param["name"], $param["subject"], $param["body"]);
-                $this->get('session')->setFlash('notice', 'Votre message a été envoyé aux administrateurs. Merci!');
+                $this->get('session')->getFlashBag()->add('notice', 'Votre message a été envoyé aux administrateurs. Merci!');
                 // Redirect - This is important to prevent users re-posting
                 // the form if they refresh the page
                 return $this->redirect($this->generateUrl('JaiUneIdeeSiteBundle_contact'));

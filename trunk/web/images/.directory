@@ -1,4 +1,7 @@
 [Dolphin]
-PreviewsShown=true
-Timestamp=2013,11,16,14,6,30
+HeaderColumnWidths=387,90,124
+SortOrder=1
+SortRole=size
+Timestamp=2014,4,26,18,37,52
 Version=3
+ViewMode=1
