@@ -62,7 +62,7 @@ class InvitationController extends Controller
 			}
             $em->persist($entity);
             $em->flush();
-            $this->get('session')->setFlash('notice', 'L\'invitation a été envoyée. Merci!');
+            $this->get('session')->getFlashBag()->add('notice', 'L\'invitation a été envoyée. Merci!');
             return $this->redirect($this->generateUrl('invitation'));
         }
 
