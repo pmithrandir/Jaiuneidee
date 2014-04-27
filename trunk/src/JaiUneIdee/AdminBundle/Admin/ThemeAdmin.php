@@ -47,7 +47,6 @@ class ThemeAdmin extends Admin
     protected function configureFormFields(FormMapper $formMapper)
     {
         $formMapper
-            ->add('id')
             ->add('nom')
             ->add('descriptif')
             ->add('is_moderated','checkbox',array("required"=>false))
@@ -61,7 +60,6 @@ class ThemeAdmin extends Admin
     protected function configureShowFields(ShowMapper $showMapper)
     {
         $showMapper
-            ->add('id')
             ->add('nom')
             ->add('descriptif')
             ->add('is_moderated')

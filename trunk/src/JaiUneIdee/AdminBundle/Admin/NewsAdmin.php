@@ -66,7 +66,6 @@ class NewsAdmin extends Admin
     protected function configureShowFields(ShowMapper $showMapper)
     {
         $showMapper
-            ->add('id')
             ->add('content')
             ->add('is_validated_by_admin')
             ->add('is_removed')

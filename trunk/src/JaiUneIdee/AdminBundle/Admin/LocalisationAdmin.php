@@ -60,7 +60,6 @@ class LocalisationAdmin extends Admin
     protected function configureShowFields(ShowMapper $showMapper)
     {
         $showMapper
-            ->add('id')
             ->add('nom')
             ->add('parent')
             ->add('min')

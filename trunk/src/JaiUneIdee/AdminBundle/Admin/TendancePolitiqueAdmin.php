@@ -43,7 +43,6 @@ class TendancePolitiqueAdmin extends Admin
     protected function configureFormFields(FormMapper $formMapper)
     {
         $formMapper
-            ->add('id')
             ->add('value')
         ;
     }
@@ -54,7 +53,6 @@ class TendancePolitiqueAdmin extends Admin
     protected function configureShowFields(ShowMapper $showMapper)
     {
         $showMapper
-            ->add('id')
             ->add('value')
         ;
     }
