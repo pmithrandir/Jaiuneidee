@@ -56,7 +56,6 @@ class DommageAdmin extends Admin
     protected function configureShowFields(ShowMapper $showMapper)
     {
         $showMapper
-            ->add('id')
             ->add('level')
             ->add('value')
         ;

@@ -49,7 +49,6 @@ class InvitationAdmin extends Admin
     protected function configureFormFields(FormMapper $formMapper)
     {
         $formMapper
-            ->add('id')
             ->add('email')
             ->add('sent')
             ->add('created_at')
@@ -62,7 +61,6 @@ class InvitationAdmin extends Admin
     protected function configureShowFields(ShowMapper $showMapper)
     {
         $showMapper
-            ->add('id')
             ->add('email')
             ->add('sent')
             ->add('created_at')
