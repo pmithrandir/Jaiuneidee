@@ -5,9 +5,9 @@
         <title>{% block title %}Accueil{% endblock %} - J'ai Une Idee, la démocratie participative autrement ! </title>
         {% block javascript %}
         <!--[if lt IE 9]>
-            <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+            <script src="//html5shim.googlecode.com/svn/trunk/html5.js"></script>
         <![endif]-->
-        <script src="http://code.jquery.com/jquery-1.8.2.min.js"></script>
+        <script src="//code.jquery.com/jquery-1.8.2.min.js"></script>
         {#
         <script src="{{ asset('js/jquery-1.8.2.min.js') }}"></script>
         #}
@@ -19,10 +19,6 @@
         
         {% endblock %}
         {% block stylesheets %}
-        {#
-            <link href='http://fonts.googleapis.com/css?family=Irish+Grover' rel='stylesheet' type='text/css'>
-            <link href='http://fonts.googleapis.com/css?family=La+Belle+Aurore' rel='stylesheet' type='text/css'>
-        #}
             <link href="{{ asset('css/token-input.css') }}" type="text/css" rel="stylesheet" />
             <link href="{{ asset('css/token-input-facebook.css') }}" type="text/css" rel="stylesheet" />
             <link href="{{ asset('css/msdropdown/dd.css') }}" type="text/css" rel="stylesheet" />
