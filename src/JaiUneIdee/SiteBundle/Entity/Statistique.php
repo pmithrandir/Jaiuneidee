@@ -421,4 +421,32 @@ class Statistique
     {
         return $this->nb_alertes_total;
     }
+    /**
+     * @var integer
+     */
+    private $nb_utilisateurs_connectes_week;
+
+
+    /**
+     * Set nb_utilisateurs_connectes_week
+     *
+     * @param integer $nbUtilisateursConnectesWeek
+     * @return Statistique
+     */
+    public function setNbUtilisateursConnectesWeek($nbUtilisateursConnectesWeek)
+    {
+        $this->nb_utilisateurs_connectes_week = $nbUtilisateursConnectesWeek;
+
+        return $this;
+    }
+
+    /**
+     * Get nb_utilisateurs_connectes_week
+     *
+     * @return integer 
+     */
+    public function getNbUtilisateursConnectesWeek()
+    {
+        return $this->nb_utilisateurs_connectes_week;
+    }
 }

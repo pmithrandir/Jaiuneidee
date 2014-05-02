@@ -15,6 +15,10 @@ JaiUneIdee\SiteBundle\Entity\Statistique:
       type: integer
       options:
         default: 0
+    nb_utilisateurs_connectes_week:
+      type: integer
+      options:
+        default: 0
     nb_inscrits_24:
       type: integer
       options:

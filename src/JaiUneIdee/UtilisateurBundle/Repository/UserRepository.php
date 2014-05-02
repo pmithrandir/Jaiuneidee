@@ -32,6 +32,15 @@ class UserRepository extends EntityRepository
         
         return $qb->getQuery()->getSingleScalarResult();
     }
+    public function countUtilisateursConnectesWeek(){
+        $qb = $this->createQueryBuilder('u');
+        $qb->select('count(u.id)');
+        $qb->andWhere('u.last_activity >= :week');
+        $qb->andWhere('u.enabled = true');
+        $qb->setParameter('week', new \DateTime('-1 week'));
+        
+        return $qb->getQuery()->getSingleScalarResult();
+    }
     public function countInscrit24(){
         $qb = $this->createQueryBuilder('u');
         $qb->select('count(u.id)');

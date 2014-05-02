@@ -618,4 +618,27 @@ class Idee
     {
         return $this->actionsElus;
     }
+
+    /**
+     * Add actionsElus
+     *
+     * @param \JaiUneIdee\SiteBundle\Entity\ActionElu $actionsElus
+     * @return Idee
+     */
+    public function addActionsElus(\JaiUneIdee\SiteBundle\Entity\ActionElu $actionsElus)
+    {
+        $this->actionsElus[] = $actionsElus;
+
+        return $this;
+    }
+
+    /**
+     * Remove actionsElus
+     *
+     * @param \JaiUneIdee\SiteBundle\Entity\ActionElu $actionsElus
+     */
+    public function removeActionsElus(\JaiUneIdee\SiteBundle\Entity\ActionElu $actionsElus)
+    {
+        $this->actionsElus->removeElement($actionsElus);
+    }
 }
