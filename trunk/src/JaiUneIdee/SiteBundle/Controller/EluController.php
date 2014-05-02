@@ -57,4 +57,16 @@ class EluController extends Controller
                 'slug' => $idee->getSlug()))
             );
     }
+    public function statAction($idee_id){
+        $em = $this->getDoctrine()->getManager();
+            
+        $stats_sexe = $em->getRepository('JaiUneIdeeSiteBundle:Vote')->getStatSexe();
+        $tabStatsJson = Array();
+        $tabStatsJson['sexe']['json'] = json_encode($stats_sexe);
+        $tabStatsJson['sexe']['title'] = "Votes par sexe";
+
+        return $this->render('JaiUneIdeeSiteBundle:Elu:stat.html.twig', array(
+            'tabStatsJson'=>$tabStatsJson
+        ));
+    }
 }

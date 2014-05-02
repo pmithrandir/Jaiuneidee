@@ -40,6 +40,8 @@ class StatCommand extends ContainerAwareCommand
         //récupérer nb usr connecté dans les 24 dernières heures
         $nbUtilisateursConnectes24 = $em->getRepository('JaiUneIdeeUtilisateurBundle:User')->countUtilisateursConnectes24();
         $stat->setNbUtilisateursConnectes24($nbUtilisateursConnectes24);
+        $nbUtilisateursConnectesWeek = $em->getRepository('JaiUneIdeeUtilisateurBundle:User')->countUtilisateursConnectesWeek();
+        $stat->setNbUtilisateursConnectesWeek($nbUtilisateursConnectesWeek);
         //récupérer le nombre d'idées créé
         $nbIdees24 = $em->getRepository('JaiUneIdeeSiteBundle:Idee')->count24();
         $stat->setNbIdees24($nbIdees24);

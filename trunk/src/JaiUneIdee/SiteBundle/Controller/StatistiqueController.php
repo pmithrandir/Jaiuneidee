@@ -20,6 +20,8 @@ class StatistiqueController extends Controller
             $tabStatsJson = Array();
             $tabStatsJson['user_connecté_24']['json'] = json_encode($stats['user_connecté_24']);
             $tabStatsJson['user_connecté_24']['title'] = "Utilisateurs Connectés dans les dernières 24 heures";
+            $tabStatsJson['user_connecté_week']['json'] = json_encode($stats['user_connecté_week']);
+            $tabStatsJson['user_connecté_week']['title'] = "Utilisateurs Connectés dans la dernière semaine";
             $tabStatsJson['user_inscrit_24']['json'] = json_encode($stats['user_inscrit_24']);
             $tabStatsJson['user_inscrit_24']['title'] = "Utilisateurs Inscrits dans les dernières 24 heures";
             $tabStatsJson['idee_24']['json'] = json_encode($stats['idee_24']);

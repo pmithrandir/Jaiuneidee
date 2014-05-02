@@ -19,6 +19,7 @@ class StatistiqueRepository extends EntityRepository
         $aRetourner = Array();
         foreach($result as $value){
             $aRetourner['user_connecté_24'][] = array($value->getCreatedAt()->format('d-F-y'), (int) $value->getNbUtilisateursConnectes24());
+            $aRetourner['user_connecté_week'][] = array($value->getCreatedAt()->format('d-F-y'), (int) $value->getNbUtilisateursConnectesWeek());
             $aRetourner['user_inscrit_24'][] = array($value->getCreatedAt()->format('d-F-y'), (int) $value->getNbInscrits24());
             $aRetourner['idee_24'][] = array($value->getCreatedAt()->format('d-F-y'), (int) $value->getNbIdees24());
             $aRetourner['commentaire_24'][] = array($value->getCreatedAt()->format('d-F-y'), (int) $value->getNbCommentaires24());
