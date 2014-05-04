@@ -163,3 +163,10 @@ JaiUneIdeeSiteBundle_elu_action:
     requirements:
         _method:  GET
         idee_id: \d+
+        
+JaiUneIdeeSiteBundle_stat_idee:
+    pattern:  /idee/stat/{idee_id}
+    defaults: { _controller: JaiUneIdeeSiteBundle:Idee:stat }
+    requirements:
+        _method:  GET
+        idee_id: \d+
