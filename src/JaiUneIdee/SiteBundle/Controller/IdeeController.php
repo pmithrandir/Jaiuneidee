@@ -454,4 +454,25 @@ class IdeeController extends Controller
             'options'=>$options
         ));
     }
+    
+    public function statAction($idee_id){
+        $em = $this->getDoctrine()->getManager();
+        $idee = $this->getIdee($idee_id);
+            
+        $stats_sexe = $em->getRepository('JaiUneIdeeSiteBundle:Vote')->getStatSexe($idee);
+        $stats_age = $em->getRepository('JaiUneIdeeSiteBundle:Vote')->getStatAge($idee);
+        $stats_age_data = array(array_values($stats_age['results']['Neutre']),array_values($stats_age['results']['Pour']),array_values($stats_age['results']['Contre']));
+        $tabStatsJson = Array();
+        $tabStatsJson['pie']['homme']['json'] = json_encode(array_values($stats_sexe['results']['Homme']));
+        $tabStatsJson['pie']['homme']['title'] = "Votes masculins (".$stats_sexe['count']['Homme'].")";
+        $tabStatsJson['pie']['femme']['json'] = json_encode(array_values($stats_sexe['results']['Femme']));
+        $tabStatsJson['pie']['femme']['title'] = "Votes féminins (".$stats_sexe['count']['Femme'].")";
+        $tabStatsJson['bar']['age']['json'] = json_encode($stats_age_data);
+        $tabStatsJson['bar']['age']['title'] = "Votes par age (".$stats_age['count']['total'].")";
+
+        return $this->render('JaiUneIdeeSiteBundle:Idee:stat.html.twig', array(
+            'tabStatsJson'=>$tabStatsJson,
+            'idee' => $idee
+        ));
+    }
 }

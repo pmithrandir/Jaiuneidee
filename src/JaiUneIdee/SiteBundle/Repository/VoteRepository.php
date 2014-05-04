@@ -12,7 +12,7 @@ use Doctrine\ORM\EntityRepository;
  */
 class VoteRepository extends EntityRepository
 {
-	public function getVotesByIdee($idee){
+    public function getVotesByIdee($idee){
         $qb = $this->createQueryBuilder('v')
                     ->select('v.note','COUNT(v.id) as nombre')
                     ->where('v.idee = :idee_id')
@@ -37,6 +37,80 @@ class VoteRepository extends EntityRepository
                     ->setParameter('user_id', $user->getId());
         return $qb->getQuery()->getOneOrNullResult();
     }
+    public function getStatSexe($idee){
+        $qb = $this->createQueryBuilder('v')
+                    ->select('s.value as sexe, v.note as note, COUNT(v.id) as nombre')
+                    ->join('v.user', 'u')
+                    ->join('u.sexe', 's')
+                    ->where('v.idee = :idee_id')
+                    ->andwhere('v.is_removed = false')
+                    ->addGroupBy('s', 'v.note')
+                    ->setParameter('idee_id', $idee->getId())
+                ;
+        $result = $qb->getQuery()->getResult();
+        $aRetourner = array();
+        $notes = array(0=>"Neutre", 1=>"Pour", -1 => "Contre");
+        $sexes = array('Homme', 'Femme');
+        foreach($sexes as $sexe){
+            foreach($notes as $note){
+                $aRetourner['results'][$sexe][$note] =  array($note,0);
+            }   
+        }
+        
+        foreach($result as $value){
+            $aRetourner['results'][$value['sexe']][$notes[$value['note']]] = array($notes[$value['note']],$value['nombre']);
+            if(!isset($aRetourner['count'][$value['sexe']])){
+                $aRetourner['count'][$value['sexe']] = 0;
+            }
+            $aRetourner['count'][$value['sexe']] += $value['nombre'];
+        }
+        return $aRetourner;
+    }
+    public function getStatAge($idee){
+        //SELECT id, EXTRACT(YEAR FROM AGE(date_de_naissance)) as age
+        //FROM fos_user
+        //WHERE EXTRACT(YEAR FROM AGE(date_de_naissance)) BETWEEN 26 AND 35
+        
+        $aRetourner = array();
+        $notes = array(0=>"Neutre", 1=>"Pour", -1 => "Contre");
+        $trancheDAges = array(
+            'tranche1'=>array('min'=>0,'max'=>18), 
+            'tranche2'=>array('min'=>18,'max'=>25), 
+            'tranche3'=>array('min'=>25,'max'=>35), 
+            'tranche4'=>array('min'=>35,'max'=>50), 
+            'tranche5'=>array('min'=>50,'max'=>65), 
+            'tranche6'=>array('min'=>65,'max'=>120)
+            );
+        foreach($notes as $note){
+            $aRetourner['results'][$note] = array();
+            foreach($trancheDAges as $key=>$trancheDAge){
+                $aRetourner['results'][$note][$key] = 0;
+            }
+        }
+        foreach($trancheDAges as $keyAge=>$trancheDAge){
+            $qb = $this->createQueryBuilder('v')
+                        ->select('v.note as note, COUNT(v.id) as nombre')
+                        ->join('v.user', 'u')
+                        ->where('v.idee = :idee_id')
+                        ->andwhere('v.is_removed = false')
+                        ->andWhere('u.date_de_naissance BETWEEN :agemax AND :agemin ')
+                        ->addGroupBy('v.note')
+                        ->setParameter('idee_id', $idee->getId())
+                        ->setParameter('agemin', new \DateTime('-'.$trancheDAge['min'].' year'))
+                        ->setParameter('agemax', new \DateTime('-'.$trancheDAge['max'].' year'))
+                    ;
+            $result = $qb->getQuery()->getResult();
+            foreach($result as $value){
+                $aRetourner['results'][$notes[$value['note']]][$keyAge] = $value['nombre'];
+                if(!isset($aRetourner['count']['total'])){
+                    $aRetourner['count']['total'] = 0;
+                }
+                $aRetourner['count']['total'] += $value['nombre'];
+            }
+        }
+        return $aRetourner;
+    }
+    
     public function count24(){
         $qb = $this->createQueryBuilder('v');
         $qb->select('count(v.id)');

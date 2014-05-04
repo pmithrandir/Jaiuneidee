@@ -705,6 +705,10 @@ select.theme{
     max-height: 45px;
     vertical-align: middle;
 }
+.stat_idee{
+    display: inline-block;
+    width: 500px;
+}
 /*******************************PROFILE INVITATION ***************************************/
 .table{
   border: 1px solid #83BEF5;

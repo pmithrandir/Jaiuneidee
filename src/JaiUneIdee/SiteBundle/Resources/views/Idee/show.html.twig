@@ -156,10 +156,10 @@
             <a href="{{ path('JaiUneIdeeSiteBundle_elu_action', { 'type': 'jaime', 'idee_id':idee.id}) }}"><img src="{{asset('images/jaime.png')}}" alt="J'aime l'idée" title="J'aime l'idée" class="action_url" /></a>
             <a href="{{ path('JaiUneIdeeSiteBundle_elu_action', { 'type': 'jenaimepas', 'idee_id':idee.id}) }}"><img src="{{asset('images/jenaimepas.png')}}" alt="Je n'aime pas l'idée" title="Je n'aime pas l'idée" class="action_url" /></a>
             <a href="{{ path('JaiUneIdeeSiteBundle_elu_action', { 'type': 'jemengage', 'idee_id':idee.id}) }}"><img src="{{asset('images/jemengage.png')}}" alt="Je m'engage à mettre en place l'idée" title="Je m'engage à mettre en place l'idée" class="action_url" /></a>
-        {%endif%}
+        {% endif%}
         {% if is_granted('ROLE_ELU') %}
             <a href="{{ path('JaiUneIdeeSiteBundle_elu_action', { 'type': 'jairealise', 'idee_id':idee.id}) }}"><img src="{{asset('images/jairealise.png')}}" alt="J'ai réalisé l'idée" title="J'ai réalisé l'idée" class="action_url" /></a>
-        {%endif%}
+        {% endif%}
         <ul>
             {% for action in idee.getActionsElus() %}
                 <li>
@@ -174,19 +174,24 @@
                     
                     {% if action.jenaimepas %}
                         <img src="{{asset('images/jenaimepas.png')}}" alt="Je n'aime pas l'idée" title="{{ action.user|capitalize }} n'aime pas l'idée depuis le {{ action.dateJenaimepas|date('d/m/Y') }} à {{ action.dateJenaimepas|date('H:i:s') }}" class="action_tag" />
-                    {%endif%}
+                    {% endif%}
                     {% if action.jairealise %}
                         <img src="{{asset('images/jairealise.png')}}" alt="J'ai réalisé l'idée" title="{{ action.user|capitalize }} a mis en place l'idée le {{ action.dateJairealise|date('d/m/Y') }} à {{ action.dateJairealise|date('H:i:s') }}" class="action_tag" />
-                    {%endif%}
+                    {% endif%}
                     {% if action.jemengage %}
                         <img src="{{asset('images/jemengage.png')}}" alt="J'aime l'idée" title="{{ action.user|capitalize }} s'est engagé le {{ action.dateJemengage|date('d/m/Y') }} à {{ action.dateJemengage|date('H:i:s') }} à réaliser l'idée" class="action_tag" />
-                    {%endif%}
+                    {% endif%}
                     {% if action.jaime %}
                         <img src="{{asset('images/jaime.png')}}" alt="J'aime l'idée" title="{{ action.user|capitalize }} aime l'idée depuis le {{ action.dateJaime|date('d/m/Y') }} à {{ action.dateJaime|date('H:i:s') }}" class="action_tag" />
-                    {%endif%}
+                    {% endif%}
                 </li>
-            {%endfor%}
+            {% endfor %}
         </ul>
+        <br />
+        <br />
+        <hr />
+        <h3>Statistiques</h3>
+        <a href="{{ path("JaiUneIdeeSiteBundle_stat_idee",{ 'idee_id': idee.id }) }}">Lien vers les statistiques</a>
     </div>
     <footer></footer>
 </div>
