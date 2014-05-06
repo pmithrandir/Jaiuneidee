@@ -35,6 +35,8 @@ security:
       - { path: ^/vote, roles: ROLE_USER }
       - { path: ^/profile, roles: ROLE_USER }
       - { path: ^/elu, roles: ROLE_CANDIDAT }
+      - { path: ^/idee/stat/, roles: [ROLE_CANDIDAT, ROLE_ADMIN] }
+      
       
     providers:
       fos_userbundle:

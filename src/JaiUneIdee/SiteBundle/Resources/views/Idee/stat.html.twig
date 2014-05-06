@@ -35,6 +35,12 @@
                 var plot1 = jQuery.jqplot ('{{key}}', [{{value.json|raw}}],
                 {
                   title: "{{value.title}}",
+                  series:[
+                    {label:'Neutre'},
+                    {label:'Pour'},
+                    {label:'Contre'}
+                  ],
+                  seriesColors: [ "#FFA500", "#90EE90", "#FF0000"],
                   seriesDefaults: {
                     // Make this a pie chart.
                     renderer: jQuery.jqplot.PieRenderer,
@@ -70,6 +76,7 @@
                     {label:'Pour'},
                     {label:'Contre'}
                   ],
+                  seriesColors: [ "#FFA500", "#90EE90", "#FF0000"],
                   axes: {
                     xaxis: {
                         renderer: $.jqplot.CategoryAxisRenderer,

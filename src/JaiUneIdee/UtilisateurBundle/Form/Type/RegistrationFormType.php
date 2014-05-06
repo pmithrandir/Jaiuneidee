@@ -13,7 +13,8 @@ class RegistrationFormType extends BaseType
 
         // Ajoutez vos champs ici, revoilà notre champ *signature* :
         //$builder->add('date_de_naissance', "birthday", array('label' => 'Date de Naissance'));
-	$builder->add('date_de_naissance', 'birthday', array('format' => 'd-M-y','pattern' => "{{ day }}/{{ month }}/{{ year }}", 'years' => range(date('Y'), date('Y') - 110)))
+	$builder
+            ->add('date_de_naissance', 'birthday', array('required' => true, 'format' => 'd-M-y','pattern' => "{{ day }}/{{ month }}/{{ year }}", 'years' => range(date('Y'), date('Y') - 110)))
                 
         ->add('date_de_naissance_public', 'checkbox', array(
             		'label' => "Publier ma date de naissance",
@@ -27,7 +28,7 @@ class RegistrationFormType extends BaseType
 	    	 array(
 				'empty_value' => 'Sélectionner',
 	            'class' => 'JaiUneIdeeUtilisateurBundle:Sexe',
-	            'required' => false,
+	            'required' => true,
 	        ))
         ->add('sexe_public', 'checkbox', array(
             		'label' => "Publier mon sexe",
