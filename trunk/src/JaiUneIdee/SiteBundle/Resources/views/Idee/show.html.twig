@@ -187,11 +187,14 @@
                 </li>
             {% endfor %}
         </ul>
+        {% if is_granted('ROLE_CANDIDAT') or is_granted('ROLE_ADMIN') %}
         <br />
         <br />
         <hr />
         <h3>Statistiques</h3>
         <a href="{{ path("JaiUneIdeeSiteBundle_stat_idee",{ 'idee_id': idee.id }) }}">Lien vers les statistiques</a>
+        {% endif%}
+        
     </div>
     <footer></footer>
 </div>
