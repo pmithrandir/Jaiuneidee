@@ -28,6 +28,7 @@ class UserAdmin extends Admin
             ->add('enabled')
             ->add('locked')
             ->add('roles')
+            ->add('sexe')
             ->add('credentialsExpired')
             ->add('credentialsExpireAt')
             ->add('created_at')
@@ -47,6 +48,7 @@ class UserAdmin extends Admin
             ->add('enabled')
             ->add('last_activity')
             ->add('roles')
+            ->add('sexe')
             ->add('localisation')
             ->add('created_at')
             ->add('_action', 'actions', array(
@@ -71,6 +73,7 @@ class UserAdmin extends Admin
             ->add('locked','checkbox',array("required"=>false))
             ->add('roles', 'choice', array('choices' => $this->getRoles($this->getConfigurationPool()->getContainer()->getParameter('security.role_hierarchy.roles')), 'multiple' => true, 'expanded' => true))
             ->add('last_activity')
+            ->add('sexe')
             ->add('date_de_naissance')
             ->add('newsletter','checkbox',array("required"=>false))
         ;
@@ -104,7 +107,9 @@ class UserAdmin extends Admin
             ->add('date_de_naissance')
             ->add('date_de_naissance_public')
             ->add('approbation_charte')
+            ->add('sexe')
             ->add('sexe_public')
+            ->add('localisation')
             ->add('localisation_public')
             ->add('tendance_politique_public')
             ->add('newsletter')
