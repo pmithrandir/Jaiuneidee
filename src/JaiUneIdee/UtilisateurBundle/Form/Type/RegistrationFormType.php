@@ -56,7 +56,7 @@ class RegistrationFormType extends BaseType
                 */
          ->add('localisation', 'jaiuneidee_localisation_type', array(
             		'label' => "La zone géographique qui vous intéresse",
-                        'required' => false,
+                        'required' => true,
                         'attr' => array(
                             'class' => 'tokeninput_unique',
                         )
