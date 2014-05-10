@@ -73,20 +73,6 @@
 <div id="news">
     {% include "JaiUneIdeeSiteBundle:Page:listeNews.html.twig" %}
 </div>
-        {% if is_granted('ROLE_ADMIN') %}
-    <ul>
-            <li><a href="{{ path('sonata_admin_dashboard') }}">Admin</a></li>
-            <li><a href="{{ path('JaiUneIdeeSiteBundle_statistiques_index') }}">Stats</a></li>
-            <li><a href="{{ path('JaiUneIdeeSiteBundle_idees_moderation_admin') }}">Idées à modérer 
-                ({% render(controller("JaiUneIdeeSiteBundle:Idee:countModeration" ))%})
-                </a></li>
-            <li><a href="{{ path('JaiUneIdeeSiteBundle_commentaires_moderation_admin') }}">Commentaires à modérer
-                ({% render(controller("JaiUneIdeeSiteBundle:Idee:countModerationCommentaire" ))%})
-                </a>
-                </li>
-            <li><a href="{{ path('message') }}">Mes messages</a></li>
-    </ul><br /> <br />
-        {% endif %}
     Vous aimez ce site, faites le savoir autour de vous ! <br /> <br />
     <g:plus href="https://plus.google.com/118203067427668607877/118203067427668607877" width="170" height="69" theme="light"></g:plus>
     <div class="fb-like-box" data-href="https://www.facebook.com/pages/Jai-Une-Id%C3%A9e/171223119712846" data-width="292" data-show-faces="false" data-stream="false" data-show-border="true" data-header="true"></div>

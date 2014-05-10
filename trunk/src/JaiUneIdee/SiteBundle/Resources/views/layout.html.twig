@@ -25,9 +25,23 @@
             <img src="{{asset('images/avatar_default.png')}}" alt="avatar" class="avatar" />
         {% endif %}
         </a>
+    <ul>
         <li><a href="{{ path('invitation_new') }}">Inviter un ami</a></li>
         <li><a href="{{ path('fos_user_profile_edit') }}">Mon compte</a></li>
+        {% if is_granted('ROLE_ADMIN') %}
+            <li><a href="{{ path('sonata_admin_dashboard') }}">Admin</a></li>
+            <li><a href="{{ path('JaiUneIdeeSiteBundle_statistiques_index') }}">Stats</a></li>
+            <li><a href="{{ path('message') }}">Mes messages</a></li>
+            <li><a href="{{ path('JaiUneIdeeSiteBundle_idees_moderation_admin') }}">Idées à modérer 
+                ({% render(controller("JaiUneIdeeSiteBundle:Idee:countModeration" ))%})
+                </a></li>
+            <li><a href="{{ path('JaiUneIdeeSiteBundle_commentaires_moderation_admin') }}">Commentaires à modérer
+                ({% render(controller("JaiUneIdeeSiteBundle:Idee:countModerationCommentaire" ))%})
+                </a>
+                </li>
+        {% endif %}
         <li><a href="{{ path('fos_user_security_logout') }}">Déconnexion</a></li>
+        </ul>
     {% endif %}
     </div>
 {% endblock %}
