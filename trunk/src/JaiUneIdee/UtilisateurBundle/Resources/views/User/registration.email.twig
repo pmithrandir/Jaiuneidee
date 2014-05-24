@@ -21,7 +21,7 @@ L'équipe de "Jai Une Idee"
 #}
 Bonjour {{ user.username }} !
 <br /><br />
-Vous devez confirmer votre inscription en cliquant sur le lien suivant : {{ confirmationUrl }}
+Vous devez confirmer votre inscription en cliquant sur le lien suivant : <a href="{{ confirmationUrl }}">{{ confirmationUrl }}</a>.
 <br /><br />
 Votre login est : {{ user.username }}<br />
 Si vous ne vous souvenez pas de votre mot de passe, vous pouvez le réinitialiser <a href="{{ url('fos_user_resetting_request') }}">ici</a>.
