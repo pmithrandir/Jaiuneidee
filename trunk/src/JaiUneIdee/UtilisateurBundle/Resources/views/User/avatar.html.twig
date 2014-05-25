@@ -5,7 +5,7 @@
     <h1>Votre Avatar</h1>
     
     {% if (user.avatar)%}
-    <img src="{{asset('upload/' ~ user.id ~'/' ~ user.avatar)}}" alt="avatar" />
+    <img src="{{ image('upload/' ~ user.id ~'/' ~ user.avatar).cropResize(120,120)}}" alt="avatar" />
     <br />
     <br />
     <a href="{{ path('supprimer_avatar') }}" >Supprimer mon avatar</a>
@@ -15,6 +15,6 @@
         <input type="submit" />
     </form>
     {% endif%}
-    <p>Le fichier doit être plus grand que 50px de large et de hauteur et moins grand que 200px de large et de hauteur.
-    <br />La taille maximum est de 200ko.</p>
+    <p>Le fichier doit être plus grand que 50px de large et de hauteur et moins grand que 10000px de large et de hauteur.
+    <br />La taille maximum est de 10Mo.</p>
 {% endblock %}

@@ -10,8 +10,8 @@ JaiUneIdee\UtilisateurBundle\Entity\User:
         avatar:
             - Image:
                 groups: [avatar]
-                maxSize: 200k
+                maxSize: 10M
                 minWidth: 50
-                maxWidth: 200
+                maxWidth: 10000
                 minHeight: 50
-                maxHeight: 200
+                maxHeight: 10000

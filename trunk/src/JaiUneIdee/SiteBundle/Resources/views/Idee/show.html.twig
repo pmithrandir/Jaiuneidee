@@ -33,7 +33,7 @@
         <div class="box_left">
             <a href="{{ path('user_profile', { 'user_id': idee.user.id, 'username':idee.user}) }}">
                 {% if(idee.user.avatar) %}
-                        <img src="{{asset('upload/' ~ idee.user.id ~'/' ~ idee.user.avatar)}}" alt="avatar de {{ idee.user|capitalize }}" title="avatar de {{ idee.user|capitalize }}" class="avatar" />
+                        <img src="{{image('upload/' ~ idee.user.id ~'/' ~ idee.user.avatar).cropResize(120,120)}}" alt="avatar de {{ idee.user|capitalize }}" title="avatar de {{ idee.user|capitalize }}" class="avatar" />
                 {% else %}
                         <img src="{{asset('images/avatar_default.png')}}" alt="avatar de {{ idee.user|capitalize }}" title="avatar de {{ idee.user|capitalize }}" class="avatar" />
                 {% endif %}
@@ -165,7 +165,7 @@
                 <li>
                     <a href="{{ path('user_profile', { 'user_id': action.user.id, 'username':action.user}) }}">
                         {% if(action.user.avatar) %}
-                                <img src="{{asset('upload/' ~ action.user.id ~'/' ~ action.user.avatar)}}" alt="avatar" title="avatar de {{ action.user|capitalize }}" class="avatar_elu" />
+                                <img src="{{ image('upload/' ~ action.user.id ~'/' ~ action.user.avatar).cropResize(120,120)}}" alt="avatar" title="avatar de {{ action.user|capitalize }}" class="avatar_elu" />
                         {% else %}
                                 <img src="{{asset('images/avatar_default.png')}}" alt="avatar" title="avatar de {{ action.user|capitalize }}" class="avatar_elu" />
                         {% endif %}
