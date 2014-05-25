@@ -75,7 +75,7 @@ abstract class Descriptor implements DescriptorInterface
      * Writes content to output.
      *
      * @param string  $content
-     * @param boolean $decorated
+     * @param bool    $decorated
      */
     protected function write($content, $decorated = false)
     {
@@ -86,7 +86,7 @@ abstract class Descriptor implements DescriptorInterface
      * Writes content to output.
      *
      * @param TableHelper $table
-     * @param boolean     $decorated
+     * @param bool        $decorated
      */
     protected function renderTable(TableHelper $table, $decorated = false)
     {
@@ -211,12 +211,8 @@ abstract class Descriptor implements DescriptorInterface
         if (is_bool($value) || is_array($value) || (null === $value)) {
             $jsonString = json_encode($value);
 
-            if (!function_exists('mb_strlen')) {
-                return substr($jsonString, 0, 60).(strlen($jsonString) > 60 ? ' ...' : '');
-            }
-
-            if (mb_strlen($jsonString) > 60) {
-                return mb_substr($jsonString, 0, 60).' ...';
+            if (preg_match('/^(.{60})./us', $jsonString, $matches)) {
+                return $matches[1].'...';
             }
 
             return $jsonString;
@@ -248,7 +244,7 @@ abstract class Descriptor implements DescriptorInterface
 
     /**
      * @param ContainerBuilder $builder
-     * @param boolean          $showPrivate
+     * @param bool             $showPrivate
      *
      * @return array
      */

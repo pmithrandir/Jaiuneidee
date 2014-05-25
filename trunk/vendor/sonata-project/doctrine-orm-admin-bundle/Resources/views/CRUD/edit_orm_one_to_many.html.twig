@@ -43,7 +43,11 @@ file that was distributed with this source code.
 
                                                     {% set dummy = nested_group_field.setrendered %}
                                                 {% else %}
-                                                    {{ form_widget(nested_field) }}
+                                                    {% if field_name == '_delete' %}
+                                                        {{ form_widget(nested_field, {'label_render': false}) }}
+                                                    {% else %}
+                                                        {{ form_widget(nested_field) }}
+                                                    {% endif %}
                                                 {% endif %}
                                                 {% if nested_field.vars.errors|length > 0 %}
                                                     <div class="help-inline sonata-ba-field-error-messages">
@@ -130,7 +134,7 @@ file that was distributed with this source code.
                     jQuery('div#field_container_{{ id }} tbody.sonata-ba-tbody').sortable({
                         axis: 'y',
                         opacity: 0.6,
-                        items: 'tr',
+                        items: '> tr',
                         stop: apply_position_value_{{ id }}
                     });
 

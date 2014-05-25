@@ -1,11 +1,11 @@
 87410e986d995553dad04d67df993c702a6ef1c5	not-for-merge	branch '1.0.x' of git://github.com/kriswallsmith/assetic
-1d671c54f147ece319642132330927672b6190a7	not-for-merge	branch '1.1.x' of git://github.com/kriswallsmith/assetic
+ddaccff1bd80bd8721a56e0d36bb141363bf3605	not-for-merge	branch '1.1.x' of git://github.com/kriswallsmith/assetic
 a0e8bcf3edbbd807b40e6d414f570bf306ac1c2a	not-for-merge	branch 'asset-locator' of git://github.com/kriswallsmith/assetic
 3a059bc202c69a1ad97dedebec2cf38a0a236f4f	not-for-merge	branch 'css-crush-filter' of git://github.com/kriswallsmith/assetic
 f17d88d55d6b6d99b0a6197d8dee79c9475c7d10	not-for-merge	branch 'experimental/tree' of git://github.com/kriswallsmith/assetic
 56cae6720ae1a24650960f2cfc58a8d27f4203a0	not-for-merge	branch 'inherit-env' of git://github.com/kriswallsmith/assetic
 c274e92b0f46e2d57eb520be5723384a4a0de40e	not-for-merge	branch 'lessc-bin' of git://github.com/kriswallsmith/assetic
-f2a5214034928d4c6849bc94cfd462ea832a50a8	not-for-merge	branch 'master' of git://github.com/kriswallsmith/assetic
+964340e69361802eddf51e8eaa85acbd1c621edf	not-for-merge	branch 'master' of git://github.com/kriswallsmith/assetic
 1e8f0860116537168f17adb5aad0352c4d39d314	not-for-merge	branch 'node-visitor' of git://github.com/kriswallsmith/assetic
 a4a52d7295202728cea5c631f17cc67f82723bea	not-for-merge	branch 'output-collisions' of git://github.com/kriswallsmith/assetic
 6939d29fb5841ca71361264c6d64d64cebfdc896	not-for-merge	branch 'pipeline-asset-locator' of git://github.com/kriswallsmith/assetic

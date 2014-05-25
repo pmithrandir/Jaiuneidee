@@ -232,14 +232,14 @@ class ProfilerController
             $session->getFlashBag()->setAll($session->getFlashBag()->peekAll());
         }
 
-        if (null === $token) {
+        if ('empty' === $token || null === $token) {
             return new Response('', 200, array('Content-Type' => 'text/html'));
         }
 
         $this->profiler->disable();
 
         if (!$profile = $this->profiler->loadProfile($token)) {
-            return new Response('', 200, array('Content-Type' => 'text/html'));
+            return new Response('', 404, array('Content-Type' => 'text/html'));
         }
 
         // the toolbar position (top, bottom, normal, or null -- use the configuration)

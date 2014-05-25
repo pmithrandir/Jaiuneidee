@@ -1,3 +1,5 @@
 b51b71e96ee5dc7d9a318e4065646ef42054d3a6	not-for-merge	branch 'doctrine_dbal_adapter' of git://github.com/whiteoctober/Pagerfanta
+ad66e75556c429915f844f6ef686b90a3385ce3d	not-for-merge	branch 'doctrine_odm_phpcr_fix' of git://github.com/whiteoctober/Pagerfanta
+9eb2f3e3afa4005170668a160b7e89ac84f59ffc	not-for-merge	branch 'doctrine_odm_phpcr_fix_rows' of git://github.com/whiteoctober/Pagerfanta
 90766bc6571841fd2b5fad9b96d73b5a9d31fb44	not-for-merge	branch 'limit_subquery_walker' of git://github.com/whiteoctober/Pagerfanta
-c41473a84768ac18ec107033dbfa87229cdefafa	not-for-merge	branch 'master' of git://github.com/whiteoctober/Pagerfanta
+e7bb39bb45ecf64a5fa09a546f1d8007fd292359	not-for-merge	branch 'master' of git://github.com/whiteoctober/Pagerfanta

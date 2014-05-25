@@ -1,7 +1,7 @@
 Templates
 =========
 
-``SoantaAdminBundle`` comes with a significant amount of ``twig`` files used to display the
+``SonataAdminBundle`` comes with a significant amount of ``twig`` files used to display the
 different parts of each ``Admin`` action's page. If you read the ``Templates`` part of the :doc:`architecture` section of this guide, you should know by now how these are organized in
 the ``views`` folder. If you haven't, now would be a good time to do it.
 
@@ -71,7 +71,7 @@ Other Templates
 There are several other templates that can be customized, enabling you to fine-tune
 ``SonataAdminBundle``:
 
-* user_block: customizes the Twig block rendered by default in the top right corner of the admin interface, containing user information. Empty by defautl, see ``SonataUserBundle`` for a real example.
+* user_block: customizes the Twig block rendered by default in the top right corner of the admin interface, containing user information. Empty by default, see ``SonataUserBundle`` for a real example.
 * add_block: customizes the Twig block rendered by default in the top right corner of the admin interface, providing quick access to create operations on available admin classes.
 * history_revision_timestamp: customizes the way timestamps are rendered when using history related actions.
 * action: a generic template you can use for your custom actions
@@ -110,6 +110,7 @@ You can specify your templates in the config.yml file, like so:
                 acl:     SonataAdminBundle:CRUD:acl.html.twig
                 action:  SonataAdminBundle:CRUD:action.html.twig
                 select:  SonataAdminBundle:CRUD:list__select.html.twig
+                filter:  SonataAdminBundle:Form:filter_admin_fields.html.twig
                 dashboard:           SonataAdminBundle:Core:dashboard.html.twig
                 search:              SonataAdminBundle:Core:search.html.twig
                 batch_confirmation:  SonataAdminBundle:CRUD:batch_confirmation.html.twig

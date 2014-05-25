@@ -26,14 +26,14 @@ class PropertyAccessor implements PropertyAccessorInterface
     const IS_REF = 1;
 
     /**
-     * @var Boolean
+     * @var bool
      */
     private $magicCall;
 
     /**
-     * @var Boolean
+     * @var bool
      */
-    private $throwExceptionOnInvalidIndex;
+    private $ignoreInvalidIndices;
 
     /**
      * Should not be used by application code. Use
@@ -42,7 +42,7 @@ class PropertyAccessor implements PropertyAccessorInterface
     public function __construct($magicCall = false, $throwExceptionOnInvalidIndex = false)
     {
         $this->magicCall = $magicCall;
-        $this->throwExceptionOnInvalidIndex = $throwExceptionOnInvalidIndex;
+        $this->ignoreInvalidIndices = !$throwExceptionOnInvalidIndex;
     }
 
     /**
@@ -56,7 +56,7 @@ class PropertyAccessor implements PropertyAccessorInterface
             throw new UnexpectedTypeException($propertyPath, 'string or Symfony\Component\PropertyAccess\PropertyPathInterface');
         }
 
-        $propertyValues =& $this->readPropertiesUntil($objectOrArray, $propertyPath, $propertyPath->getLength(), $this->throwExceptionOnInvalidIndex);
+        $propertyValues =& $this->readPropertiesUntil($objectOrArray, $propertyPath, $propertyPath->getLength(), $this->ignoreInvalidIndices);
 
         return $propertyValues[count($propertyValues) - 1][self::VALUE];
     }
@@ -110,13 +110,13 @@ class PropertyAccessor implements PropertyAccessorInterface
      *
      * @param object|array          $objectOrArray The object or array to read from
      * @param PropertyPathInterface $propertyPath  The property path to read
-     * @param integer               $lastIndex     The index up to which should be read
+     * @param int                   $lastIndex     The index up to which should be read
      *
      * @return array The values read in the path.
      *
      * @throws UnexpectedTypeException If a value within the path is neither object nor array.
      */
-    private function &readPropertiesUntil(&$objectOrArray, PropertyPathInterface $propertyPath, $lastIndex, $throwExceptionOnNonexistantIndex = false)
+    private function &readPropertiesUntil(&$objectOrArray, PropertyPathInterface $propertyPath, $lastIndex, $ignoreInvalidIndices = true)
     {
         $propertyValues = array();
 
@@ -131,9 +131,25 @@ class PropertyAccessor implements PropertyAccessorInterface
 
             // Create missing nested arrays on demand
             if ($isIndex && $isArrayAccess && !isset($objectOrArray[$property])) {
-                if ($throwExceptionOnNonexistantIndex) {
-                    throw new NoSuchIndexException(sprintf('Cannot read property "%s". Available properties are "%s"', $property, print_r(array_keys($objectOrArray), true)));
+                if (!$ignoreInvalidIndices) {
+                    if (!is_array($objectOrArray)) {
+                        if (!$objectOrArray instanceof \Traversable) {
+                            throw new NoSuchIndexException(sprintf(
+                                'Cannot read property "%s".',
+                                $property
+                            ));
+                        }
+
+                        $objectOrArray = iterator_to_array($objectOrArray);
+                    }
+
+                    throw new NoSuchIndexException(sprintf(
+                        'Cannot read property "%s". Available properties are "%s"',
+                        $property,
+                        print_r(array_keys($objectOrArray), true)
+                    ));
                 }
+
                 $objectOrArray[$property] = $i + 1 < $propertyPath->getLength() ? array() : null;
             }
 
@@ -155,7 +171,7 @@ class PropertyAccessor implements PropertyAccessorInterface
      * Reads a key from an array-like structure.
      *
      * @param \ArrayAccess|array $array The array or \ArrayAccess object to read from
-     * @param string|integer     $index The key to read
+     * @param string|int         $index The key to read
      *
      * @return mixed The value of the key
      *
@@ -267,7 +283,7 @@ class PropertyAccessor implements PropertyAccessorInterface
      * Sets the value of the property at the given index in the path
      *
      * @param \ArrayAccess|array $array An array or \ArrayAccess object to write to
-     * @param string|integer     $index The index to write at
+     * @param string|int         $index The index to write at
      * @param mixed              $value The value to write
      *
      * @throws NoSuchPropertyException If the array does not implement \ArrayAccess or it is not an array
@@ -412,8 +428,8 @@ class PropertyAccessor implements PropertyAccessorInterface
             $addMethod = 'add'.$singular;
             $removeMethod = 'remove'.$singular;
 
-            $addMethodFound = $this->isAccessible($reflClass, $addMethod, 1);
-            $removeMethodFound = $this->isAccessible($reflClass, $removeMethod, 1);
+            $addMethodFound = $this->isMethodAccessible($reflClass, $addMethod, 1);
+            $removeMethodFound = $this->isMethodAccessible($reflClass, $removeMethod, 1);
 
             if ($addMethodFound && $removeMethodFound) {
                 return array($addMethod, $removeMethod);
@@ -428,8 +444,6 @@ class PropertyAccessor implements PropertyAccessorInterface
                 ));
             }
         }
-
-        return null;
     }
 
     /**
@@ -437,12 +451,12 @@ class PropertyAccessor implements PropertyAccessorInterface
      *
      * @param  \ReflectionClass $class      The class of the method
      * @param  string           $methodName The method name
-     * @param  integer          $parameters The number of parameters
+     * @param  int              $parameters The number of parameters
      *
-     * @return Boolean Whether the method is public and has $parameters
+     * @return bool    Whether the method is public and has $parameters
      *                                      required parameters
      */
-    private function isAccessible(\ReflectionClass $class, $methodName, $parameters)
+    private function isMethodAccessible(\ReflectionClass $class, $methodName, $parameters)
     {
         if ($class->hasMethod($methodName)) {
             $method = $class->getMethod($methodName);

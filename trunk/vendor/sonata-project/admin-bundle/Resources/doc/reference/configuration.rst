@@ -59,8 +59,10 @@ Full Configuration Options
                 html5_validate:                         true      # use html5 validation
                 confirm_exit:                           true      # enabled confirmation when quitting with unsaved changes
                 use_select2:                            true      # enable select2
+                use_icheck:                             true      # enable iCheck
                 pager_links:                            ~         # pager max links to display
                 dropdown_number_groups_per_colums:      2         # max items per column in dropdown menu (add button in top nav)
+                title_mode:           'both'                      # 'both', 'single_text' or 'single_image'
             dashboard:
                 groups:
 
@@ -101,6 +103,7 @@ Full Configuration Options
                 dashboard:            SonataAdminBundle:Core:dashboard.html.twig
                 search:               SonataAdminBundle:Core:search.html.twig
                 list:                 SonataAdminBundle:CRUD:list.html.twig
+                filter:               SonataAdminBundle:Form:filter_admin_fields.html.twig
                 show:                 SonataAdminBundle:CRUD:show.html.twig
                 edit:                 SonataAdminBundle:CRUD:edit.html.twig
                 preview:              SonataAdminBundle:CRUD:preview.html.twig

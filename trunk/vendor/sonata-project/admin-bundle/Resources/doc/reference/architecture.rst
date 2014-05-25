@@ -262,7 +262,7 @@ you will also find instructions on how to configure ``SonataAdminBundle`` to use
 instead of the default ones.
 
 Managing ``Admin`` Service
-------------------------------
+--------------------------
 
 Your ``Admin`` service definitions are parsed when Symfony2 is loaded, and handled by
 the ``Pool`` class. This class, available as the ``sonata.admin.pool`` service from the
@@ -284,7 +284,7 @@ To do this, you first need to call the ``addChild`` method in your PostAdmin ser
 .. code-block:: xml
 
     <!-- app/config/config.xml -->
-    <service id="sonata.news.admin.post" class="Sonata\NewsBundle\Admin\CommentAdmin">
+    <service id="sonata.news.admin.post" class="Sonata\NewsBundle\Admin\PostAdmin">
         ...
 
         <call method="addChild">
