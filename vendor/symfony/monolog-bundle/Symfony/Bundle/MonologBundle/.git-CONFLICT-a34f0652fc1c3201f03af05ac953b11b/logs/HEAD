@@ -1,2 +1,2 @@
-0000000000000000000000000000000000000000 1cebb645e4c0f4d62ae8c00346980b7713e90daa Pierre Bonneau <pmithrandir@localhost.(none)> 1397908677 +0300	clone: from git://github.com/symfony/MonologBundle.git
-1cebb645e4c0f4d62ae8c00346980b7713e90daa 1cebb645e4c0f4d62ae8c00346980b7713e90daa Pierre Bonneau <pmithrandir@localhost.(none)> 1397908688 +0300	checkout: moving from master to master
+0000000000000000000000000000000000000000 93970f8abcd53e1079cb06ce4db53263e143ad9a Pierre Bonneau <pmithrandir@localhost.(none)> 1401026535 +0300	clone: from git://github.com/symfony/MonologBundle.git
+93970f8abcd53e1079cb06ce4db53263e143ad9a 93970f8abcd53e1079cb06ce4db53263e143ad9a Pierre Bonneau <pmithrandir@localhost.(none)> 1401026544 +0300	checkout: moving from master to master

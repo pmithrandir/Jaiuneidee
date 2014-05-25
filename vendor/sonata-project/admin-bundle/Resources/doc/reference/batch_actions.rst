@@ -139,7 +139,7 @@ This method may return three different values:
 (Optional) Executing a pre batch hook
 -------------------------------------
 
-In your admin class you can create a ``preBacthAction`` method to execute something before doing the batch action.
+In your admin class you can create a ``preBatchAction`` method to execute something before doing the batch action.
 The main purpose of this method is to alter the query or the list of selected id.
 
 .. code-block:: php
@@ -163,11 +163,15 @@ The main purpose of this method is to alter the query or the list of selected id
 Define the core action logic
 ----------------------------
 
-The method ``batchAction<MyAction>`` will be executed to process your batch. The selected
+The method ``batchAction<MyAction>`` will be executed to process your batch in your ``CRUDController`` class. The selected
 objects are passed to this method through a query argument which can be used to retrieve them. 
 If for some reason it makes sense to perform your batch action without the default selection 
 method (for example you defined another way, at template level, to select model at a lower 
 granularity), the passed query is ``null``.
+
+.. note::
+
+    You can check how to declare your own ``CRUDController`` class in the Architecture section.
 
 .. code-block:: php
 

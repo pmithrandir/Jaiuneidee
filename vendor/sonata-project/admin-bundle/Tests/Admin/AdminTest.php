@@ -281,11 +281,11 @@ class AdminTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals('admin_sonata_news_post_comment', $commentAdmin->getBaseRouteName());
 
         $this->assertTrue($postAdmin->hasRoute('show'));
-//        $this->assertTrue($postAdmin->hasRoute('sonata.post.admin.post.show'));
-//        $this->assertTrue($postAdmin->hasRoute('sonata.post.admin.post|sonata.post.admin.comment.show'));
-//        $this->assertTrue($postAdmin->hasRoute('sonata.post.admin.comment.list'));
-//        $this->assertFalse($postAdmin->hasRoute('sonata.post.admin.post|sonata.post.admin.comment.edit'));
-//        $this->assertFalse($commentAdmin->hasRoute('edit'));
+        $this->assertTrue($postAdmin->hasRoute('sonata.post.admin.post.show'));
+        $this->assertTrue($postAdmin->hasRoute('sonata.post.admin.post|sonata.post.admin.comment.show'));
+        $this->assertTrue($postAdmin->hasRoute('sonata.post.admin.comment.list'));
+        $this->assertFalse($postAdmin->hasRoute('sonata.post.admin.post|sonata.post.admin.comment.edit'));
+        $this->assertFalse($commentAdmin->hasRoute('edit'));
     }
 
     /**
@@ -848,7 +848,7 @@ class AdminTest extends \PHPUnit_Framework_TestCase
         $securityHandler=$this->getMock('Sonata\AdminBundle\Security\Handler\AclSecurityHandlerInterface');
         $securityHandler->expects($this->any())
             ->method('isGranted')
-            ->will($this->returnCallback(function (AdminInterface $adminIn, $attributes, $object = nul) use ($admin, $entity) {
+            ->will($this->returnCallback(function (AdminInterface $adminIn, $attributes, $object = null) use ($admin, $entity) {
                 if ($admin == $adminIn && $attributes == 'FOO') {
                     if (($object == $admin) || ($object == $entity)) {
                         return true;

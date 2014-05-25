@@ -123,12 +123,14 @@ This code manage the many-to-[one|many] association field popup
 
                 field_dialog_title_{{ id }}.html("{{ associationadmin.label|trans({}, associationadmin.translationdomain) }}");
 
-                Admin.add_filters(field_dialog_{{ id }});
+                Admin.shared_setup(field_dialog_{{ id }});
 
                 field_dialog_form_list_handle_action_{{ id }}();
 
                 // open the dialog in modal mode
                 field_dialog_{{ id }}.modal();
+
+                Admin.setup_list_modal(field_dialog_{{ id }});
             }
         });
     };
@@ -158,6 +160,8 @@ This code manage the many-to-[one|many] association field popup
                 field_dialog_content_{{ id }}.html(html);
                 field_dialog_title_{{ id }}.html("{{ associationadmin.label|trans({}, associationadmin.translationdomain) }}");
 
+                Admin.shared_setup(field_dialog_{{ id }});
+
                 // capture the submit event to make an ajax call, ie : POST data to the
                 // related create admin
                 jQuery('a', field_dialog_{{ id }}).on('click', field_dialog_form_action_{{ id }});
@@ -165,6 +169,8 @@ This code manage the many-to-[one|many] association field popup
 
                 // open the dialog in modal mode
                 field_dialog_{{ id }}.modal();
+
+                Admin.setup_list_modal(field_dialog_{{ id }});
             }
         });
     };
@@ -246,7 +252,7 @@ This code manage the many-to-[one|many] association field popup
                             dataType: 'html',
                             type: 'POST',
                             success: function(html) {
-                                jQuery('#field_container_content_{{ id }}').replaceWith(html);
+                                jQuery('#field_container_{{ id }}').replaceWith(html);
                                 var newElement = jQuery('#{{ id }} [value="' + data.objectId + '"]');
                                 if (newElement.is("input")) {
                                     newElement.attr('checked', 'checked');
@@ -266,7 +272,7 @@ This code manage the many-to-[one|many] association field popup
                 // otherwise, display form error
                 field_dialog_content_{{ id }}.html(data);
 
-                Admin.add_pretty_errors(field_dialog_{{ id }});
+                Admin.shared_setup(field_dialog_{{ id }});
 
                 // reattach the event
                 jQuery('form', field_dialog_{{ id }}).submit(field_dialog_form_action_{{ id }});
@@ -316,7 +322,7 @@ This code manage the many-to-[one|many] association field popup
     }
 
     if (field_dialog_{{ id }}) {
-        Admin.add_pretty_errors(field_dialog_{{ id }});
+        Admin.shared_setup(field_dialog_{{ id }});
     }
 
     {% if sonata_admin.edit == 'list' %}

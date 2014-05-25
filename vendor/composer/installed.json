@@ -265,7 +265,7 @@
             {
                 "name": "Johannes Schmitt",
                 "email": "schmittjoh@gmail.com",
-                "homepage": "https://github.com/schmittjoh",
+                "homepage": "http://jmsyst.com",
                 "role": "Developer of wrapped JMSSerializerBundle"
             }
         ],
@@ -410,9 +410,9 @@
                 "email": "kontakt@beberlei.de"
             },
             {
-                "name": "Johannes M. Schmitt",
+                "name": "Johannes Schmitt",
                 "email": "schmittjoh@gmail.com",
-                "homepage": "https://github.com/schmittjoh",
+                "homepage": "http://jmsyst.com",
                 "role": "Developer of wrapped JMSSerializerBundle"
             }
         ],
@@ -491,17 +491,17 @@
     },
     {
         "name": "doctrine/common",
-        "version": "v2.4.1",
-        "version_normalized": "2.4.1.0",
+        "version": "v2.4.2",
+        "version_normalized": "2.4.2.0",
         "source": {
             "type": "git",
             "url": "https://github.com/doctrine/common.git",
-            "reference": "ceb18cf9b0230f3ea208b6238130fd415abda0a7"
+            "reference": "5db6ab40e4c531f14dad4ca96a394dfce5d4255b"
         },
         "dist": {
             "type": "zip",
-            "url": "https://api.github.com/repos/doctrine/common/zipball/ceb18cf9b0230f3ea208b6238130fd415abda0a7",
-            "reference": "ceb18cf9b0230f3ea208b6238130fd415abda0a7",
+            "url": "https://api.github.com/repos/doctrine/common/zipball/5db6ab40e4c531f14dad4ca96a394dfce5d4255b",
+            "reference": "5db6ab40e4c531f14dad4ca96a394dfce5d4255b",
             "shasum": ""
         },
         "require": {
@@ -512,7 +512,10 @@
             "doctrine/lexer": "1.*",
             "php": ">=5.3.2"
         },
-        "time": "2013-09-07 10:20:34",
+        "require-dev": {
+            "phpunit/phpunit": "~3.7"
+        },
+        "time": "2014-05-21 19:28:51",
         "type": "library",
         "extra": {
             "branch-alias": {
@@ -550,9 +553,9 @@
                 "email": "kontakt@beberlei.de"
             },
             {
-                "name": "Johannes M. Schmitt",
+                "name": "Johannes Schmitt",
                 "email": "schmittjoh@gmail.com",
-                "homepage": "https://github.com/schmittjoh",
+                "homepage": "http://jmsyst.com",
                 "role": "Developer of wrapped JMSSerializerBundle"
             }
         ],
@@ -568,17 +571,17 @@
     },
     {
         "name": "symfony/symfony",
-        "version": "v2.4.3",
-        "version_normalized": "2.4.3.0",
+        "version": "v2.4.5",
+        "version_normalized": "2.4.5.0",
         "source": {
             "type": "git",
             "url": "https://github.com/symfony/symfony.git",
-            "reference": "3199b2e0d194f71fe2e13c95768b2ef22206682b"
+            "reference": "885b6d17447fcc3cd9c42622321e5af4283dbde1"
         },
         "dist": {
             "type": "zip",
-            "url": "https://api.github.com/repos/symfony/symfony/zipball/3199b2e0d194f71fe2e13c95768b2ef22206682b",
-            "reference": "3199b2e0d194f71fe2e13c95768b2ef22206682b",
+            "url": "https://api.github.com/repos/symfony/symfony/zipball/885b6d17447fcc3cd9c42622321e5af4283dbde1",
+            "reference": "885b6d17447fcc3cd9c42622321e5af4283dbde1",
             "shasum": ""
         },
         "require": {
@@ -641,7 +644,7 @@
             "ocramius/proxy-manager": ">=0.3.1,<0.6-dev",
             "propel/propel1": "1.6.*"
         },
-        "time": "2014-04-04 10:27:02",
+        "time": "2014-05-22 21:04:05",
         "type": "library",
         "extra": {
             "branch-alias": {
@@ -740,12 +743,12 @@
         "source": {
             "type": "git",
             "url": "https://github.com/kriswallsmith/assetic.git",
-            "reference": "f2a5214034928d4c6849bc94cfd462ea832a50a8"
+            "reference": "964340e69361802eddf51e8eaa85acbd1c621edf"
         },
         "dist": {
             "type": "zip",
-            "url": "https://api.github.com/repos/kriswallsmith/assetic/zipball/f2a5214034928d4c6849bc94cfd462ea832a50a8",
-            "reference": "f2a5214034928d4c6849bc94cfd462ea832a50a8",
+            "url": "https://api.github.com/repos/kriswallsmith/assetic/zipball/964340e69361802eddf51e8eaa85acbd1c621edf",
+            "reference": "964340e69361802eddf51e8eaa85acbd1c621edf",
             "shasum": ""
         },
         "require": {
@@ -762,6 +765,7 @@
             "mrclay/minify": "*",
             "patchwork/jsqueeze": "*",
             "phpunit/phpunit": "~3.7",
+            "psr/log": "~1.0",
             "ptachoire/cssembed": "*",
             "twig/twig": "~1.6"
         },
@@ -773,7 +777,7 @@
             "ptachoire/cssembed": "Assetic provides the integration with phpcssembed to embed data uris",
             "twig/twig": "Assetic provides the integration with the Twig templating engine"
         },
-        "time": "2014-04-08 21:27:14",
+        "time": "2014-05-05 12:59:42",
         "type": "library",
         "extra": {
             "branch-alias": {
@@ -816,12 +820,12 @@
         "source": {
             "type": "git",
             "url": "https://github.com/symfony/AsseticBundle.git",
-            "reference": "ea2424a1ea11dd276eaecdbacd188de637fd904a"
+            "reference": "ff46000dd73411bbe812238f38bcacaf3f94b504"
         },
         "dist": {
             "type": "zip",
-            "url": "https://api.github.com/repos/symfony/AsseticBundle/zipball/ea2424a1ea11dd276eaecdbacd188de637fd904a",
-            "reference": "ea2424a1ea11dd276eaecdbacd188de637fd904a",
+            "url": "https://api.github.com/repos/symfony/AsseticBundle/zipball/ff46000dd73411bbe812238f38bcacaf3f94b504",
+            "reference": "ff46000dd73411bbe812238f38bcacaf3f94b504",
             "shasum": ""
         },
         "require": {
@@ -842,7 +846,7 @@
             "kriswallsmith/spork": "v0.2",
             "symfony/twig-bundle": "~2.1"
         },
-        "time": "2014-04-01 18:02:48",
+        "time": "2014-05-05 14:19:41",
         "type": "symfony-bundle",
         "extra": {
             "branch-alias": {
@@ -876,17 +880,17 @@
     },
     {
         "name": "monolog/monolog",
-        "version": "1.8.0",
-        "version_normalized": "1.8.0.0",
+        "version": "1.9.1",
+        "version_normalized": "1.9.1.0",
         "source": {
             "type": "git",
             "url": "https://github.com/Seldaek/monolog.git",
-            "reference": "392ef35fd470638e08d0160d6b1cbab63cb23174"
+            "reference": "65026b610f8c19e61d7242f600530677b0466aac"
         },
         "dist": {
             "type": "zip",
-            "url": "https://api.github.com/repos/Seldaek/monolog/zipball/392ef35fd470638e08d0160d6b1cbab63cb23174",
-            "reference": "392ef35fd470638e08d0160d6b1cbab63cb23174",
+            "url": "https://api.github.com/repos/Seldaek/monolog/zipball/65026b610f8c19e61d7242f600530677b0466aac",
+            "reference": "65026b610f8c19e61d7242f600530677b0466aac",
             "shasum": ""
         },
         "require": {
@@ -911,11 +915,11 @@
             "rollbar/rollbar": "Allow sending log messages to Rollbar",
             "ruflin/elastica": "Allow sending log messages to an Elastic Search server"
         },
-        "time": "2014-03-23 19:50:26",
+        "time": "2014-04-24 13:29:03",
         "type": "library",
         "extra": {
             "branch-alias": {
-                "dev-master": "1.8.x-dev"
+                "dev-master": "1.9.x-dev"
             }
         },
         "installation-source": "dist",
@@ -952,12 +956,12 @@
         "source": {
             "type": "git",
             "url": "https://github.com/symfony/MonologBundle.git",
-            "reference": "1cebb645e4c0f4d62ae8c00346980b7713e90daa"
+            "reference": "93970f8abcd53e1079cb06ce4db53263e143ad9a"
         },
         "dist": {
             "type": "zip",
-            "url": "https://api.github.com/repos/symfony/MonologBundle/zipball/1cebb645e4c0f4d62ae8c00346980b7713e90daa",
-            "reference": "1cebb645e4c0f4d62ae8c00346980b7713e90daa",
+            "url": "https://api.github.com/repos/symfony/MonologBundle/zipball/93970f8abcd53e1079cb06ce4db53263e143ad9a",
+            "reference": "93970f8abcd53e1079cb06ce4db53263e143ad9a",
             "shasum": ""
         },
         "require": {
@@ -972,7 +976,7 @@
             "symfony/console": "~2.3",
             "symfony/yaml": "~2.3"
         },
-        "time": "2014-04-16 07:35:34",
+        "time": "2014-04-29 08:13:14",
         "type": "symfony-bundle",
         "extra": {
             "branch-alias": {
@@ -1016,21 +1020,29 @@
         "source": {
             "type": "git",
             "url": "https://github.com/sensiolabs/SensioDistributionBundle.git",
-            "reference": "5581391dad1138511716f00a1212ec68bb23c273"
+            "reference": "d7ad610b9667ed33ade22484023552eb75372a44"
         },
         "dist": {
             "type": "zip",
-            "url": "https://api.github.com/repos/sensiolabs/SensioDistributionBundle/zipball/5581391dad1138511716f00a1212ec68bb23c273",
-            "reference": "5581391dad1138511716f00a1212ec68bb23c273",
+            "url": "https://api.github.com/repos/sensiolabs/SensioDistributionBundle/zipball/d7ad610b9667ed33ade22484023552eb75372a44",
+            "reference": "d7ad610b9667ed33ade22484023552eb75372a44",
             "shasum": ""
         },
         "require": {
             "php": ">=5.3.3",
-            "symfony/class-loader": "~2.3",
-            "symfony/filesystem": "~2.3",
-            "symfony/framework-bundle": "~2.3"
+            "symfony/class-loader": "~2.2",
+            "symfony/config": "~2.2",
+            "symfony/dependency-injection": "~2.2",
+            "symfony/filesystem": "~2.2",
+            "symfony/form": "~2.2",
+            "symfony/framework-bundle": "~2.2",
+            "symfony/http-foundation": "~2.2",
+            "symfony/http-kernel": "~2.2",
+            "symfony/process": "~2.2",
+            "symfony/validator": "~2.2",
+            "symfony/yaml": "~2.2"
         },
-        "time": "2014-04-15 20:55:26",
+        "time": "2014-05-10 12:31:39",
         "type": "symfony-bundle",
         "extra": {
             "branch-alias": {
@@ -1128,12 +1140,12 @@
         "source": {
             "type": "git",
             "url": "https://github.com/sensiolabs/SensioGeneratorBundle.git",
-            "reference": "201c75b4ae26e906c26cdfe4db7ac5043cc15743"
+            "reference": "8b7a33aa3d22388443b6de0b0cf184122e9f60d2"
         },
         "dist": {
             "type": "zip",
-            "url": "https://api.github.com/repos/sensiolabs/SensioGeneratorBundle/zipball/201c75b4ae26e906c26cdfe4db7ac5043cc15743",
-            "reference": "201c75b4ae26e906c26cdfe4db7ac5043cc15743",
+            "url": "https://api.github.com/repos/sensiolabs/SensioGeneratorBundle/zipball/8b7a33aa3d22388443b6de0b0cf184122e9f60d2",
+            "reference": "8b7a33aa3d22388443b6de0b0cf184122e9f60d2",
             "shasum": ""
         },
         "require": {
@@ -1145,7 +1157,7 @@
             "symfony/doctrine-bridge": "~2.2",
             "twig/twig": "~1.11"
         },
-        "time": "2014-03-30 07:47:50",
+        "time": "2014-04-28 14:01:06",
         "type": "symfony-bundle",
         "extra": {
             "branch-alias": {
@@ -1174,27 +1186,30 @@
     },
     {
         "name": "swiftmailer/swiftmailer",
-        "version": "v5.1.0",
-        "version_normalized": "5.1.0.0",
+        "version": "v5.2.0",
+        "version_normalized": "5.2.0.0",
         "source": {
             "type": "git",
             "url": "https://github.com/swiftmailer/swiftmailer.git",
-            "reference": "748c01c1144713ac0118396935d10b6ceec91b68"
+            "reference": "043e336b871f17a117f76ef8e190eddfc04c8d48"
         },
         "dist": {
             "type": "zip",
-            "url": "https://api.github.com/repos/swiftmailer/swiftmailer/zipball/748c01c1144713ac0118396935d10b6ceec91b68",
-            "reference": "748c01c1144713ac0118396935d10b6ceec91b68",
+            "url": "https://api.github.com/repos/swiftmailer/swiftmailer/zipball/043e336b871f17a117f76ef8e190eddfc04c8d48",
+            "reference": "043e336b871f17a117f76ef8e190eddfc04c8d48",
             "shasum": ""
         },
         "require": {
             "php": ">=5.2.4"
         },
-        "time": "2014-03-18 09:03:27",
+        "require-dev": {
+            "mockery/mockery": "~0.9.1"
+        },
+        "time": "2014-05-08 08:11:19",
         "type": "library",
         "extra": {
             "branch-alias": {
-                "dev-master": "5.1-dev"
+                "dev-master": "5.2-dev"
             }
         },
         "installation-source": "dist",
@@ -1233,12 +1248,12 @@
         "source": {
             "type": "git",
             "url": "https://github.com/symfony/SwiftmailerBundle.git",
-            "reference": "e98defd402f72e8b54a029ba4d3ac4cb51dc3577"
+            "reference": "85840a287403e53268e212f892607e01cc61b6da"
         },
         "dist": {
             "type": "zip",
-            "url": "https://api.github.com/repos/symfony/SwiftmailerBundle/zipball/e98defd402f72e8b54a029ba4d3ac4cb51dc3577",
-            "reference": "e98defd402f72e8b54a029ba4d3ac4cb51dc3577",
+            "url": "https://api.github.com/repos/symfony/SwiftmailerBundle/zipball/85840a287403e53268e212f892607e01cc61b6da",
+            "reference": "85840a287403e53268e212f892607e01cc61b6da",
             "shasum": ""
         },
         "require": {
@@ -1252,7 +1267,10 @@
             "symfony/http-kernel": "~2.1",
             "symfony/yaml": "~2.1"
         },
-        "time": "2014-04-05 17:15:52",
+        "suggest": {
+            "psr/log": "Allows logging"
+        },
+        "time": "2014-04-29 13:05:02",
         "type": "symfony-bundle",
         "extra": {
             "branch-alias": {
@@ -1422,7 +1440,7 @@
             {
                 "name": "Johannes M. Schmitt",
                 "email": "schmittjoh@gmail.com",
-                "homepage": "https://github.com/schmittjoh",
+                "homepage": "http://jmsyst.com",
                 "role": "Developer of wrapped JMSSerializerBundle"
             }
         ],
@@ -1490,7 +1508,7 @@
             {
                 "name": "Johannes M. Schmitt",
                 "email": "schmittjoh@gmail.com",
-                "homepage": "https://github.com/schmittjoh",
+                "homepage": "http://jmsyst.com",
                 "role": "Developer of wrapped JMSSerializerBundle"
             }
         ],
@@ -1844,7 +1862,7 @@
             {
                 "name": "Johannes M. Schmitt",
                 "email": "schmittjoh@gmail.com",
-                "homepage": "https://github.com/schmittjoh",
+                "homepage": "http://jmsyst.com",
                 "role": "Developer of wrapped JMSSerializerBundle"
             }
         ],
@@ -2464,12 +2482,12 @@
         "source": {
             "type": "git",
             "url": "https://github.com/whiteoctober/Pagerfanta.git",
-            "reference": "c41473a84768ac18ec107033dbfa87229cdefafa"
+            "reference": "e7bb39bb45ecf64a5fa09a546f1d8007fd292359"
         },
         "dist": {
             "type": "zip",
-            "url": "https://api.github.com/repos/whiteoctober/Pagerfanta/zipball/c41473a84768ac18ec107033dbfa87229cdefafa",
-            "reference": "c41473a84768ac18ec107033dbfa87229cdefafa",
+            "url": "https://api.github.com/repos/whiteoctober/Pagerfanta/zipball/e7bb39bb45ecf64a5fa09a546f1d8007fd292359",
+            "reference": "e7bb39bb45ecf64a5fa09a546f1d8007fd292359",
             "shasum": ""
         },
         "require": {
@@ -2478,7 +2496,8 @@
         "require-dev": {
             "doctrine/mongodb-odm": "1.0.*@dev",
             "doctrine/orm": "2.3.*",
-            "doctrine/phpcr-odm": "1.0.*",
+            "doctrine/phpcr-odm": "1.*",
+            "jackalope/jackalope-doctrine-dbal": "1.*",
             "jmikola/geojson": "1.0.*",
             "mandango/mandango": "1.0.*@dev",
             "phpunit/phpunit": "3.7.*",
@@ -2493,7 +2512,7 @@
             "propel/propel1": "To use the PropelAdapter",
             "solarium/solarium": "To use the SolariumAdapter."
         },
-        "time": "2014-03-14 07:32:00",
+        "time": "2014-05-23 10:20:31",
         "type": "library",
         "extra": {
             "branch-alias": {
@@ -2533,12 +2552,12 @@
         "source": {
             "type": "git",
             "url": "https://github.com/whiteoctober/WhiteOctoberPagerfantaBundle.git",
-            "reference": "35c8e2124ffa62b14f09dd357c78ade58ac444bc"
+            "reference": "8bac169e9839bb685a4b912f426600b3d7401ec3"
         },
         "dist": {
             "type": "zip",
-            "url": "https://api.github.com/repos/whiteoctober/WhiteOctoberPagerfantaBundle/zipball/35c8e2124ffa62b14f09dd357c78ade58ac444bc",
-            "reference": "35c8e2124ffa62b14f09dd357c78ade58ac444bc",
+            "url": "https://api.github.com/repos/whiteoctober/WhiteOctoberPagerfantaBundle/zipball/8bac169e9839bb685a4b912f426600b3d7401ec3",
+            "reference": "8bac169e9839bb685a4b912f426600b3d7401ec3",
             "shasum": ""
         },
         "require": {
@@ -2551,7 +2570,7 @@
             "phpunit/phpunit": "~3.7",
             "symfony/symfony": "~2.2"
         },
-        "time": "2014-01-30 11:03:51",
+        "time": "2014-05-20 10:23:37",
         "type": "symfony-bundle",
         "extra": {
             "branch-alias": {
@@ -2582,126 +2601,34 @@
         ]
     },
     {
-        "name": "doctrine/orm",
-        "version": "v2.4.2",
-        "version_normalized": "2.4.2.0",
+        "name": "sonata-project/jquery-bundle",
+        "version": "dev-master",
+        "version_normalized": "9999999-dev",
         "source": {
             "type": "git",
-            "url": "https://github.com/doctrine/doctrine2.git",
-            "reference": "0363a5548d9263f979f9ca149decb9cfc66419ab"
+            "url": "https://github.com/sonata-project/SonatajQueryBundle.git",
+            "reference": "8db2fbc85e57f193d22ed67f0223c8a717eeaad5"
         },
         "dist": {
             "type": "zip",
-            "url": "https://api.github.com/repos/doctrine/doctrine2/zipball/0363a5548d9263f979f9ca149decb9cfc66419ab",
-            "reference": "0363a5548d9263f979f9ca149decb9cfc66419ab",
+            "url": "https://api.github.com/repos/sonata-project/SonatajQueryBundle/zipball/8db2fbc85e57f193d22ed67f0223c8a717eeaad5",
+            "reference": "8db2fbc85e57f193d22ed67f0223c8a717eeaad5",
             "shasum": ""
         },
         "require": {
-            "doctrine/collections": "~1.1",
-            "doctrine/dbal": "~2.4",
-            "ext-pdo": "*",
-            "php": ">=5.3.2",
-            "symfony/console": "~2.0"
+            "php": ">=5.3.2"
         },
-        "require-dev": {
-            "satooshi/php-coveralls": "dev-master",
-            "symfony/yaml": "~2.1"
-        },
-        "suggest": {
-            "symfony/yaml": "If you want to use YAML Metadata Mapping Driver"
-        },
-        "time": "2014-02-08 16:35:09",
-        "bin": [
-            "bin/doctrine",
-            "bin/doctrine.php"
-        ],
-        "type": "library",
-        "extra": {
-            "branch-alias": {
-                "dev-master": "2.4.x-dev"
-            }
-        },
-        "installation-source": "dist",
-        "autoload": {
-            "psr-0": {
-                "Doctrine\\ORM\\": "lib/"
-            }
-        },
-        "notification-url": "https://packagist.org/downloads/",
-        "license": [
-            "MIT"
-        ],
-        "authors": [
-            {
-                "name": "Jonathan Wage",
-                "email": "jonwage@gmail.com",
-                "homepage": "http://www.jwage.com/",
-                "role": "Creator"
-            },
-            {
-                "name": "Guilherme Blanco",
-                "email": "guilhermeblanco@gmail.com",
-                "homepage": "http://www.instaclick.com"
-            },
-            {
-                "name": "Roman Borschel",
-                "email": "roman@code-factory.org"
-            },
-            {
-                "name": "Benjamin Eberlei",
-                "email": "kontakt@beberlei.de"
-            }
-        ],
-        "description": "Object-Relational-Mapper for PHP",
-        "homepage": "http://www.doctrine-project.org",
-        "keywords": [
-            "database",
-            "orm"
-        ]
-    },
-    {
-        "name": "friendsofsymfony/user-bundle",
-        "version": "v1.3.3",
-        "version_normalized": "1.3.3.0",
-        "target-dir": "FOS/UserBundle",
-        "source": {
-            "type": "git",
-            "url": "https://github.com/FriendsOfSymfony/FOSUserBundle.git",
-            "reference": "0fc044447ca41acc73d424a6a90d1b9f7fa25d7b"
-        },
-        "dist": {
-            "type": "zip",
-            "url": "https://api.github.com/repos/FriendsOfSymfony/FOSUserBundle/zipball/0fc044447ca41acc73d424a6a90d1b9f7fa25d7b",
-            "reference": "0fc044447ca41acc73d424a6a90d1b9f7fa25d7b",
-            "shasum": ""
-        },
-        "require": {
-            "php": ">=5.3.2",
-            "symfony/framework-bundle": "~2.1",
-            "symfony/security-bundle": "~2.1"
-        },
-        "require-dev": {
-            "doctrine/doctrine-bundle": "*",
-            "swiftmailer/swiftmailer": "~4.3",
-            "symfony/validator": "~2.1",
-            "symfony/yaml": "~2.1",
-            "twig/twig": "~1.5",
-            "willdurand/propel-typehintable-behavior": "dev-master"
-        },
-        "suggest": {
-            "willdurand/propel-typehintable-behavior": "Needed when using the propel implementation"
-        },
-        "time": "2013-09-23 08:24:12",
+        "time": "2014-03-19 11:45:00",
         "type": "symfony-bundle",
         "extra": {
             "branch-alias": {
-                "dev-master": "2.0.x-dev"
+                "dev-master": "1.9.x-dev"
             }
         },
-        "installation-source": "dist",
+        "installation-source": "source",
         "autoload": {
-            "psr-0": {
-                "FOS\\UserBundle": ""
+            "psr-4": {
+                "Sonata\\jQueryBundle\\": ""
             }
         },
         "notification-url": "https://packagist.org/downloads/",
@@ -2710,23 +2637,20 @@
         ],
         "authors": [
             {
-                "name": "Christophe Coevoet",
-                "email": "stof@notk.org"
+                "name": "Thomas Rabaix",
+                "email": "thomas.rabaix@sonata-project.org",
+                "homepage": "http://sonata-project.org"
             },
             {
-                "name": "Thibault Duplessis",
-                "email": "thibault.duplessis@gmail.com",
-                "homepage": "http://ornicar.github.com"
-            },
-            {
-                "name": "FriendsOfSymfony Community",
-                "homepage": "https://github.com/friendsofsymfony/FOSUserBundle/contributors"
+                "name": "Sonata Community",
+                "homepage": "https://github.com/sonata-project/SonatajQueryBundle/contributors"
             }
         ],
-        "description": "Symfony FOSUserBundle",
-        "homepage": "http://friendsofsymfony.github.com",
+        "description": "Symfony SonatajQueryBundle",
+        "homepage": "http://sonata-project.org/bundles/jquery",
         "keywords": [
-            "User management"
+            "jquery",
+            "sonata"
         ]
     },
     {
@@ -2952,7 +2876,7 @@
                 "email": "stof@notk.org"
             },
             {
-                "name": "KnpLabs",
+                "name": "Knplabs",
                 "homepage": "http://knplabs.com"
             },
             {
@@ -2967,23 +2891,23 @@
     },
     {
         "name": "sonata-project/cache",
-        "version": "1.0.1",
-        "version_normalized": "1.0.1.0",
+        "version": "1.0.2",
+        "version_normalized": "1.0.2.0",
         "source": {
             "type": "git",
             "url": "https://github.com/sonata-project/cache.git",
-            "reference": "3bd8c266c6184ebcf82846d659292e9680b979eb"
+            "reference": "7c91e7fd1ca5be4273b09388650709bff31d8966"
         },
         "dist": {
             "type": "zip",
-            "url": "https://api.github.com/repos/sonata-project/cache/zipball/3bd8c266c6184ebcf82846d659292e9680b979eb",
-            "reference": "3bd8c266c6184ebcf82846d659292e9680b979eb",
+            "url": "https://api.github.com/repos/sonata-project/cache/zipball/7c91e7fd1ca5be4273b09388650709bff31d8966",
+            "reference": "7c91e7fd1ca5be4273b09388650709bff31d8966",
             "shasum": ""
         },
         "require-dev": {
             "doctrine/orm": "~2.2",
             "doctrine/phpcr-odm": "~1.0",
-            "predis/predis": "~0.8",
+            "predis/predis": "~0.8,<1.0",
             "psr/log": "~1.0"
         },
         "suggest": {
@@ -2993,7 +2917,7 @@
             "ext-memcached": "Caching with ext/memcached",
             "predis/predis": "Install redis php"
         },
-        "time": "2014-02-13 15:12:33",
+        "time": "2014-05-12 08:55:48",
         "type": "library",
         "extra": {
             "branch-alias": {
@@ -3100,12 +3024,12 @@
         "source": {
             "type": "git",
             "url": "https://github.com/sonata-project/SonataAdminBundle.git",
-            "reference": "7d1aebb93efc65ccb53cdb750dcb8122593fac2c"
+            "reference": "4b7cd58c1e5feef212fb07631eef6132340c8e94"
         },
         "dist": {
             "type": "zip",
-            "url": "https://api.github.com/repos/sonata-project/SonataAdminBundle/zipball/7d1aebb93efc65ccb53cdb750dcb8122593fac2c",
-            "reference": "7d1aebb93efc65ccb53cdb750dcb8122593fac2c",
+            "url": "https://api.github.com/repos/sonata-project/SonataAdminBundle/zipball/4b7cd58c1e5feef212fb07631eef6132340c8e94",
+            "reference": "4b7cd58c1e5feef212fb07631eef6132340c8e94",
             "shasum": ""
         },
         "require": {
@@ -3137,7 +3061,7 @@
             "jms/translation-bundle": "Extract message keys from Admins",
             "sonata-project/intl-bundle": "Add localized date and number into the list"
         },
-        "time": "2014-04-17 12:05:47",
+        "time": "2014-05-20 09:22:42",
         "type": "symfony-bundle",
         "extra": {
             "branch-alias": {
@@ -3175,22 +3099,100 @@
         ]
     },
     {
+        "name": "doctrine/orm",
+        "version": "v2.4.2",
+        "version_normalized": "2.4.2.0",
+        "source": {
+            "type": "git",
+            "url": "https://github.com/doctrine/doctrine2.git",
+            "reference": "0363a5548d9263f979f9ca149decb9cfc66419ab"
+        },
+        "dist": {
+            "type": "zip",
+            "url": "https://api.github.com/repos/doctrine/doctrine2/zipball/0363a5548d9263f979f9ca149decb9cfc66419ab",
+            "reference": "0363a5548d9263f979f9ca149decb9cfc66419ab",
+            "shasum": ""
+        },
+        "require": {
+            "doctrine/collections": "~1.1",
+            "doctrine/dbal": "~2.4",
+            "ext-pdo": "*",
+            "php": ">=5.3.2",
+            "symfony/console": "~2.0"
+        },
+        "require-dev": {
+            "satooshi/php-coveralls": "dev-master",
+            "symfony/yaml": "~2.1"
+        },
+        "suggest": {
+            "symfony/yaml": "If you want to use YAML Metadata Mapping Driver"
+        },
+        "time": "2014-02-08 16:35:09",
+        "bin": [
+            "bin/doctrine",
+            "bin/doctrine.php"
+        ],
+        "type": "library",
+        "extra": {
+            "branch-alias": {
+                "dev-master": "2.4.x-dev"
+            }
+        },
+        "installation-source": "dist",
+        "autoload": {
+            "psr-0": {
+                "Doctrine\\ORM\\": "lib/"
+            }
+        },
+        "notification-url": "https://packagist.org/downloads/",
+        "license": [
+            "MIT"
+        ],
+        "authors": [
+            {
+                "name": "Jonathan Wage",
+                "email": "jonwage@gmail.com",
+                "homepage": "http://www.jwage.com/",
+                "role": "Creator"
+            },
+            {
+                "name": "Guilherme Blanco",
+                "email": "guilhermeblanco@gmail.com",
+                "homepage": "http://www.instaclick.com"
+            },
+            {
+                "name": "Roman Borschel",
+                "email": "roman@code-factory.org"
+            },
+            {
+                "name": "Benjamin Eberlei",
+                "email": "kontakt@beberlei.de"
+            }
+        ],
+        "description": "Object-Relational-Mapper for PHP",
+        "homepage": "http://www.doctrine-project.org",
+        "keywords": [
+            "database",
+            "orm"
+        ]
+    },
+    {
         "name": "sonata-project/doctrine-orm-admin-bundle",
         "version": "dev-master",
         "version_normalized": "9999999-dev",
         "source": {
             "type": "git",
             "url": "https://github.com/sonata-project/SonataDoctrineORMAdminBundle.git",
-            "reference": "9e03b1b1d65ef42aca2f52c0e99eb4c2aae10ddd"
+            "reference": "4ec27dd08779be47c3a1c4beb6eb203178b98d37"
         },
         "dist": {
             "type": "zip",
-            "url": "https://api.github.com/repos/sonata-project/SonataDoctrineORMAdminBundle/zipball/9e03b1b1d65ef42aca2f52c0e99eb4c2aae10ddd",
-            "reference": "9e03b1b1d65ef42aca2f52c0e99eb4c2aae10ddd",
+            "url": "https://api.github.com/repos/sonata-project/SonataDoctrineORMAdminBundle/zipball/4ec27dd08779be47c3a1c4beb6eb203178b98d37",
+            "reference": "4ec27dd08779be47c3a1c4beb6eb203178b98d37",
             "shasum": ""
         },
         "require": {
-            "doctrine/orm": "~2.4",
+            "doctrine/orm": "~2.3",
             "sonata-project/admin-bundle": "~2.3@dev",
             "sonata-project/exporter": "~1.3,>=1.3.1",
             "symfony/console": "~2.3",
@@ -3199,14 +3201,16 @@
             "symfony/framework-bundle": "~2.2",
             "symfony/security": "~2.3"
         },
+        "provide": {
+            "sonata-project/admin-bundle-persistency-layer": "1.0.0"
+        },
         "require-dev": {
-            "simplethings/entity-audit-bundle": "~0.1",
-            "sonata-project/admin-bundle": "~2.3@dev"
+            "simplethings/entity-audit-bundle": "~0.1"
         },
         "suggest": {
             "simplethings/entity-audit-bundle": "If you want to support for versioning of entities and their associations."
         },
-        "time": "2014-04-17 00:10:12",
+        "time": "2014-05-23 14:43:19",
         "type": "symfony-bundle",
         "extra": {
             "branch-alias": {
@@ -3245,34 +3249,48 @@
         ]
     },
     {
-        "name": "sonata-project/jquery-bundle",
-        "version": "dev-master",
-        "version_normalized": "9999999-dev",
+        "name": "friendsofsymfony/user-bundle",
+        "version": "v1.3.3",
+        "version_normalized": "1.3.3.0",
+        "target-dir": "FOS/UserBundle",
         "source": {
             "type": "git",
-            "url": "https://github.com/sonata-project/SonatajQueryBundle.git",
-            "reference": "8db2fbc85e57f193d22ed67f0223c8a717eeaad5"
+            "url": "https://github.com/FriendsOfSymfony/FOSUserBundle.git",
+            "reference": "0fc044447ca41acc73d424a6a90d1b9f7fa25d7b"
         },
         "dist": {
             "type": "zip",
-            "url": "https://api.github.com/repos/sonata-project/SonatajQueryBundle/zipball/8db2fbc85e57f193d22ed67f0223c8a717eeaad5",
-            "reference": "8db2fbc85e57f193d22ed67f0223c8a717eeaad5",
+            "url": "https://api.github.com/repos/FriendsOfSymfony/FOSUserBundle/zipball/0fc044447ca41acc73d424a6a90d1b9f7fa25d7b",
+            "reference": "0fc044447ca41acc73d424a6a90d1b9f7fa25d7b",
             "shasum": ""
         },
         "require": {
-            "php": ">=5.3.2"
+            "php": ">=5.3.2",
+            "symfony/framework-bundle": "~2.1",
+            "symfony/security-bundle": "~2.1"
         },
-        "time": "2014-03-19 11:45:00",
+        "require-dev": {
+            "doctrine/doctrine-bundle": "*",
+            "swiftmailer/swiftmailer": "~4.3",
+            "symfony/validator": "~2.1",
+            "symfony/yaml": "~2.1",
+            "twig/twig": "~1.5",
+            "willdurand/propel-typehintable-behavior": "dev-master"
+        },
+        "suggest": {
+            "willdurand/propel-typehintable-behavior": "Needed when using the propel implementation"
+        },
+        "time": "2013-09-23 08:24:12",
         "type": "symfony-bundle",
         "extra": {
             "branch-alias": {
-                "dev-master": "1.9.x-dev"
+                "dev-master": "2.0.x-dev"
             }
         },
-        "installation-source": "source",
+        "installation-source": "dist",
         "autoload": {
-            "psr-4": {
-                "Sonata\\jQueryBundle\\": ""
+            "psr-0": {
+                "FOS\\UserBundle": ""
             }
         },
         "notification-url": "https://packagist.org/downloads/",
@@ -3281,20 +3299,23 @@
         ],
         "authors": [
             {
-                "name": "Thomas Rabaix",
-                "email": "thomas.rabaix@sonata-project.org",
-                "homepage": "http://sonata-project.org"
+                "name": "Christophe Coevoet",
+                "email": "stof@notk.org"
             },
             {
-                "name": "Sonata Community",
-                "homepage": "https://github.com/sonata-project/SonatajQueryBundle/contributors"
+                "name": "Thibault Duplessis",
+                "email": "thibault.duplessis@gmail.com",
+                "homepage": "http://ornicar.github.com"
+            },
+            {
+                "name": "FriendsOfSymfony Community",
+                "homepage": "https://github.com/friendsofsymfony/FOSUserBundle/contributors"
             }
         ],
-        "description": "Symfony SonatajQueryBundle",
-        "homepage": "http://sonata-project.org/bundles/jquery",
+        "description": "Symfony FOSUserBundle",
+        "homepage": "http://friendsofsymfony.github.com",
         "keywords": [
-            "jquery",
-            "sonata"
+            "User management"
         ]
     }
 ]

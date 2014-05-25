@@ -33,6 +33,7 @@ fi
 export COPY_EXTENDED_ATTRIBUTES_DISABLE=true
 export COPYFILE_DISABLE=true
 export SENSIOLABS_FORCE_ACME_DEMO=true
+export SENSIOLABS_DISABLE_NEW_DIRECTORY_STRUCTURE=true
 
 # Temp dir
 rm -rf /tmp/Symfony
@@ -40,6 +41,12 @@ mkdir /tmp/Symfony
 
 # Create project
 composer.phar create-project -n symfony/framework-standard-edition /tmp/Symfony $2
+
+if [ 0 -ne $? ]; then
+    echo "\033[37;41mVersion $2 does not exist\033[0m"
+    exit 1
+fi
+
 cd /tmp/Symfony
 
 # cleanup

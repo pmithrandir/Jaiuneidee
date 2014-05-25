@@ -1,6 +1,6 @@
 # pack-refs with: peeled fully-peeled 
 5d1b9eb262055019a280a0ec48bc0b11fba5bb23 refs/remotes/origin/2.1
-35c8e2124ffa62b14f09dd357c78ade58ac444bc refs/remotes/origin/master
+8bac169e9839bb685a4b912f426600b3d7401ec3 refs/remotes/origin/master
 095b79a5eb033dc49b7228bbb57d594e044d59ec refs/remotes/origin/pagerfanta_twig_extension_without_container
 f99600fcc27e2d6aff2f253902ae6c8cdd5bed42 refs/remotes/origin/symfony2.0
 d3afee30720bcf19d251c3c5c91d7dc96fa4c704 refs/tags/v1.0.0

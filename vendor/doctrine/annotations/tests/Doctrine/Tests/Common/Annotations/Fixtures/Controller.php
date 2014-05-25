@@ -41,7 +41,7 @@ class Controller
         if ($form->isValid()) {
             $form->send($this->get('mailer'));
 
-            $this->get('session')->getFlashBag()->add('notice', 'Message sent!');
+            $this->get('session')->setFlash('notice', 'Message sent!');
 
             return new RedirectResponse($this->generateUrl('_demo'));
         }
