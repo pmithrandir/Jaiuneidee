@@ -49,7 +49,7 @@ class PageController extends Controller
         if($request->get("tri")=="nb_commentaire"){
             $typeTri = "Buzz"; 
         }
-        else if($request->get("tri")=="derniereIdee"){
+        else if($request->get("tri")=="date"){
             $typeTri = "derniereIdee"; 
         }
         $options = array(
