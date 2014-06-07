@@ -1,6 +1,7 @@
 {% extends 'JaiUneIdeeSiteBundle::layout_2_col.html.twig' %}
 
 {% block title %}{{ idee.title }}{% if page>1 %} (page {{ page }}) {% endif %} {% endblock %}
+{% block descriptionSite %}{{idee.description}}{% endblock %}
 {% block javascript %}
     {{ parent() }}
 <script>(function(d, s, id) {
