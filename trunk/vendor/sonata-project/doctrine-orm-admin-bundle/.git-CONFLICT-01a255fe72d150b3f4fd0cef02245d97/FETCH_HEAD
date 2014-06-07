@@ -1,6 +1,8 @@
-2be8e7166d2fee6ca1ffe09c74a54284b6af0a2d	not-for-merge	branch '2.0' of git://github.com/sonata-project/SonataDoctrineORMAdminBundle
-90bbf87b6d4dcd92080b23dad04676d4258f405f	not-for-merge	branch '2.1' of git://github.com/sonata-project/SonataDoctrineORMAdminBundle
-9f04e09e180fee6325a9a36c61d0414ed37e0917	not-for-merge	branch '2.2' of git://github.com/sonata-project/SonataDoctrineORMAdminBundle
-68d55f7d1107e33b69b6c9b40aaf8a692828520c	not-for-merge	branch 'cmf_test' of git://github.com/sonata-project/SonataDoctrineORMAdminBundle
-07058948fb6cf4e47a8cdc495da8f7f5621c1807	not-for-merge	branch 'improve-many-to-many-list' of git://github.com/sonata-project/SonataDoctrineORMAdminBundle
-4ec27dd08779be47c3a1c4beb6eb203178b98d37	not-for-merge	branch 'master' of git://github.com/sonata-project/SonataDoctrineORMAdminBundle
+1da79f55ddf3b40a3e844ddeef32f7897511d973	not-for-merge	tag '2.2.0' of git://github.com/sonata-project/SonataDoctrineORMAdminBundle
+612171fe8ed25f617c9ed917cdb0364e6fe94c41	not-for-merge	tag '2.2.1' of git://github.com/sonata-project/SonataDoctrineORMAdminBundle
+2c4ec97a693fa365977d58c7ea401cc2fd193d9e	not-for-merge	tag '2.2.2' of git://github.com/sonata-project/SonataDoctrineORMAdminBundle
+82fa12521baf232f26ab012b38d1801bc5591ddc	not-for-merge	tag '2.2.3' of git://github.com/sonata-project/SonataDoctrineORMAdminBundle
+d08c67df3d00b3333f2e0935ff42efe079a8d4d6	not-for-merge	tag '2.2.4' of git://github.com/sonata-project/SonataDoctrineORMAdminBundle
+4d171410cbe732b4223829be3baf68e22caab401	not-for-merge	tag '2.2.5' of git://github.com/sonata-project/SonataDoctrineORMAdminBundle
+8e9219582e80e3a21add9ad4a8d396ab83d33687	not-for-merge	tag '2.2.6' of git://github.com/sonata-project/SonataDoctrineORMAdminBundle
+abb8ccf5ac1d11a6707c9929e47206eefae4ee08	not-for-merge	tag '2.2.7' of git://github.com/sonata-project/SonataDoctrineORMAdminBundle

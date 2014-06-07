@@ -18,6 +18,9 @@
         <parameter key="monolog.handler.null.class">Monolog\Handler\NullHandler</parameter>
         <parameter key="monolog.handler.test.class">Monolog\Handler\TestHandler</parameter>
         <parameter key="monolog.handler.gelf.class">Monolog\Handler\GelfHandler</parameter>
+        <parameter key="monolog.handler.rollbar.class">Monolog\Handler\RollbarHandler</parameter>
+        <parameter key="monolog.handler.flowdock.class">Monolog\Handler\FlowdockHandler</parameter>
+        <parameter key="monolog.handler.browser_console.class">Monolog\Handler\BrowserConsoleHandler</parameter>
         <parameter key="monolog.handler.firephp.class">Symfony\Bridge\Monolog\Handler\FirePHPHandler</parameter>
         <parameter key="monolog.handler.chromephp.class">Symfony\Bridge\Monolog\Handler\ChromePhpHandler</parameter>
         <parameter key="monolog.handler.debug.class">Symfony\Bridge\Monolog\Handler\DebugHandler</parameter>
@@ -37,6 +40,7 @@
 
         <parameter key="monolog.handler.fingers_crossed.class">Monolog\Handler\FingersCrossedHandler</parameter>
         <parameter key="monolog.handler.fingers_crossed.error_level_activation_strategy.class">Monolog\Handler\FingersCrossed\ErrorLevelActivationStrategy</parameter>
+        <parameter key="monolog.handler.filter.class">Monolog\Handler\FilterHandler</parameter>
         <parameter key="monolog.handler.mongo.class">Monolog\Handler\MongoDBHandler</parameter>
         <parameter key="monolog.mongo.client.class">MongoClient</parameter>
 

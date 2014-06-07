@@ -1,2 +1,4 @@
 0000000000000000000000000000000000000000 ff46000dd73411bbe812238f38bcacaf3f94b504 Pierre Bonneau <pmithrandir@localhost.(none)> 1401026508 +0300	clone: from git://github.com/symfony/AsseticBundle.git
 ff46000dd73411bbe812238f38bcacaf3f94b504 ff46000dd73411bbe812238f38bcacaf3f94b504 Pierre Bonneau <pmithrandir@localhost.(none)> 1401026523 +0300	checkout: moving from master to master
+ff46000dd73411bbe812238f38bcacaf3f94b504 ff46000dd73411bbe812238f38bcacaf3f94b504 Pierre Bonneau <pmithrandir@localhost.(none)> 1401990042 +0300	checkout: moving from master to master
+ff46000dd73411bbe812238f38bcacaf3f94b504 df10fae8852a5733e671b4ba37cf2f4beafa7561 Pierre Bonneau <pmithrandir@localhost.(none)> 1401990042 +0300	reset: moving to df10fae8852a5733e671b4ba37cf2f4beafa7561
