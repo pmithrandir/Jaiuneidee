@@ -5,8 +5,7 @@ namespace JaiUneIdee\SiteBundle\Entity;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Mapping\ClassMetadata;
 use Symfony\Component\Validator\Constraints\NotBlank;
-use Symfony\Component\Validator\Constraints\MinLength;
-use Symfony\Component\Validator\Constraints\MaxLength;
+use Symfony\Component\Validator\Constraints\Length;
 
 /**
  * JaiUneIdee\SiteBundle\Entity\Commentaire
@@ -43,11 +42,12 @@ class Commentaire
 	$this->setCreatedAt(new \DateTime());
         $this->setUpdatedAt(new \DateTime());
     }
+    
     public static function loadValidatorMetadata(ClassMetadata $metadata)
     {
         $metadata->addPropertyConstraint('content', new NotBlank());
-        $metadata->addPropertyConstraint('content', new MinLength(20));
-        $metadata->addPropertyConstraint('content', new MaxLength(5000));
+        $metadata->addPropertyConstraint('content', new Length(array('min'=>8)));
+        $metadata->addPropertyConstraint('content', new Length(array('max'=>5000)));
     }
     /**
      * Get id
