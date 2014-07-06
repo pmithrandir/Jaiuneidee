@@ -85,6 +85,9 @@ jQuery(document).ready(function() {
         }
     }); 
     defineAnimateCCMOut();
+    $("window").unload(function(event){
+        return confirm('Voulez-vous<u> vraiment</u> quitter cette page ???');
+    });
 });
 
 bindPagination = function() {

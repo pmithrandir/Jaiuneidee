@@ -89,7 +89,7 @@ class IdeeController extends Controller
         if($this->getRequest()->isXMLHttpRequest()){
             return $this->listeCommentaireAction($id, $page);
         }
-        else{ 
+        else{
             $em = $this->getDoctrine()->getManager();
             $idee = $this->getIdee($id);
             $votes = $em->getRepository('JaiUneIdeeSiteBundle:Vote')->getVotesByIdee($idee);
@@ -236,7 +236,9 @@ class IdeeController extends Controller
             'form'   => $form->createView()
         ));
     }
-    
+    /**
+     * @return Idee
+     */
     protected function getIdee($id){
         $em = $this->getDoctrine()->getManager();
 		//$idee = $em->getRepository('JaiUneIdeeSiteBundle:Idee')->find($id);
