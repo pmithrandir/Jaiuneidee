@@ -1,6 +1,7 @@
 jQuery(document).ready(function() {
     //$("#filtres_submit").css("display","none");
     bindPagination();
+    bindVotes();
     $("#filtres").submit(function(event){
         $.ajax({
            url: $(this).attr('href'),
@@ -85,9 +86,10 @@ jQuery(document).ready(function() {
         }
     }); 
     defineAnimateCCMOut();
+    /*
     $("window").unload(function(event){
         return confirm('Voulez-vous<u> vraiment</u> quitter cette page ???');
-    });
+    });*/
 });
 
 bindPagination = function() {
@@ -106,6 +108,21 @@ bindPagination = function() {
            success: function(html){
              element.parents(".pagerfanta").parent().html(html);    
              bindPagination();
+           }
+        });
+        return false;
+    });
+};
+bindVotes = function() {
+    $("#bloc_votes a").click(function(event){
+        
+        $.ajax({
+           url: $(this).attr('href'),
+           type: "GET",
+           dataType: "html",
+           success: function(html){
+            $("#bloc_votes").html(html);    
+            bindVotes();
            }
         });
         return false;
