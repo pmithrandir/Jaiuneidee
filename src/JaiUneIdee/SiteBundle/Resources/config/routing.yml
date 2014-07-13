@@ -33,6 +33,12 @@ JaiUneIdeeSiteBundle_idee_show:
     requirements:
         _method:  GET
         id: \d+
+JaiUneIdeeSiteBundle_idee_votes:
+    pattern:  /votes/{id}/{slug}
+    defaults: { _controller: JaiUneIdeeSiteBundle:Idee:votes}
+    requirements:
+        _method:  GET
+        id: \d+
 JaiUneIdeeSiteBundle_idee_new:
     pattern:  /idee/new
     defaults: { _controller: JaiUneIdeeSiteBundle:Idee:new }
