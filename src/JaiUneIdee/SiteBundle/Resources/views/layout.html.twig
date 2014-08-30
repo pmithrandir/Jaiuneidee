@@ -1,11 +1,20 @@
 {# src/JaiUneIdee/SiteBundle/Resources/views/layout.html.twig #}
 {% extends '::base.html.twig' %}
-
+{% block javascript %}
+    {{ parent() }}
+    {% javascripts '@JaiUneIdeeSiteBundle/Resources/public/js/*'
+                '@JaiUneIdeeLocalisationBundle/Resources/public/js/*' 
+            output='js/compiled/main.js' %}
+        <script type="text/javascript" src="{{ asset_url }}"></script>
+    {% endjavascripts %}
+{% endblock %}
+{#
 {% block javascript %}
     {{ parent() }}
     <script src="{{ asset('bundles/jaiuneideesite/js/siteBundle.js') }}"></script>
     <script src="{{ asset('bundles/jaiuneideelocalisation/js/localisationBundle.js') }}"></script>
 {% endblock %}
+#}
 {% block stylesheets %}
     {{ parent() }}
     <link href="{{ asset('bundles/jaiuneideesite/css/blog.css') }}" type="text/css" rel="stylesheet" />

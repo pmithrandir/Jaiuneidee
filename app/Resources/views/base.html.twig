@@ -10,16 +10,24 @@
         <!--[if lt IE 9]>
             <script src="//html5shim.googlecode.com/svn/trunk/html5.js"></script>
         <![endif]-->
+        
         <script src="//code.jquery.com/jquery-1.8.2.min.js"></script>
         {#
         <script src="{{ asset('js/jquery-1.8.2.min.js') }}"></script>
         #}
+        {#
         <script src="{{ asset('js/jquery.validate.min.js') }}"></script>
         <script src="{{ asset('js/messages_fr.js') }}"></script>
         <script src="{{ asset('js/tokeninput.js') }}"></script>
         <script src="{{ asset('js/msdropdown/jquery.dd.min.js') }}"></script>
-        
-        
+        #}
+        {% javascripts 'js/jquery.validate.min.js'
+                    'js/messages_fr.js'
+                    'js/tokeninput.js'
+                    'js/msdropdown/jquery.dd.min.js'
+                output='js/compiled/lib.js' %}
+            <script type="text/javascript" src="{{ asset_url }}"></script>
+        {% endjavascripts %}
         {% endblock %}
         {% block stylesheets %}
             <link href="{{ asset('css/token-input.css') }}" type="text/css" rel="stylesheet" />

@@ -18,8 +18,8 @@ monolog:
             type:  firephp
             level: info
 
-assetic:
-    use_controller: true
+#assetic:
+#    use_controller: true
 fos_user:
     registration:
       # Permet la validation automatique du compte par envoi d'un email
