@@ -8,17 +8,6 @@
         <script type="text/javascript" src="{{ asset_url }}"></script>
     {% endjavascripts %}
 {% endblock %}
-{#
-{% block javascript %}
-    {{ parent() }}
-    <script src="{{ asset('bundles/jaiuneideesite/js/siteBundle.js') }}"></script>
-    <script src="{{ asset('bundles/jaiuneideelocalisation/js/localisationBundle.js') }}"></script>
-{% endblock %}
-#}
-{% block stylesheets %}
-    {{ parent() }}
-    <link href="{{ asset('bundles/jaiuneideesite/css/blog.css') }}" type="text/css" rel="stylesheet" />
-{% endblock %}
 
 {% block login  %}
     <div id="login">

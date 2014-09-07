@@ -25,12 +25,12 @@ twig:
 
 # Assetic Configuration
 assetic:
-    #bundles: []
+#    bundles: ~ 
 #    debug:          %kernel.debug%
 #    use_controller: false
 #    java: /usr/bin/java
-#    filters:
-#        cssrewrite: ~
+    filters:
+        cssrewrite: ~
 #         closure:
 #             jar: %kernel.root_dir%/java/compiler.jar
 #         yui_css:
