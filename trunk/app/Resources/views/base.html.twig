@@ -30,11 +30,15 @@
         {% endjavascripts %}
         {% endblock %}
         {% block stylesheets %}
-            <link href="{{ asset('css/token-input.css') }}" type="text/css" rel="stylesheet" />
-            <link href="{{ asset('css/token-input-facebook.css') }}" type="text/css" rel="stylesheet" />
-            <link href="{{ asset('css/msdropdown/dd.css') }}" type="text/css" rel="stylesheet" />
+            {% stylesheets 'css/token-input.css'
+                    'css/token-input-facebook.css'
+                    'css/msdropdown/dd.css'
+                    'css/jaiuneidee.css'
+                output='css/compiled/jaiuneidee.css'
+                %}
+                <link rel="stylesheet" href="{{ asset_url }}" />
+            {% endstylesheets %}
         {% endblock %}
-        <link href="{{ asset('css/jaiuneidee.css') }}" type="text/css" rel="stylesheet" />
         {#
         <link rel="shortcut icon" href="{{ asset('favicon.ico') }}" />
         #}
