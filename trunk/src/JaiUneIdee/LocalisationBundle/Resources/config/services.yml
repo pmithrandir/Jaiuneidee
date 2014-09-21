@@ -9,3 +9,8 @@ services:
         class: JaiUneIdee\LocalisationBundle\Form\Type\LocalisationFormType
         arguments: [@jaiuneidee.localisation.form.data_transformer]
         tags: [{ name: "form.type", alias: "jaiuneidee_localisation_type" }]
+    localisation_request_listener:
+        class: JaiUneIdee\LocalisationBundle\Listener\RequestListener
+        arguments: [@doctrine.orm.entity_manager,%main_site%]
+        tags:
+            - { name: kernel.event_listener, event: kernel.request, method: onKernelRequest }

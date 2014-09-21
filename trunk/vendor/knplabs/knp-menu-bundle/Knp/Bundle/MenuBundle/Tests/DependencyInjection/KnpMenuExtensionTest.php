@@ -4,11 +4,8 @@ namespace Knp\Bundle\MenuBundle\Tests\DependencyInjection;
 
 use Knp\Bundle\MenuBundle\DependencyInjection\KnpMenuExtension;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
-use Symfony\Component\DependencyInjection\Definition;
-use Symfony\Component\DependencyInjection\Parameter;
-use Symfony\Component\DependencyInjection\Reference;
 
-class FOSAdvancedEncoderExtensionTest extends \PHPUnit_Framework_TestCase
+class KnpMenuExtensionTest extends \PHPUnit_Framework_TestCase
 {
     public function testDefault()
     {

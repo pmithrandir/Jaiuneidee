@@ -66,7 +66,11 @@ class Translator extends BaseTranslator
     public function getLocale()
     {
         if (null === $this->locale && $this->container->isScopeActive('request') && $this->container->has('request')) {
-            $this->locale = $this->container->get('request')->getLocale();
+            try {
+                $this->setLocale($this->container->get('request')->getLocale());
+            } catch (\InvalidArgumentException $e) {
+                $this->setLocale($this->container->get('request')->getDefaultLocale());
+            }
         }
 
         return $this->locale;
@@ -87,6 +91,8 @@ class Translator extends BaseTranslator
             return parent::loadCatalogue($locale);
         }
 
+        $this->assertValidLocale($locale);
+
         $cache = new ConfigCache($this->options['cache_dir'].'/catalogue.'.$locale.'.php', $this->options['debug']);
         if (!$cache->isFresh()) {
             $this->initialize();
@@ -95,8 +101,10 @@ class Translator extends BaseTranslator
 
             $fallbackContent = '';
             $current = '';
+            $replacementPattern = '/[^a-z0-9_]/i';
             foreach ($this->computeFallbackLocales($locale) as $fallback) {
-                $fallbackSuffix = ucfirst(str_replace('-', '_', $fallback));
+                $fallbackSuffix = ucfirst(preg_replace($replacementPattern, '_', $fallback));
+                $currentSuffix = ucfirst(preg_replace($replacementPattern, '_', $current));
 
                 $fallbackContent .= sprintf(<<<EOF
 \$catalogue%s = new MessageCatalogue('%s', %s);
@@ -108,7 +116,7 @@ EOF
                     $fallbackSuffix,
                     $fallback,
                     var_export($this->catalogues[$fallback]->all(), true),
-                    ucfirst(str_replace('-', '_', $current)),
+                    $currentSuffix,
                     $fallbackSuffix
                 );
                 $current = $fallback;

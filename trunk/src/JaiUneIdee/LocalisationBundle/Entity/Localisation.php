@@ -183,4 +183,33 @@ class Localisation
     {
         return $this->population;
     }
+
+    /**
+     * @var string
+     */
+    private $urlName;
+
+
+    /**
+     * Set urlName
+     *
+     * @param string $urlName
+     * @return Localisation
+     */
+    public function setUrlName($urlName)
+    {
+        $this->urlName = $urlName;
+
+        return $this;
+    }
+
+    /**
+     * Get urlName
+     *
+     * @return string 
+     */
+    public function getUrlName()
+    {
+        return $this->urlName;
+    }
 }

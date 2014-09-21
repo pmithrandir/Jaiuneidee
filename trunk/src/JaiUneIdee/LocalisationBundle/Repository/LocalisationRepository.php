@@ -24,4 +24,13 @@ class LocalisationRepository extends EntityRepository
         $qb->setParameter('param', '%'.$param.'%');
     	return $qb->getQuery()->getArrayResult();
     }
+    public function getListeSousDomaine()
+    {
+        $qb = $this->createQueryBuilder('l');
+        $qb->andWhere('l.urlName IS NOT NULL')
+           ->addOrderBy('l.population', 'ASC')
+           ->addOrderBy('l.niveau', 'ASC')
+           ->addOrderBy('l.nom', 'ASC');
+    	return $qb->getQuery()->getResult();
+    }
 }

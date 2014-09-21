@@ -1,5 +1,14 @@
 <?php
 
+/*
+ * This file is part of the Symfony package.
+ *
+ * (c) Fabien Potencier <fabien@symfony.com>
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
+
 namespace Sensio\Bundle\FrameworkExtraBundle\Tests\EventListener;
 
 use Symfony\Component\HttpFoundation\Request;
@@ -28,7 +37,7 @@ class HttpCacheListenerTest extends \PHPUnit_Framework_TestCase
             ->method('setResponse')
         ;
 
-        $this->response->setStatusCode(404);
+        $this->response->setStatusCode(500);
 
         $this->assertInternalType('null', $this->listener->onKernelResponse($this->event));
     }
@@ -74,6 +83,19 @@ class HttpCacheListenerTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals('15', $this->response->getMaxAge());
         $this->assertEquals('15', $this->response->headers->getCacheControlDirective('s-maxage'));
         $this->assertInstanceOf('DateTime', $this->response->getExpires());
+    }
+
+    public function testCacheMaxAgeSupportsStrtotimeFormat()
+    {
+        $this->request->attributes->set('_cache', new Cache(array(
+            'smaxage' => '1 day',
+            'maxage' => '1 day',
+        )));
+
+        $this->listener->onKernelResponse($this->event);
+
+        $this->assertEquals(60 * 60 * 24, $this->response->headers->getCacheControlDirective('s-maxage'));
+        $this->assertEquals(60 * 60 * 24, $this->response->getMaxAge());
     }
 
     public function testLastModifiedNotModifiedResponse()

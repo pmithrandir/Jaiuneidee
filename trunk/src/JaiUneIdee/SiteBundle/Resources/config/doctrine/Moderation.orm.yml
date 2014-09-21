@@ -13,6 +13,7 @@ JaiUneIdee\SiteBundle\Entity\Moderation:
       targetEntity: Idee
       joinColumn:
         onDelete: CASCADE
+      inversedBy: moderations
     user:
       targetEntity: JaiUneIdee\UtilisateurBundle\Entity\User
       joinColumn:

@@ -15,13 +15,19 @@ framework:
     router:
         resource: "%kernel.root_dir%/config/routing.yml"
         strict_requirements: "%kernel.debug%"
-    session: ~
+    session:
+        cookie_lifetime: 0
+        save_path: %kernel.root_dir%/cache/sessions
+        cookie_domain: .%main_site%
+        name: SFSESSID
 #    trust_proxy_headers: false
 
 # Twig Configuration
 twig:
     debug:            %kernel.debug%
     strict_variables: %kernel.debug%
+    globals:
+      main_site: %main_site%
 
 # Assetic Configuration
 assetic:

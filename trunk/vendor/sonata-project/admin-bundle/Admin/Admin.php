@@ -161,11 +161,25 @@ abstract class Admin implements AdminInterface, DomainObjectInterface
     private $formGroups = false;
 
     /**
+     * The form tabs disposition
+     *
+     * @var array|boolean
+     */
+    private $formTabs = false;
+
+    /**
      * The view group disposition
      *
      * @var array|boolean
      */
     private $showGroups = false;
+
+    /**
+     * The view tab disposition
+     *
+     * @var array|boolean
+     */
+    private $showTabs = false;
 
     /**
      * The label class name  (used in the title/breadcrumb ...)
@@ -611,12 +625,18 @@ abstract class Admin implements AdminInterface, DomainObjectInterface
             $extension->preUpdate($this, $object);
         }
 
-        $this->getModelManager()->update($object);
+        $result = $this->getModelManager()->update($object);
+        // BC compatibility
+        if (null !== $result) {
+            $object = $result;
+        }
 
         $this->postUpdate($object);
         foreach ($this->extensions as $extension) {
             $extension->postUpdate($this, $object);
         }
+
+        return $object;
     }
 
     /**
@@ -629,7 +649,11 @@ abstract class Admin implements AdminInterface, DomainObjectInterface
             $extension->prePersist($this, $object);
         }
 
-        $this->getModelManager()->create($object);
+        $result = $this->getModelManager()->create($object);
+        // BC compatibility
+        if (null !== $result) {
+            $object = $result;
+        }
 
         $this->postPersist($object);
         foreach ($this->extensions as $extension) {
@@ -637,6 +661,8 @@ abstract class Admin implements AdminInterface, DomainObjectInterface
         }
 
         $this->createObjectSecurity($object);
+
+        return $object;
     }
 
     /**
@@ -993,7 +1019,8 @@ abstract class Admin implements AdminInterface, DomainObjectInterface
      */
     public function getClass()
     {
-        if ($this->hasSubject()) {
+        // see https://github.com/sonata-project/SonataCoreBundle/commit/247eeb0a7ca7211142e101754769d70bc402a5b4
+        if ($this->hasSubject() && is_object($this->getSubject())) {
             return ClassUtils::getClass($this->getSubject());
         }
 
@@ -1001,7 +1028,7 @@ abstract class Admin implements AdminInterface, DomainObjectInterface
             if (count($this->getSubClasses()) > 0) {
                 $subject = $this->getSubject();
 
-                if ($subject) {
+                if ($subject && is_object($subject)) {
                     return ClassUtils::getClass($subject);
                 }
             }
@@ -1063,7 +1090,7 @@ abstract class Admin implements AdminInterface, DomainObjectInterface
      */
     public function hasActiveSubClass()
     {
-        if (count($this->subClasses) > 1 && $this->request) {
+        if (count($this->subClasses) > 0 && $this->request) {
             return null !== $this->getRequest()->query->get('subclass');
         }
 
@@ -1607,6 +1634,38 @@ abstract class Admin implements AdminInterface, DomainObjectInterface
         $formGroups = $this->getFormGroups();
         $formGroups[$group]['fields'] = array_merge(array_flip($keys), $formGroups[$group]['fields']);
         $this->setFormGroups($formGroups);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getFormTabs()
+    {
+        return $this->formTabs;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function setFormTabs(array $formTabs)
+    {
+        $this->formTabs = $formTabs;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getShowTabs()
+    {
+        return $this->showTabs;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function setShowTabs(array $showTabs)
+    {
+        $this->showTabs = $showTabs;
     }
 
     /**
