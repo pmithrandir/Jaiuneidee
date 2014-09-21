@@ -26,6 +26,7 @@ JaiUneIdee\SiteBundle\Entity\Vote:
       targetEntity: Idee
       joinColumn:
         onDelete: CASCADE
+      inversedBy: votes
     user:
       targetEntity: JaiUneIdee\UtilisateurBundle\Entity\User
       joinColumn:

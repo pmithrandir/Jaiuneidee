@@ -19,6 +19,7 @@ class LocalisationAdmin extends Admin
             ->add('nom')
             ->add('niveau')
             ->add('population')
+            ->add('urlName')
         ;
     }
 
@@ -32,6 +33,7 @@ class LocalisationAdmin extends Admin
             ->add('parent')
             ->add('niveau')
             ->add('population')
+            ->add('urlName')
             ->add('_action', 'actions', array(
                 'actions' => array(
                     'show' => array(),
@@ -51,6 +53,7 @@ class LocalisationAdmin extends Admin
             ->add('nom')
             ->add('niveau')
             ->add('population')
+            ->add('urlName')
         ;
     }
 
@@ -66,6 +69,7 @@ class LocalisationAdmin extends Admin
             ->add('max')
             ->add('niveau')
             ->add('population')
+            ->add('urlName')
         ;
     }
 }

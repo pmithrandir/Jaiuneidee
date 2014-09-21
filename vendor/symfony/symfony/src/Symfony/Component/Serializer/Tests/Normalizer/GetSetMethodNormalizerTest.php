@@ -17,6 +17,11 @@ use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
 class GetSetMethodNormalizerTest extends \PHPUnit_Framework_TestCase
 {
+    /**
+     * @var GetSetMethodNormalizer
+     */
+    private $normalizer;
+
     protected function setUp()
     {
         $this->serializer = $this->getMock(__NAMESPACE__.'\SerializerNormalizer');
@@ -63,6 +68,17 @@ class GetSetMethodNormalizerTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals('bar', $obj->getBar());
     }
 
+    public function testDenormalizeWithObject()
+    {
+        $data = new \stdClass();
+        $data->foo = 'foo';
+        $data->bar = 'bar';
+        $data->fooBar = 'foobar';
+        $obj = $this->normalizer->denormalize($data, __NAMESPACE__.'\GetSetDummy', 'any');
+        $this->assertEquals('foo', $obj->getFoo());
+        $this->assertEquals('bar', $obj->getBar());
+    }
+
     public function testDenormalizeOnCamelCaseFormat()
     {
         $this->normalizer->setCamelizedAttributes(array('camel_case'));
@@ -71,6 +87,11 @@ class GetSetMethodNormalizerTest extends \PHPUnit_Framework_TestCase
             __NAMESPACE__.'\GetSetDummy'
         );
         $this->assertEquals('camelCase', $obj->getCamelCase());
+    }
+
+    public function testDenormalizeNull()
+    {
+        $this->assertEquals(new GetSetDummy(), $this->normalizer->denormalize(null, __NAMESPACE__.'\GetSetDummy'));
     }
 
     /**
@@ -101,6 +122,27 @@ class GetSetMethodNormalizerTest extends \PHPUnit_Framework_TestCase
         $obj = $this->normalizer->denormalize(
             array('foo' => 'foo', 'bar' => 'bar', 'fooBar' => 'foobar'),
             __NAMESPACE__.'\GetConstructorDummy', 'any');
+        $this->assertEquals('foo', $obj->getFoo());
+        $this->assertEquals('bar', $obj->getBar());
+    }
+
+    public function testConstructorDenormalizeWithMissingOptionalArgument()
+    {
+        $obj = $this->normalizer->denormalize(
+            array('foo' => 'test', 'baz' => array(1, 2, 3)),
+            __NAMESPACE__.'\GetConstructorOptionalArgsDummy', 'any');
+        $this->assertEquals('test', $obj->getFoo());
+        $this->assertEquals(array(), $obj->getBar());
+        $this->assertEquals(array(1, 2, 3), $obj->getBaz());
+    }
+
+    public function testConstructorWithObjectDenormalize()
+    {
+        $data = new \stdClass();
+        $data->foo = 'foo';
+        $data->bar = 'bar';
+        $data->fooBar = 'foobar';
+        $obj = $this->normalizer->denormalize($data, __NAMESPACE__.'\GetConstructorDummy', 'any');
         $this->assertEquals('foo', $obj->getFoo());
         $this->assertEquals('bar', $obj->getBar());
     }
@@ -312,4 +354,38 @@ class GetConstructorDummy
 
 abstract class SerializerNormalizer implements SerializerInterface, NormalizerInterface
 {
+}
+
+class GetConstructorOptionalArgsDummy
+{
+    protected $foo;
+    private $bar;
+    private $baz;
+
+    public function __construct($foo, $bar = array(), $baz = array())
+    {
+        $this->foo = $foo;
+        $this->bar = $bar;
+        $this->baz = $baz;
+    }
+
+    public function getFoo()
+    {
+        return $this->foo;
+    }
+
+    public function getBar()
+    {
+        return $this->bar;
+    }
+
+    public function getBaz()
+    {
+        return $this->baz;
+    }
+
+    public function otherMethod()
+    {
+        throw new \RuntimeException("Dummy::otherMethod() should not be called");
+    }
 }

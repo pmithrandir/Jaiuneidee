@@ -4,17 +4,16 @@ namespace JaiUneIdee\SiteBundle\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpFoundation\Request;
 use JaiUneIdee\SiteBundle\Entity\Idee;
 use JaiUneIdee\SiteBundle\Entity\Commentaire;
 use JaiUneIdee\SiteBundle\Form\IdeeType;
+use JaiUneIdee\SiteBundle\Form\IdeeLocalisationType;
 use JaiUneIdee\SiteBundle\Form\CommentaireType;
 use JaiUneIdee\SiteBundle\Entity\Moderation;
 use JaiUneIdee\SiteBundle\Entity\ModerationCommentaire;
 use JaiUneIdee\SiteBundle\Entity\IdeeLue;
 use JaiUneIdee\SiteBundle\Entity\AlerteIdee;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
-use Gloomy\PagerBundle\Pager\Wrapper\QueryBuilderWrapper;
-use Gloomy\PagerBundle\Pager\Field;
 use Pagerfanta\Adapter\DoctrineORMAdapter;
 use Pagerfanta\Pagerfanta;
 
@@ -23,95 +22,12 @@ use Pagerfanta\Pagerfanta;
  */
 class IdeeController extends Controller {
 
-    /**
-     * @Template()
-     */
-    public function listAction() {
-
-        $idees = $this->getDoctrine()->getManager()
-                        ->getRepository('JaiUneIdeeSiteBundle:Idee')->getLatestIdeesQb()
-                        ->addSelect('t')->leftJoin('i.theme', 't')
-                        ->addSelect('u')->leftJoin('i.user', 'u')
-                        ->addSelect('l')->leftJoin('i.localisations', 'l')
-        ;
-        $wrapper = new QueryBuilderWrapper($idees);
-        $wrapper
-                ->addField(new Field('theme.nom', 'string', 'Thème', 't.id', array('tree' => true)), 'theme')
-                ->addField(new Field('user.username', 'string', 'Auteur', 'u.username', array('tree' => true)), 'user')
-                ->addField(new Field('localisation.nom', 'string', 'Localisation', 'l.id', array('tree' => true)), 'localisation')
-        ;
-        $wrapper->setOrderBy(array('updated_at' => 'desc'));
-        $datagrid = $this->get('gloomy.datagrid')->factory($wrapper);
-        $datagrid->showOnly(
-                array(
-                    'title',
-                    'description',
-                    'created_at',
-                    'theme',
-                    'user',
-                    'localisation'
-                )
-        );
-
-        $themes = $this->getDoctrine()->getManager()->getRepository('JaiUneIdeeSiteBundle:Theme')->findAll();
-        $datagrid->getField('theme')->addOption('select_options', $themes);
-        $datagrid->getField('created_at')->setProperty('createdAt');
-        $datagrid->getField('created_at')->setType('date');
-        $datagrid->getField('created_at')->setDateFormat('d/m/Y à H:i:s');
-
-        $datagrid->getField('title')->setLabel('Titre');
-        $datagrid->getField('created_at')->setLabel('Créé le');
-        $datagrid->getField('description')->setLabel('Description');
-        $datagrid->getField('localisation')->setLabel('Localisation');
-
-        if ($this->getRequest()->getMethod() == 'POST') {
-            $params = $this->getRequest()->request->all();
-            if ((isset($params["_gp"]["f"]["v"]["localisation"])) && ($params["_gp"]["f"]["v"]["localisation"] > 0)) {
-                $localisation = $this->getDoctrine()->getManager()->getRepository('JaiUneIdeeLocalisationBundle:Localisation')->find($params["_gp"]["f"]["v"]["localisation"]);
-                if ($localisation) {
-                    $datagrid->getField('localisation')->addOption('selected_localisation', $localisation->getNom());
-                }
-            }
-        }
-        $template = $this->getRequest()->isXMLHttpRequest() ? 'datagrid.html.twig' : 'list.html.twig';
-        return $this->render(
-                        'JaiUneIdeeSiteBundle:Idee:' . $template, array(
-                    'datagrid' => $datagrid,
-                        )
-        );
-    }
-
     public function showAction($id, $slug, $page = 1) {
         if ($this->getRequest()->isXMLHttpRequest()) {
             return $this->listeCommentaireAction($id, $page);
         } else {
             $em = $this->getDoctrine()->getManager();
             $idee = $this->getIdee($id);
-            /*
-              $votes = $em->getRepository('JaiUneIdeeSiteBundle:Vote')->getVotesByIdee($idee);
-              if(!isset($votes["1"])){
-              $votes["1"] = 0;
-              }
-              if(!isset($votes["0"])){
-              $votes["0"] = 0;
-              }
-              if(!isset($votes["-1"])){
-              $votes["-1"] = 0;
-              }
-              $votes["max"] = max($votes);
-              $votes["total"] = $votes["1"] + $votes["-1"] + $votes["0"];
-              if($votes["total"]>0){
-              $votes["pourcent_1"] = round($votes["1"]*100/$votes["total"],2);
-              $votes["pourcent_-1"] = round($votes["-1"]*100/$votes["total"],2);
-              $votes["pourcent_0"] = round($votes["0"]*100/$votes["total"],2);
-              }
-              else{
-              $votes["pourcent_1"] = 0;
-              $votes["pourcent_-1"] = 0;
-              $votes["pourcent_0"] = 0;
-              }
-              $voteExistant = null;
-             */
             $moderation = null;
             $alerteIdee = null;
             if (true === $this->get('security.context')->isGranted('ROLE_USER')) {
@@ -137,7 +53,8 @@ class IdeeController extends Controller {
             ));
         }
     }
-    public function votesAction($id, $slug = ""){
+
+    public function votesAction($id, $slug = "") {
         $idee = $this->getIdee($id);
         $voteArray = $this->generateVotes($idee);
         return $this->render('JaiUneIdeeSiteBundle:Idee:votes.html.twig', array(
@@ -146,6 +63,7 @@ class IdeeController extends Controller {
                     'voteExistant' => $voteArray["voteExistant"],
         ));
     }
+
     private function generateVotes(Idee $idee) {
         $em = $this->getDoctrine()->getManager();
         $votes = $em->getRepository('JaiUneIdeeSiteBundle:Vote')->getVotesByIdee($idee);
@@ -176,22 +94,36 @@ class IdeeController extends Controller {
         return array("votes" => $votes, "voteExistant" => $voteExistant);
     }
 
-    public function newAction() {
+    public function newAction(Request $request) {
         $idee = new Idee();
-        $form = $this->createForm(new IdeeType(), $idee);
+
+        if ($request->getSession()->get("localisation") !== null) {
+            $form = $this->createForm(new IdeeLocalisationType(), $idee);
+        } else {
+            $form = $this->createForm(new IdeeType(), $idee);
+        }
         return $this->render('JaiUneIdeeSiteBundle:Idee:create.html.twig', array(
                     'form' => $form->createView()
         ));
     }
 
-    public function createAction() {
+    public function createAction(Request $request) {
         $em = $this->getDoctrine()->getManager();
         $idee = new Idee();
-        $request = $this->getRequest();
-        $form = $this->createForm(new IdeeType(), $idee);
+        
+        if ($request->getSession()->get("localisation") !== null) {
+            $form = $this->createForm(new IdeeLocalisationType(), $idee);
+        } else {
+            $form = $this->createForm(new IdeeType(), $idee);
+        }
+        
         $form->bind($request);
         if ($idee->getTheme()->getIsModerated() == true) {
             $idee->setIsPublished(false);
+        }
+        if ($request->getSession()->get("localisation") !== null) {
+            $localisation = $em->getRepository('JaiUneIdeeLocalisationBundle:Localisation')->find($request->getSession()->get('localisation_id'));
+            $idee->addLocalisation($localisation);
         }
         $idee->setUser($this->get('security.context')->getToken()->getUser());
         if ($form->isValid()) {

@@ -28,6 +28,12 @@ JaiUneIdee\LocalisationBundle\Entity\Localisation:
       notnull: true
       options:
         default: 0
+    urlName:
+      type: string
+      lenght: 255
+      nullable: true
+      options:
+        default: null
   manyToOne:
     parent:
       targetEntity: Localisation

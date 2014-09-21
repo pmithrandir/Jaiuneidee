@@ -1,3 +1,7 @@
+#JaiUneIdeeSiteBundle_localized_homepage:
+#    path:     /
+#    host:     "{localisation}.%main_site%"
+#    defaults: {_controller: JaiUneIdeeSiteBundle:Page:index, page:1, page_news:1 }
 JaiUneIdeeSiteBundle_homepage:
     pattern:  /
     defaults: {_controller: JaiUneIdeeSiteBundle:Page:index, page:1, page_news:1 }
@@ -7,11 +11,6 @@ JaiUneIdeeSiteBundle_homepage_pagination:
     requirements:
         page: \d+
         page_news: \d+
-#JaiUneIdeeSiteBundle_comment_ca_marche:
-#    pattern:  /comment_ca_marche
-#    defaults: { _controller: JaiUneIdeeSiteBundle:Page:ccm }
-#    requirements:
-#        _method:  GET
 JaiUneIdeeSiteBundle_charte:
     pattern:  /charte
     defaults: { _controller: JaiUneIdeeSiteBundle:Page:charte }
@@ -42,9 +41,6 @@ JaiUneIdeeSiteBundle_idee_votes:
 JaiUneIdeeSiteBundle_idee_new:
     pattern:  /idee/new
     defaults: { _controller: JaiUneIdeeSiteBundle:Idee:new }
-#JaiUneIdeeSiteBundle_idee_list:
-#    pattern:  /idee/list
-#    defaults: { _controller: JaiUneIdeeSiteBundle:Idee:list }
 JaiUneIdeeSiteBundle_idee_create:
     pattern:  /idee/create
     defaults: { _controller: JaiUneIdeeSiteBundle:Idee:create }

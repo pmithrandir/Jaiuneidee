@@ -33,8 +33,19 @@ body > .header .logo {
 }
 
 .logo img {
+    display: inline;
     padding-bottom: 4px;
+    max-height: 100%;
+    max-width: 60px;
 }
+
+.logo span {
+    display: inline-block;
+    line-height: 1;
+    vertical-align: middle;
+    width: 200px;
+}
+.logo img + span { width: 140px; }
 
 .open > .dropdown-menu {
     animation-duration: .3s;
@@ -115,6 +126,11 @@ body > .header .logo {
     border: none !important;
     box-shadow: none !important;
     min-width:100px;
+}
+
+.dropdown-add .dropdown-menu > li > a {
+    white-space: normal;
+    overflow: hidden;
 }
 
 /* top right */

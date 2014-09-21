@@ -43,6 +43,7 @@ JaiUneIdee\SiteBundle\Entity\ActionElu:
   manyToOne:
     idee:
       targetEntity: Idee
+      inversedBy: actionsElus
     user:
       targetEntity: JaiUneIdee\UtilisateurBundle\Entity\User
       joinColumn:

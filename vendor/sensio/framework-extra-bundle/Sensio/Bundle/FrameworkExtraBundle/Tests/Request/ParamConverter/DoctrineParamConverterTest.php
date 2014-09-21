@@ -1,5 +1,14 @@
 <?php
 
+/*
+ * This file is part of the Symfony package.
+ *
+ * (c) Fabien Potencier <fabien@symfony.com>
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
+
 namespace Sensio\Bundle\FrameworkExtraBundle\Tests\Request\ParamConverter;
 
 use Symfony\Component\HttpFoundation\Request;
@@ -145,6 +154,21 @@ class DoctrineParamConverterTest extends \PHPUnit_Framework_TestCase
 
         $this->assertTrue($ret);
         $this->assertSame($object, $request->attributes->get('arg'));
+    }
+
+    public function testUsedProperIdentifier()
+    {
+        $request = new Request();
+        $request->attributes->set('id', 1);
+        $request->attributes->set('entity_id', null);
+        $request->attributes->set('arg', null);
+
+        $config = $this->createConfiguration('stdClass', array('id' => 'entity_id'), 'arg', null);
+
+        $ret = $this->converter->apply($request, $config);
+
+        $this->assertTrue($ret);
+        $this->assertNull($request->attributes->get('arg'));
     }
 
     public function idsProvider()

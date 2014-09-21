@@ -25,4 +25,5 @@ JaiUneIdee\UtilisateurBundle\Entity\Invitation:
   manyToOne:
     inviteur:
       targetEntity: User
+      inversedBy: invitations
 

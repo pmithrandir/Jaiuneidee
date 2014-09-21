@@ -17,7 +17,11 @@ class PageController extends Controller
     {
         $request = $this->getRequest();
         $em = $this->getDoctrine()->getManager();
-        if(true === $this->get('security.context')->isGranted('ROLE_USER')){
+        if($request->getSession()->get('localisation') !==null){
+            $localisation = $em->getRepository('JaiUneIdeeLocalisationBundle:Localisation')->find($request->getSession()->get('localisation_id'));
+            $withLocChildren = true;
+        }
+        else if(true === $this->get('security.context')->isGranted('ROLE_USER')){
             if ($request->get("localisation")=="toutes"){
                 $localisation = $em->getRepository('JaiUneIdeeLocalisationBundle:Localisation')->findOneBy(array("nom"=>"France"));
                 $withLocChildren = true;
@@ -126,6 +130,9 @@ class PageController extends Controller
         else{
             $template = 'index.html.twig';
         }
+        
+        $liste_site = $em->getRepository('JaiUneIdeeLocalisationBundle:Localisation')->getListeSousDomaine();
+        //echo "Localisation : ".$request->getSession()->get('localisation');
         return $this->render('JaiUneIdeeSiteBundle:Page:'.$template, array(
             'idees' => $idees,
             'ideesLues'=>$ideesLues,
@@ -137,12 +144,9 @@ class PageController extends Controller
             'theme_selected'=>($theme!==null)?$theme->getId():null,
             'themes'=>$liste_themes,
             'options_pager'=>$options_pager,
-            'options_pager_news'=>$options_pager_news
+            'options_pager_news'=>$options_pager_news,
+            'liste_site' => $liste_site
         ));
-    }
-    public function ccmAction()
-    {
-        return $this->render('JaiUneIdeeSiteBundle:Page:ccm.html.twig');
     }
     public function charteAction()
     {

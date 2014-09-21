@@ -12,7 +12,7 @@
 jQuery(document).ready(function() {
     jQuery('html').removeClass('no-js');
     if (window.SONATA_CONFIG && window.SONATA_CONFIG.CONFIRM_EXIT) {
-        jQuery('.sonata-ba-form form').each( function () { $(this).confirmExit(); } );
+        jQuery('.sonata-ba-form form').each(function () { jQuery(this).confirmExit(); });
     }
 
     Admin.setup_per_page_switcher(document);
@@ -44,6 +44,8 @@ var Admin = {
         Admin.add_pretty_errors(subject);
         Admin.setup_form_tabs_for_errors(subject);
         Admin.setup_inline_form_errors(subject);
+        Admin.setup_tree_view(subject);
+
 //        Admin.setup_list_modal(subject);
     },
     setup_list_modal: function(modal) {
@@ -70,8 +72,8 @@ var Admin = {
         if (window.SONATA_CONFIG && window.SONATA_CONFIG.USE_SELECT2 && window.Select2) {
 
             jQuery('select:not([data-sonata-select2="false"])', subject).each(function() {
-                var select = $(this);
 
+                var select = jQuery(this);
                 var allowClearEnabled = false;
 
                 if (select.find('option[value=""]').length) {
@@ -84,8 +86,32 @@ var Admin = {
                     allowClearEnabled = false;
                 }
 
+                ereg = /width:(auto|(([-+]?([0-9]*\.)?[0-9]+)(px|em|ex|%|in|cm|mm|pt|pc)))/i;
                 select.select2({
-                    width: 'resolve',
+                    width: function() {
+
+                    // this code is an adaptation of select2 code (initContainerWidth function)
+                    style = this.element.attr('style');
+                    //console.log("main style", style);
+                    if (style !== undefined) {
+                        attrs = style.split(';');
+                        for (i = 0, l = attrs.length; i < l; i = i + 1) {
+
+                            matches = attrs[i].replace(/\s/g, '').match(ereg);
+
+                            if (matches !== null && matches.length >= 1)
+                                return matches[1];
+                            }
+                        }
+
+                        style = this.element.css('width');
+                        if (style.indexOf("%") > 0) {
+                            return style;
+                        }
+
+                        return '100%';
+                    },
+                    dropdownAutoWidth: true,
                     minimumResultsForSearch: 10,
                     allowClear: allowClearEnabled
                 });
@@ -114,6 +140,7 @@ var Admin = {
         jQuery('.x-editable', subject).editable({
             emptyclass: 'editable-empty btn btn-sm',
             emptytext: '<i class="glyphicon glyphicon-edit"></i>',
+            container: 'body',
             success: function(response) {
                 if('KO' === response.status) {
                     return response.message;
@@ -331,7 +358,7 @@ var Admin = {
             Admin.switch_inline_form_errors(jQuery(this));
         });
 
-        $(subject).on('change', deleteCheckboxSelector, function() {
+        jQuery(subject).on('change', deleteCheckboxSelector, function() {
             Admin.switch_inline_form_errors(jQuery(this));
         });
     },
@@ -360,5 +387,9 @@ var Admin = {
 
             errors.show();
         }
+    },
+
+    setup_tree_view: function(subject) {
+        jQuery('ul.js-treeview', subject).treeView();
     }
 };
