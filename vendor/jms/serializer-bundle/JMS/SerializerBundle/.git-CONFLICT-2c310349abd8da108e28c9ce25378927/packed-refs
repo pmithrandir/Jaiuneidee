@@ -1,9 +1,0 @@
-# pack-refs with: peeled fully-peeled 
-3d2d5606d1cef4857fd121234d46e4a16d555f28 refs/remotes/origin/builder
-ce44a109e58cec5df17304670117fc7a853f3a0e refs/remotes/origin/doctrineMetadata
-ca66cd3ace6bea5367838c6dfb00a6a0bacb8a79 refs/remotes/origin/master
-d87e8d19ee35a4d3dced79fb2b3eee277d0f9f05 refs/tags/0.10
-12eed88bb3483c1ae1a7b9454abfc2c2cb3d4e2f refs/tags/0.11.0
-5531198a73c4adee669a8a2d1452999349822771 refs/tags/0.12.0
-bb15db3e661168f4310fad48b86915ff1ca33795 refs/tags/0.13.0
-4553238f391f14cd1198bdf43fcca8ea02bc4c25 refs/tags/0.9.0

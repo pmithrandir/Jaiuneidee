@@ -1,7 +1,0 @@
-phpunit.xml
-vendor
-composer.phar
-composer.lock
-Tests/Functional/App/parameters.yml
-Tests/Functional/App/cache
-Tests/Functional/App/logs

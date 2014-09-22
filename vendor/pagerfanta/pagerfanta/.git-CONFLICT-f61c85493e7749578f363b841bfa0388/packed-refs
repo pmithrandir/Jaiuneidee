@@ -1,9 +1,0 @@
-# pack-refs with: peeled fully-peeled 
-b51b71e96ee5dc7d9a318e4065646ef42054d3a6 refs/remotes/origin/doctrine_dbal_adapter
-ad66e75556c429915f844f6ef686b90a3385ce3d refs/remotes/origin/doctrine_odm_phpcr_fix
-9eb2f3e3afa4005170668a160b7e89ac84f59ffc refs/remotes/origin/doctrine_odm_phpcr_fix_rows
-90766bc6571841fd2b5fad9b96d73b5a9d31fb44 refs/remotes/origin/limit_subquery_walker
-e7bb39bb45ecf64a5fa09a546f1d8007fd292359 refs/remotes/origin/master
-4d5f15a3700a769bd0af364ccd7ecadb07d91d78 refs/tags/v1.0.0
-627b9719ac88395d6cb49d11e09864a41ec23a7c refs/tags/v1.0.1
-^9568187b789a39a3933c71e4e28b60fc2c26b70d
