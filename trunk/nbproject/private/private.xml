@@ -3,14 +3,11 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/home/pmithrandir/workspace/jaiuneidee/app/config/parameters_dist.ini</file>
-            <file>file:/home/pmithrandir/workspace/jaiuneidee/app/config/parameters.ini</file>
-            <file>file:/home/pmithrandir/workspace/jaiuneidee/src/JaiUneIdee/LocalisationBundle/Resources/config/doctrine/Localisation.orm.yml</file>
-            <file>file:/home/pmithrandir/workspace/jaiuneidee/app/Resources/views/base.html.twig</file>
-            <file>file:/home/pmithrandir/workspace/jaiuneidee/src/JaiUneIdee/LocalisationBundle/Listener/RequestListener.php</file>
-            <file>file:/home/pmithrandir/workspace/jaiuneidee/src/JaiUneIdee/SiteBundle/Resources/config/routing.yml</file>
-            <file>file:/home/pmithrandir/workspace/jaiuneidee/src/JaiUneIdee/SiteBundle/Controller/PageController.php</file>
-            <file>file:/home/pmithrandir/workspace/jaiuneidee/app/config/config.yml</file>
+            <file>file:/home/pmithrandir/workspace/jaiuneidee/src/JaiUneIdee/SiteBundle/Resources/views/Idee/create.html.twig</file>
+            <file>file:/home/pmithrandir/workspace/jaiuneidee/src/JaiUneIdee/SiteBundle/Form/IdeeLocalisationType.php</file>
+            <file>file:/home/pmithrandir/workspace/jaiuneidee/src/JaiUneIdee/SiteBundle/Controller/IdeeController.php</file>
+            <file>file:/home/pmithrandir/workspace/jaiuneidee/src/JaiUneIdee/SiteBundle/Resources/public/js/siteBundle.js</file>
+            <file>file:/home/pmithrandir/workspace/jaiuneidee/src/JaiUneIdee/SiteBundle/Form/IdeeType.php</file>
         </group>
     </open-files>
 </project-private>

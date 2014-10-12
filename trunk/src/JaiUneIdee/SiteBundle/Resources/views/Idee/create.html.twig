@@ -12,6 +12,18 @@
 	{%endfor%}
        </select>
 {%endblock%}
+{%block _jaiuneidee_sitebundle_ideelocalisationtype_theme_widget %}
+    <select {{ block('widget_attributes') }} class="theme">
+            <option value="">-- Thème --</option>
+	    {%for choice in choices%}
+                 <option value="{{ choice.value }}" 
+			    {% if choice is selectedchoice(value) %} selected="selected"{% endif %}
+                            data-image="/images/themes/{{choice.label|lower}}.png">
+		{{ choice.label|trans({}, translation_domain) }}
+                 </option>
+	{%endfor%}
+       </select>
+{%endblock%}
 {% block title %}Créer une nouvelle idée{% endblock%}
 
 {% block mainCol %}
