@@ -73,6 +73,7 @@
 <div id="news">
     {% include "JaiUneIdeeSiteBundle:Page:listeNews.html.twig" %}
 </div>
+    {% if liste_site|length >0%}
     Tous les sites J'ai une idée : <br />
     <ul>
         <li><a href="//www.{{main_site}}{{ app.request.getBaseURL() }}">Site national</a></li>
@@ -81,6 +82,7 @@
         {% endfor %}
     </ul>
     <br />
+    {%endif%}
     Vous aimez ce site, faites le savoir autour de vous ! <br /> <br />
     <g:plus href="https://plus.google.com/118203067427668607877/118203067427668607877" width="170" height="69" theme="light"></g:plus>
     <div class="fb-like-box" data-href="https://www.facebook.com/pages/Jai-Une-Id%C3%A9e/171223119712846" data-width="292" data-show-faces="false" data-stream="false" data-show-border="true" data-header="true"></div>
