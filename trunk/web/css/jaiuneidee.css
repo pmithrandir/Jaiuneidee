@@ -557,9 +557,11 @@ select.theme{
     width:200px;
 }
 .index_idee{
-    margin: 10px;
+    margin: 15px;
     background-color: white;
-    min-height:55px;
+    height:55px;
+    display:block;
+    padding:0px;
 }
 .index_idee:hover{
     background: #60A4F6;
@@ -591,7 +593,7 @@ select.theme{
 }
 .index_idee_commentaire{
     float: right;
-    padding:3px 5px 5px 10px;
+    padding: 0 5px 0 10px;
     text-align: right;
 }
 .index_idee .vote_graph{
@@ -600,6 +602,7 @@ select.theme{
     width:120px;
     font-size: 12px;
     box-shadow: 2px 2px 3px 1px #538ED5;
+    margin-right:5px
 }
 #news{
     padding-top: 20px;
