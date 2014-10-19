@@ -1,6 +1,6 @@
 $(function() {
 	if($(".tokeninput").length){
-		$(".tokeninput").tokenInput("../localisation_list", {
+		$(".tokeninput").tokenInput("/localisation_list", {
             theme: "facebook",
             propertyToSearch: "nom",
             minChars: 3,
@@ -10,7 +10,7 @@ $(function() {
         });
 	}
 	if($(".tokeninput_unique").length){
-		$(".tokeninput_unique").tokenInput("../localisation_list", {
+		$(".tokeninput_unique").tokenInput("/localisation_list", {
             theme: "facebook",
             propertyToSearch: "nom",
             minChars: 3,

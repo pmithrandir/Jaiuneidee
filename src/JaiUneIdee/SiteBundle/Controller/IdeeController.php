@@ -94,58 +94,59 @@ class IdeeController extends Controller {
         return array("votes" => $votes, "voteExistant" => $voteExistant);
     }
 
-    public function newAction(Request $request) {
-        $idee = new Idee();
-
-        if ($request->getSession()->get("localisation") !== null) {
-            $form = $this->createForm(new IdeeLocalisationType(), $idee);
-        } else {
-            $form = $this->createForm(new IdeeType(), $idee);
-        }
-        return $this->render('JaiUneIdeeSiteBundle:Idee:create.html.twig', array(
-                    'form' => $form->createView()
-        ));
+    public function ajouterAction(Request $request) {
+      $idee = new Idee();
+      return $this->ideeForm($idee, $request,"create");
     }
 
-    public function createAction(Request $request) {
-        $em = $this->getDoctrine()->getManager();
-        $idee = new Idee();
-        
+    public function editAction($id, Request $request) {
+        $idee = $this->getIdee($id);
+        return $this->ideeForm($idee, $request,"edit");
+    }
+
+    private function ideeForm (Idee $idee, Request $request, $mode = "create") {
         if ($request->getSession()->get("localisation") !== null) {
             $form = $this->createForm(new IdeeLocalisationType(), $idee);
         } else {
             $form = $this->createForm(new IdeeType(), $idee);
         }
-        
-        $form->bind($request);
-        if ($idee->getTheme()->getIsModerated() == true) {
-            $idee->setIsPublished(false);
-        }
-        if ($request->getSession()->get("localisation") !== null) {
-            $localisation = $em->getRepository('JaiUneIdeeLocalisationBundle:Localisation')->find($request->getSession()->get('localisation_id'));
-            $idee->addLocalisation($localisation);
-        }
-        $idee->setUser($this->get('security.context')->getToken()->getUser());
+
+        $form->handleRequest($request);
         if ($form->isValid()) {
+            $em = $this->getDoctrine()->getManager();
+            $idee->setUser($this->get('security.context')->getToken()->getUser());
+            if ($idee->getTheme()->getIsModerated() == true) {
+                $idee->setIsPublished(false);
+            }
+            if ($request->getSession()->get("localisation") !== null) {
+                $localisation = $em->getRepository('JaiUneIdeeLocalisationBundle:Localisation')->find($request->getSession()->get('localisation_id'));
+                $idee->addLocalisation($localisation);
+            }
             $em->persist($idee);
             $em->flush();
-            $alerte = $em->getRepository('JaiUneIdeeSiteBundle:AlerteIdee')->getAlerteIdeeByIdeeAndUser($idee, $this->get('security.context')->getToken()->getUser());
-            if (!$alerte) {
-                $alerte = new AlerteIdee();
-                $alerte->setIdee($idee);
-                $alerte->setUser($this->get('security.context')->getToken()->getUser());
-                $alerte->setActivated(true);
-                $em->persist($alerte);
-                $em->flush();
+            if($mode == "create"){
+                $alerte = $em->getRepository('JaiUneIdeeSiteBundle:AlerteIdee')->getAlerteIdeeByIdeeAndUser($idee, $this->get('security.context')->getToken()->getUser());
+                if (!$alerte) {
+                    $alerte = new AlerteIdee();
+                    $alerte->setIdee($idee);
+                    $alerte->setUser($this->get('security.context')->getToken()->getUser());
+                    $alerte->setActivated(true);
+                    $em->persist($alerte);
+                    $em->flush();
+                }
             }
             return $this->redirect($this->generateUrl('JaiUneIdeeSiteBundle_idee_show', array(
                                 'id' => $idee->getId(),
                                 'slug' => $idee->getSlug()))
             );
         }
-        return $this->render('JaiUneIdeeSiteBundle:Idee:create.html.twig', array(
-                    'form' => $form->createView()
-        ));
+
+        $build['form'] = $form->createView();
+        $build['mode'] = $mode;
+        if($mode == "edit"){
+            $build['idee'] = $idee;
+        }
+        return $this->render('JaiUneIdeeSiteBundle:Idee:create.html.twig', $build);
     }
 
     public function newCommentAction($idee_id) {
