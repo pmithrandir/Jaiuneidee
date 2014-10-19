@@ -562,6 +562,8 @@ select.theme{
     height:55px;
     display:block;
     padding:0px;
+    text-overflow: ellipsis;
+    overflow: hidden;
 }
 .index_idee:hover{
     background: #60A4F6;
