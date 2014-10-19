@@ -46,6 +46,17 @@ JaiUneIdeeSiteBundle_idee_edit:
     defaults: { _controller: JaiUneIdeeSiteBundle:Idee:edit }
     requirements:
         id: \d+
+        
+JaiUneIdeeSiteBundle_commentaire_ajouter:
+    pattern:  /idee/commentaire/{idee_id}
+    defaults: { _controller: JaiUneIdeeSiteBundle:Idee:ajouterCommentaire }
+    requirements:
+        idee_id: \d+
+JaiUneIdeeSiteBundle_commentaire_editer:
+    pattern:  /idee/commentaire/edit/{commentaire_id}
+    defaults: { _controller: JaiUneIdeeSiteBundle:Idee:editerCommentaire }
+    requirements:
+        commentaire_id: \d+
 #
 #JaiUneIdeeSiteBundle_idee_create:
 #    pattern:  /idee/create
@@ -113,12 +124,12 @@ JaiUneIdeeSiteBundle_idee_admin_validate_commentaire:
     requirements:
         _method:  GET
         id: \d+
-JaiUneIdeeSiteBundle_idee_create_comment:
-    pattern:  /idee/comment/{idee_id}
-    defaults: { _controller: JaiUneIdeeSiteBundle:Idee:createComment }
-    requirements:
-        _method:  POST
-        idee_id: \d+
+#JaiUneIdeeSiteBundle_idee_create_comment:
+#    pattern:  /idee/comment/{idee_id}
+#    defaults: { _controller: JaiUneIdeeSiteBundle:Idee:createComment }
+#    requirements:
+#        _method:  POST
+#        idee_id: \d+
 
 JaiUneIdeeSiteBundle_vote_vote:
     pattern:  /vote/{idee_id}/{note}

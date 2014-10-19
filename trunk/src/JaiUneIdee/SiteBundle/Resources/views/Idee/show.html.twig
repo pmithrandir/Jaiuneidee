@@ -60,7 +60,9 @@
             {% else %}
                 <img src="{{asset('images/valid.png')}}" alt="Idée conforme à la charte" title="Idée conforme à la charte" class="action" />  
             {% endif %}
-            <a href="{{ path('JaiUneIdeeSiteBundle_idee_edit', { 'id': idee.id }) }}" class="lien_visible">Editer</a>
+            {% if is_granted('IS_AUTHENTICATED_REMEMBERED') and idee.user == app.user %}
+                <a href="{{ path('JaiUneIdeeSiteBundle_idee_edit', { 'id': idee.id }) }}" class="lien_visible">Editer</a>
+            {% endif %}
             
         </div>
         <div class="box_content">
@@ -73,7 +75,7 @@
     </div>
         <br />
     {% if is_granted('ROLE_USER') %}
-        {% render(controller('JaiUneIdeeSiteBundle:Idee:newComment',{ 'idee_id': idee.id })) %}
+        {% render(controller('JaiUneIdeeSiteBundle:Idee:ajouterCommentaire',{ 'idee_id': idee.id })) %}
     {% else %}
         Désolé, vous devez être identifié pour répondre à cette idée.
     {% endif %}

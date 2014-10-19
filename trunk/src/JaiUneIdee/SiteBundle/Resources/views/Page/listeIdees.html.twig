@@ -7,28 +7,28 @@
         {% set lueClass = "" %}
     {% endif %}
     <li class="index_idee {{lueClass}} box">
-        <header class="separation"></header>
-        <div class="index_idee_theme">
-            <img src="/images/themes/{{ idee[0].theme|lower }}.png" alt="{{ idee[0].theme }}" title="{{ idee[0].theme }}"/>
-        </div>
-        <div class="index_idee_commentaire">
-            <a class="lien_nb_comments" href="{{ path('JaiUneIdeeSiteBundle_idee_show', { 'id': idee[0].id, 'slug': idee[0].slug }) }}#comments"> {{ idee["nombre"] }} commentaires</a>
-        </div>
-        {% if idee.votes["total"]>0 %}
-            <div class="vote_graph">
+        <a class="idee" href="{{ path('JaiUneIdeeSiteBundle_idee_show', { 'id': idee[0].id, 'slug': idee[0].slug }) }}" alt="{{ idee[0]}}" title="{{ idee[0]}}">
+            <header class="separation"></header>
+            <div class="index_idee_theme">
+                <img src="/images/themes/{{ idee[0].theme|lower }}.png" alt="{{ idee[0].theme }}" title="{{ idee[0].theme }}"/>
+            </div>
+            <div class="index_idee_commentaire">
+                {{ idee["nombre"] }} commentaires
+            </div>
+            {% if idee.votes["total"]>0 %}
+                <div class="vote_graph">
                     <div class="bar pour" style="width:{{ idee.votes["pourcent_1"] }}%;">{{ idee.votes["pourcent_1"] }}%</div>
                     <div class="bar blanc" style="width:{{ idee.votes["pourcent_0"] }}%;">{{ idee.votes["pourcent_0"] }}%</div>
                     <div class="bar contre" style="width:{{ idee.votes["pourcent_-1"] }}%;">{{ idee.votes["pourcent_-1"] }}%</div>
-            </div>
-        {% endif %}
-        <div class="index_idee_body">
-            <a class="idee" href="{{ path('JaiUneIdeeSiteBundle_idee_show', { 'id': idee[0].id, 'slug': idee[0].slug }) }}" alt="{{ idee[0]}}" title="{{ idee[0]}}">
+                </div>
+            {% endif %}
+            <div class="index_idee_body">
                 <h3>{{ idee[0].title }}</h3>
                 <div class="ellipsis">
                     {{ idee[0].description|striptags }}
                 </div>
-            </a>
-        </div>
+            </div>
+        </a>
     </li>
 {% else %}
     <br />

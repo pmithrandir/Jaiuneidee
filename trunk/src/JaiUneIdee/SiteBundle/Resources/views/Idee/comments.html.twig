@@ -27,6 +27,10 @@
         {% endif %}<br />
         Posté le {{ comment.createdAt|date('d/m/Y') }} <br />
         à {{ comment.createdAt|date('H:i:s') }}
+        
+        {% if is_granted('IS_AUTHENTICATED_REMEMBERED') and comment.user == app.user %}
+            <br /><a href="{{ path('JaiUneIdeeSiteBundle_commentaire_editer', { 'commentaire_id': comment.id }) }}" class="lien_visible">Editer</a>
+        {% endif %}
     </div>
     <div class="box_content {{ comment in commentairesAVerifier ? 'toModerate' : '' }}">
         <p>
