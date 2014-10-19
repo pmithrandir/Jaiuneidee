@@ -38,14 +38,26 @@ JaiUneIdeeSiteBundle_idee_votes:
     requirements:
         _method:  GET
         id: \d+
-JaiUneIdeeSiteBundle_idee_new:
-    pattern:  /idee/new
-    defaults: { _controller: JaiUneIdeeSiteBundle:Idee:new }
-JaiUneIdeeSiteBundle_idee_create:
-    pattern:  /idee/create
-    defaults: { _controller: JaiUneIdeeSiteBundle:Idee:create }
+JaiUneIdeeSiteBundle_idee_ajouter:
+    pattern:  /idee/ajouter
+    defaults: { _controller: JaiUneIdeeSiteBundle:Idee:ajouter }
+JaiUneIdeeSiteBundle_idee_edit:
+    pattern:  /idee/edit/{id}
+    defaults: { _controller: JaiUneIdeeSiteBundle:Idee:edit }
     requirements:
-        _method:  POST
+        id: \d+
+#
+#JaiUneIdeeSiteBundle_idee_create:
+#    pattern:  /idee/create
+#    defaults: { _controller: JaiUneIdeeSiteBundle:Idee:create }
+#    requirements:
+#        _method:  POST
+#JaiUneIdeeSiteBundle_idee_edit_perform:
+#    pattern:  /idee/edit/{id}/perform
+#    defaults: { _controller: JaiUneIdeeSiteBundle:Idee:moderate }
+#    requirements:
+#        _method:  GET
+#        id: \d+
 JaiUneIdeeSiteBundle_idee_moderate:
     pattern:  /idee/moderate/{id}
     defaults: { _controller: JaiUneIdeeSiteBundle:Idee:moderate }

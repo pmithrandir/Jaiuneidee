@@ -5,6 +5,8 @@ use Symfony\Component\Form\DataTransformerInterface;
 use Symfony\Component\Form\Exception\UnexpectedTypeException;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\EntityManager;
+use Doctrine\ORM\PersistentCollection;
+
 
 class LocalisationsToIdsTransformer implements DataTransformerInterface
 {
@@ -19,21 +21,20 @@ class LocalisationsToIdsTransformer implements DataTransformerInterface
         if (null === $localisations) {
             return "";
         }
-
-        if ($localisations instanceof ArrayCollection) {
-	        $idsArray = array();
-	        foreach ($localisations as $localisation) {
-	            $idsArray[] = $localisation->getId();
-	        }
-	        $ids = implode(",", $idsArray);
-	        return $ids;
+        else if ($localisations instanceof ArrayCollection) {
+            $idsArray = array();
+            foreach ($localisations as $localisation) {
+                $idsArray[] = $localisation->getId();
+            }
+            $ids = implode(",", $idsArray);
+            return $ids;
         }
         elseif($localisations instanceof \JaiUneIdee\LocalisationBundle\Entity\Localisation){
         	return $localisations->getId();
         }
         else{
         	
-            throw new UnexpectedTypeException($localisations, 'ArrayCollection');
+            //throw new UnexpectedTypeException($localisations, 'ArrayCollection');
         }
     }
 

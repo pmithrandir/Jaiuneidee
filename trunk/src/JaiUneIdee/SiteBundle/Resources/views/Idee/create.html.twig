@@ -1,34 +1,44 @@
 {% extends 'JaiUneIdeeSiteBundle::layout_2_col.html.twig' %}
 {% form_theme form _self %}
-{%block _jaiuneidee_sitebundle_ideetype_theme_widget %}
+{% block _jaiuneidee_sitebundle_ideetype_theme_widget %}
     <select {{ block('widget_attributes') }} class="theme">
-            <option value="">-- Thème --</option>
-	    {%for choice in choices%}
-                 <option value="{{ choice.value }}" 
-			    {% if choice is selectedchoice(value) %} selected="selected"{% endif %}
-                            data-image="/images/themes/{{choice.label|lower}}.png">
-		{{ choice.label|trans({}, translation_domain) }}
-                 </option>
+        <option value="">-- Thème --</option>
+        {%for choice in choices%}
+             <option value="{{ choice.value }}" 
+                        {% if choice is selectedchoice(value) %} selected="selected"{% endif %}
+                        data-image="/images/themes/{{choice.label|lower}}.png">
+            {{ choice.label|trans({}, translation_domain) }}
+             </option>
 	{%endfor%}
-       </select>
-{%endblock%}
-{%block _jaiuneidee_sitebundle_ideelocalisationtype_theme_widget %}
+    </select>
+{% endblock %}
+{% block _jaiuneidee_sitebundle_ideelocalisationtype_theme_widget %}
     <select {{ block('widget_attributes') }} class="theme">
-            <option value="">-- Thème --</option>
-	    {%for choice in choices%}
-                 <option value="{{ choice.value }}" 
-			    {% if choice is selectedchoice(value) %} selected="selected"{% endif %}
-                            data-image="/images/themes/{{choice.label|lower}}.png">
-		{{ choice.label|trans({}, translation_domain) }}
-                 </option>
-	{%endfor%}
-       </select>
-{%endblock%}
-{% block title %}Créer une nouvelle idée{% endblock%}
+        <option value="">-- Thème --</option>
+        {%for choice in choices%}
+             <option value="{{ choice.value }}" 
+                        {% if choice is selectedchoice(value) %} selected="selected"{% endif %}
+                        data-image="/images/themes/{{choice.label|lower}}.png">
+            {{ choice.label|trans({}, translation_domain) }}
+             </option>
+        {%endfor%}
+    </select>
+{% endblock %}
+{% block title %}
+    {%if mode == "create" %}
+    	Création d'une nouvelle idée
+    {%else%}
+    	Edition d'une idée
+    {%endif%}
+{% endblock%}
 
 {% block mainCol %}
-    <form action="{{ path('JaiUneIdeeSiteBundle_idee_create') }}" method="post" {{ form_enctype(form) }} class="form nouvelle_idee">
+    <form action="" method="post" {{ form_enctype(form) }} class="form nouvelle_idee">
+        {%if mode == "create" %}
     	    <h1>Création d'une nouvelle idée</h1>
+        {%else%}
+    	    <h1>Edition d'une idée</h1>
+        {%endif%}
 	      {{ form_widget(form) }}
       <input type="submit" value="Publier" id="idee_submit">
     </form>
@@ -51,4 +61,16 @@
 		</div>
 		<footer></footer>
 	</div>
+{% endblock %}
+{% block javascripts %}
+    {{ parent() }}
+        {% if mode == "edit" %}
+		<script type="text/javascript">
+		var datas =[
+			{% for localisation in idee.localisations %}
+		 		{id: {{ localisation.id }}, nom: "{{ localisation.nom }}"},
+			{% endfor %}
+		]
+		</script>
+        {% endif %}
 {% endblock %}
