@@ -123,7 +123,7 @@ class IdeeController extends Controller {
             if ($idee->getTheme()->getIsModerated() == true) {
                 $idee->setIsPublished(false);
             }
-            if ($request->getSession()->get("localisation") !== null) {
+            if (($request->getSession()->get("localisation") !== null)&&($mode =="create")) {
                 $localisation = $em->getRepository('JaiUneIdeeLocalisationBundle:Localisation')->find($request->getSession()->get('localisation_id'));
                 $idee->addLocalisation($localisation);
             }
