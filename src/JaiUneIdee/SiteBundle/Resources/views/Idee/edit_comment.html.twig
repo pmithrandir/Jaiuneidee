@@ -3,7 +3,7 @@
 
 {% block body %}
     <h1>Editer un commentaire"</h1>
-    <form action="{{ path('JaiUneIdeeSiteBundle_commentaire_ajouter', { 'idee_id' : comment.idee.id } ) }}" method="post" {{ form_enctype(form) }} class="form nouveau_commentaire">
+    <form action="{{ path('JaiUneIdeeSiteBundle_commentaire_editer', { 'commentaire_id' : comment.id } ) }}" method="post" {{ form_enctype(form) }} class="form nouveau_commentaire">
 	{{ form_widget(form) }}
         <p>
             <input type="submit" value="Modifier">
