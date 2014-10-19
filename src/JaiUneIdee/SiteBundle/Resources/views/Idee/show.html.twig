@@ -61,7 +61,7 @@
                 <img src="{{asset('images/valid.png')}}" alt="Idée conforme à la charte" title="Idée conforme à la charte" class="action" />  
             {% endif %}
             {% if is_granted('IS_AUTHENTICATED_REMEMBERED') and idee.user == app.user %}
-                <a href="{{ path('JaiUneIdeeSiteBundle_idee_edit', { 'id': idee.id }) }}" class="lien_visible">Editer</a>
+                <br /><a href="{{ path('JaiUneIdeeSiteBundle_idee_edit', { 'id': idee.id }) }}" class="lien_visible">Editer</a>
             {% endif %}
             
         </div>
