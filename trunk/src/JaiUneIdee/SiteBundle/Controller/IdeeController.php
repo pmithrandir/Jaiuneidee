@@ -216,6 +216,11 @@ class IdeeController extends Controller {
         if ($form->isValid()) {
             $em->persist($comment);
             $em->flush();
+            return $this->redirect($this->generateUrl('JaiUneIdeeSiteBundle_idee_show', array(
+                                'id' => $comment->getIdee()->getId(),
+                                'slug' => $comment->getIdee()->getSlug())) .
+                            '#comment-' . $comment->getId()
+            );
         }
         return $this->render('JaiUneIdeeSiteBundle:Idee:edit_comment.html.twig', array(
                     'comment' => $comment,
