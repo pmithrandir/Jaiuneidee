@@ -1,0 +1,13 @@
+{% extends 'JaiUneIdeeSiteBundle::layout_2_col.html.twig' %}
+{% block title %}Editer un commentaire{% endblock%}
+
+{% block body %}
+    <h1>Editer un commentaire"</h1>
+    <form action="{{ path('JaiUneIdeeSiteBundle_commentaire_ajouter', { 'idee_id' : comment.idee.id } ) }}" method="post" {{ form_enctype(form) }} class="form nouveau_commentaire">
+	{{ form_widget(form) }}
+        <p>
+            <input type="submit" value="Modifier">
+        </p>
+    </form>
+    <a class="idee" href="{{ path('JaiUneIdeeSiteBundle_idee_show', { 'id': comment.idee.id, 'slug': comment.idee.slug }) }}" alt="{{ comment.idee}}" title="{{ comment.idee}}">Retourner sur l'idée</a>
+{% endblock %}

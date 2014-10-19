@@ -16,7 +16,6 @@ use JaiUneIdee\SiteBundle\Entity\IdeeLue;
 use JaiUneIdee\SiteBundle\Entity\AlerteIdee;
 use Pagerfanta\Adapter\DoctrineORMAdapter;
 use Pagerfanta\Pagerfanta;
-
 /**
  * Idee controller.
  */
@@ -101,6 +100,12 @@ class IdeeController extends Controller {
 
     public function editAction($id, Request $request) {
         $idee = $this->getIdee($id);
+        if($this->get('security.context')->getToken()->getUser() != $idee->getUser()){
+            return $this->redirect($this->generateUrl('JaiUneIdeeSiteBundle_idee_show', array(
+                                'id' => $idee->getId(),
+                                'slug' => $idee->getSlug()))
+            );
+        }
         return $this->ideeForm($idee, $request,"edit");
     }
 
@@ -148,29 +153,15 @@ class IdeeController extends Controller {
         }
         return $this->render('JaiUneIdeeSiteBundle:Idee:create.html.twig', $build);
     }
-
-    public function newCommentAction($idee_id) {
-        $idee = $this->getIdee($idee_id);
+    public function ajouterCommentaireAction ($idee_id, Request $request){
         $comment = new Commentaire();
+        $idee = $this->getIdee($idee_id);
         $comment->setIdee($idee);
         $form = $this->createForm(new CommentaireType(), $comment);
-        return $this->render('JaiUneIdeeSiteBundle:Idee:form_comment.html.twig', array(
-                    'comment' => $comment,
-                    'form' => $form->createView()
-        ));
-    }
-
-    public function createCommentAction($idee_id) {
-        $idee = $this->getIdee($idee_id);
-        $comment = new Commentaire();
-        $comment->setIdee($idee);
-        $comment->setUser($this->get('security.context')->getToken()->getUser());
-        $request = $this->getRequest();
-        $form = $this->createForm(new CommentaireType(), $comment);
-        $form->bind($request);
+        $form->handleRequest($request);
         if ($form->isValid()) {
-            $em = $this->getDoctrine()
-                    ->getManager();
+            $comment->setUser($this->get('security.context')->getToken()->getUser());
+            $em = $this->getDoctrine()->getManager();
             $em->persist($comment);
             $em->flush();
             //récupération de tous les abonnés
@@ -202,9 +193,31 @@ class IdeeController extends Controller {
                             '#comment-' . $comment->getId()
             );
         }
-
-
-        return $this->render('JaiUneIdeeSiteBundle:Idee:create_comment.html.twig', array(
+        return $this->render('JaiUneIdeeSiteBundle:Idee:form_comment.html.twig', array(
+                    'comment' => $comment,
+                    'form' => $form->createView()
+        ));
+    }
+    public function editerCommentaireAction ($commentaire_id, Request $request){
+        $em = $this->getDoctrine()->getManager();
+        $comment = $em->getRepository('JaiUneIdeeSiteBundle:Commentaire')->find($commentaire_id);
+        if (!$comment) {
+            throw $this->createNotFoundException("Impossible de trouver le commentaire.");
+        }
+        if($this->get('security.context')->getToken()->getUser() != $comment->getUser()){
+            return $this->redirect($this->generateUrl('JaiUneIdeeSiteBundle_idee_show', array(
+                                'id' => $comment->getIdee()->getId(),
+                                'slug' => $comment->getIdee()->getSlug())) .
+                            '#comment-' . $comment->getId()
+            );
+        }
+        $form = $this->createForm(new CommentaireType(), $comment);
+        $form->handleRequest($request);
+        if ($form->isValid()) {
+            $em->persist($comment);
+            $em->flush();
+        }
+        return $this->render('JaiUneIdeeSiteBundle:Idee:edit_comment.html.twig', array(
                     'comment' => $comment,
                     'form' => $form->createView()
         ));

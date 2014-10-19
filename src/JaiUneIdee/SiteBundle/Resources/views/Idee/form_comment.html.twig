@@ -1,4 +1,4 @@
-<form action="{{ path('JaiUneIdeeSiteBundle_idee_create_comment', { 'idee_id' : comment.idee.id } ) }}" method="post" {{ form_enctype(form) }} class="form nouveau_commentaire">
+<form action="{{ path('JaiUneIdeeSiteBundle_commentaire_ajouter', { 'idee_id' : comment.idee.id } ) }}" method="post" {{ form_enctype(form) }} class="form nouveau_commentaire">
     <h3>Répondre à l'auteur :</h3> 
 		{{ form_widget(form) }}
     <p>
