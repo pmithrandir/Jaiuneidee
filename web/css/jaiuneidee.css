@@ -44,6 +44,7 @@ h1{
     font-size:18px;
     font-weight:bold;
     text-align:center;
+    margin-bottom: 5px;
 }
 h2{
     font-size:14px;
@@ -387,6 +388,7 @@ You also need to include this conditional style in the <head> of your HTML file 
 #body{
     padding-bottom:131px;
     background-color: #FBFBFB;
+    padding-top: 5px;
 }
 /********************************* COLONNES************************************/
 .one-col-80,
@@ -712,6 +714,34 @@ select.theme{
 .stat_idee{
     display: inline-block;
     width: 500px;
+}
+/*******************************PROFILE ***************************************/
+.profile_avatar{
+    display:block;
+    margin:auto;
+}
+.profile_margin{
+    width:130px;
+    float:left;
+}
+.profile_content{
+    margin-left:130px;
+}
+.profile_content table, 
+.profile_content tr,
+.profile_content td,
+.profile_content th{
+    border:0px;
+}
+.profile_content td,
+.profile_content th{
+    padding:3px;
+}
+.profile_content .strong{
+    font-weight: bold;
+}
+.profile_informations{
+    /*margin-top: 100px;*/
 }
 /*******************************PROFILE INVITATION ***************************************/
 .table{
