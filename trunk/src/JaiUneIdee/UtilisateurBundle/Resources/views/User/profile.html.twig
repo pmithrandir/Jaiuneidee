@@ -5,84 +5,94 @@
 	<h1>
 	Profil de {{ user.username|capitalize }}
 	</h1>
-	<h3>Informations sur l'utilisateur</h3>
-	<br />
-	<table class="table" >
-		<tr>
-			<th></th>
-			<th>Valeur</th>
-		</tr>
-		<tr>
-			<td>Inscription</td>
-			<td>{{ user.createdAt|date('d/m/Y') }} à {{ user.createdAt|date('H:i:s') }}</td>
-		</tr>
-		{%  if(user.dateDeNaissancePublic and user.dateDeNaissance) %}
-		<tr>
-			<td>Date de Naissance</td>
-			<td>{{ user.dateDeNaissance|date('d/m/Y')}}</td>
-		</tr>
-		{% endif %}
-		{%  if(user.sexePublic and user.sexe) %}
-		<tr>
-			<td>Sexe</td>
-			<td>{{ user.sexe}}</td>
-		</tr>
-		{% endif %}
-		{%  if(user.tendancePolitiquePublic and user.tendancePolitique)%}
-		<tr>
-			<td>Tendance politique</td>
-			<td>{{ user.tendancePolitique}}</td>
-		</tr>
-		{% endif %}
-		{%  if(user.localisationPublic and user.localisation) %}
-		<tr>
-			<td>Localisation</td>
-			<td>{{ user.localisation}}</td>
-		</tr>
-		{% endif %}
-		<tr>
-			<td>Parrain</td>
-			<td>
-				{%  if(user.invitation.inviteur) %}
-					<a href="{{ path('user_profile', { 'user_id': user.invitation.inviteur.id, 'username':user.invitation.inviteur}) }}">{{ user.invitation.inviteur|capitalize }}</a>
-				{% endif %}
-			</td>
-		</tr>
-		<tr>
-			<td>Filleuls</td>
-			<td>
-				{% for invitation in user.invitations %}
-					{%  if(invitation.user) %}
-			 			<a href="{{ path('user_profile', { 'user_id': invitation.user.id, 'username':invitation.user}) }}">{{ invitation.user|capitalize }}</a> 
-					{% endif %}
-				{% else  %}
-					{{ user.username }} n'a pas encore de filleuls
-				{% endfor  %}
-			</td>
-		</tr>
-	</table>
-	<br />
-	<br />
-	<br />
-	<h3>Liste d'idées soumises</h3>
-	<br />
-	<table class="table" >
-		<tr>
-			<th>Titre</th>
-			<th>Thème</th>
-			<th>Posté le</th>
-		</tr>
-		{% for idee in idees %}
-		<tr>
-			<td><a href="{{ path('JaiUneIdeeSiteBundle_idee_show', { 'id': idee.id, 'slug': idee.slug }) }}">{{ idee.title }}</a></td>
-			<td>{{ idee.theme }}</td>
-			<td>{{ idee.createdAt|date('d/m/Y') }} à {{ idee.createdAt|date('H:i:s') }}</td>
-		</tr>
-		{% else %}
-		<tr>
-			<td colspan="3">Il n'y a pas encore d'idées crées par cet utilisateur.</td>
-		</tr>
-	  {% endfor %}
-	  </table>
-	
+        <div class="profile_margin">
+            {% if(user.avatar) %}
+                <img src="{{image('upload/' ~ user.id ~'/' ~ user.avatar).cropResize(120,120)}}" alt="avatar de {{ user|capitalize }}" title="avatar de {{ user|capitalize }}" class="profile_avatar" />
+            {% else %}
+                <img src="{{asset('images/avatar_default.png')}}" alt="avatar de {{ user|capitalize }}" title="avatar de {{ user|capitalize }}" class="profile_avatar" />
+            {% endif %}
+        </div>
+        <div class="profile_content">
+            <table class="profile_informations" >
+                <tr>
+                    <td class="strong">Inscription</td>
+                    <td>{{ user.createdAt|date('d/m/Y') }} à {{ user.createdAt|date('H:i:s') }}</td>
+                </tr>
+                {%  if(user.dateDeNaissancePublic and user.dateDeNaissance) %}
+                <tr>
+                    <td class="strong">Date de Naissance</td>
+                    <td>{{ user.dateDeNaissance|date('d/m/Y')}}</td>
+                </tr>
+                {% endif %}
+                {%  if(user.sexePublic and user.sexe) %}
+                <tr>
+                    <td class="strong">Sexe</td>
+                    <td>{{ user.sexe}}</td>
+                </tr>
+                {% endif %}
+                {%  if(user.tendancePolitiquePublic and user.tendancePolitique)%}
+                <tr>
+                    <td class="strong">Tendance politique</td>
+                    <td>{{ user.tendancePolitique}}</td>
+                </tr>
+                {% endif %}
+                {%  if(user.localisationPublic and user.localisation) %}
+                <tr>
+                    <td class="strong">Localisation</td>
+                    <td>{{ user.localisation}}</td>
+                </tr>
+                {% endif %}
+                <tr>
+                    <td class="strong">Parrain</td>
+                    <td>
+                        {%  if(user.invitation.inviteur) %}
+                            <a href="{{ path('user_profile', { 'user_id': user.invitation.inviteur.id, 'username':user.invitation.inviteur}) }}">{{ user.invitation.inviteur|capitalize }}</a>
+                        {% endif %}
+                    </td>
+                </tr>
+                <tr>
+                    <td class="strong">Filleuls</td>
+                    <td>
+                        {% for invitation in user.invitations %}
+                            {%  if(invitation.user) %}
+                                <a href="{{ path('user_profile', { 'user_id': invitation.user.id, 'username':invitation.user}) }}">{{ invitation.user|capitalize }}</a> 
+                            {% endif %}
+                        {% else  %}
+                            {{ user.username }} n'a pas encore de filleuls
+                        {% endfor  %}
+                    </td>
+                </tr>
+                <tr>
+                    <td class="strong">Nombre d'idées</td>
+                    <td>{{ idees|length}}</td>
+                </tr>
+                <tr>
+                    <td class="strong">Nombre de commentaires</td>
+                    <td>{{ nbCommentaires}}</td>
+                </tr>
+            </table>
+            <br />
+            <br />
+            <br />
+            <h3>Ses idées</h3>
+            <br />
+            <table class="" >
+                <tr>
+                    <th class="strong">Titre</th>
+                    <th class="strong">Thème</th>
+                    <th class="strong">Posté le</th>
+                </tr>
+                {% for idee in idees %}
+                <tr>
+                    <td><a href="{{ path('JaiUneIdeeSiteBundle_idee_show', { 'id': idee.id, 'slug': idee.slug }) }}">{{ idee.title|capitalize}}</a></td>
+                    <td>{{ idee.theme }}</td>
+                    <td>{{ idee.createdAt|date('d/m/Y') }} à {{ idee.createdAt|date('H:i:s') }}</td>
+                </tr>
+                {% else %}
+                <tr>
+                    <td colspan="3">Il n'y a pas encore d'idées crées par cet utilisateur.</td>
+                </tr>
+              {% endfor %}
+            </table>
+	</div>
 {% endblock fos_user_content %}

@@ -141,9 +141,10 @@ class IdeeRepository extends EntityRepository {
         return $qb->getQuery()->execute();
     }
     public function getIdeesByUser($user_id) {
-        $qb = $this->getLatestIdeesQb(20);
+        $qb = $this->getLatestIdeesQb();
         $qb->andWhere('i.user = :user_id')
-                ->setParameter('user_id', $user_id)
+            ->setParameter('user_id', $user_id)
+            ->addOrderBy('i.id', 'DESC');
         ;
         return $qb->getQuery()->execute();
     }

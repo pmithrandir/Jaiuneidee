@@ -19,12 +19,14 @@ class UserController extends Controller
 
         $user = $em->getRepository('JaiUneIdeeUtilisateurBundle:User')->find($user_id);
         $idees = $em->getRepository('JaiUneIdeeSiteBundle:Idee')->getIdeesByUser($user_id);
-        if (!$user) {
+        $nbCommentaires = count($em->getRepository('JaiUneIdeeSiteBundle:Commentaire')->findBy(array('user'=> $user_id)));
+        if (!$user){
             throw $this->createNotFoundException("Impossible de trouver l'utilisateur.");
         }
     	return $this->render('JaiUneIdeeUtilisateurBundle:User:profile.html.twig', array(
             'user' => $user,
             'idees' => $idees,
+            'nbCommentaires' => $nbCommentaires
         ));
     }
     public function avatarAction(Request $request){
