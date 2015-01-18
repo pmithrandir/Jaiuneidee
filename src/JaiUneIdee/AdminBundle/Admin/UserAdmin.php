@@ -75,6 +75,7 @@ class UserAdmin extends Admin
             ->add('last_activity')
             ->add('sexe')
             ->add('date_de_naissance')
+            ->add('dommage')
             ->add('newsletter','checkbox',array("required"=>false))
         ;
     }
@@ -90,14 +91,10 @@ class UserAdmin extends Admin
             ->add('email')
             ->add('emailCanonical')
             ->add('enabled')
-            ->add('salt')
-            ->add('password')
             ->add('lastLogin')
             ->add('locked')
             ->add('expired')
             ->add('expiresAt')
-            ->add('confirmationToken')
-            ->add('passwordRequestedAt')
             ->add('roles')
             ->add('credentialsExpired')
             ->add('credentialsExpireAt')
@@ -113,7 +110,7 @@ class UserAdmin extends Admin
             ->add('localisation_public')
             ->add('tendance_politique_public')
             ->add('newsletter')
-            ->add('avatar')
+            ->add('dommage')
         ;
     }
 }
