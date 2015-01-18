@@ -35,6 +35,8 @@ class RequestListener {
             if($session->get('localisation') !== null){
                 $session->set('localisation', null);
                 $session->set('localisation_name', null);
+                $session->set('localisation_footer', null);
+                $session->set('localisation_css', null);
                 $session->set('localisation_id', null);
             }
         }
@@ -47,11 +49,15 @@ class RequestListener {
             if($localisation_object !== null){
                 $session->set('localisation', $localisation_object->getUrlName());
                 $session->set('localisation_name', $localisation_object->getNom());
+                $session->set('localisation_footer', $localisation_object->getFooter());
+                $session->set('localisation_css', $localisation_object->getCss());
                 $session->set('localisation_id', $localisation_object->getId());
             }
             else{
                 $session->set('localisation', null);
                 $session->set('localisation_name', null);
+                $session->set('localisation_footer', null);
+                $session->set('localisation_css', null);
                 $session->set('localisation_id', null);
                 $url = str_replace($localisation,"www",$request->getSchemeAndHttpHost()).$request->getBaseUrl();
                 $event->setResponse(new RedirectResponse($url));

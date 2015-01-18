@@ -34,6 +34,17 @@ JaiUneIdee\LocalisationBundle\Entity\Localisation:
       nullable: true
       options:
         default: null
+    footer:
+      type: text
+      nullable: true
+      options:
+        default: null
+    css:
+      type: string
+      lenght: 255
+      nullable: true
+      options:
+        default: null
   manyToOne:
     parent:
       targetEntity: Localisation
