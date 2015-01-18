@@ -212,4 +212,60 @@ class Localisation
     {
         return $this->urlName;
     }
+    /**
+     * @var string
+     */
+    private $footer;
+
+
+    /**
+     * Set footer
+     *
+     * @param string $footer
+     * @return Localisation
+     */
+    public function setFooter($footer)
+    {
+        $this->footer = $footer;
+
+        return $this;
+    }
+
+    /**
+     * Get footer
+     *
+     * @return string 
+     */
+    public function getFooter()
+    {
+        return $this->footer;
+    }
+    /**
+     * @var string
+     */
+    private $css;
+
+
+    /**
+     * Set css
+     *
+     * @param string $css
+     * @return Localisation
+     */
+    public function setCss($css)
+    {
+        $this->css = $css;
+
+        return $this;
+    }
+
+    /**
+     * Get css
+     *
+     * @return string 
+     */
+    public function getCss()
+    {
+        return $this->css;
+    }
 }

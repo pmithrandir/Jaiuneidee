@@ -39,6 +39,11 @@
                 %}
                 <link rel="stylesheet" href="{{ asset_url }}" />
             {% endstylesheets %}
+            
+            {%if app.session.get("localisation_css") is not null%}
+                <link rel="stylesheet" href="/css/localisations/{{app.session.get("localisation_css")}}" />
+            {% endif %}
+                
         {% endblock %}
         {#
         <link rel="shortcut icon" href="{{ asset('favicon.ico') }}" />
@@ -69,7 +74,7 @@
                     <a href="{{ path('JaiUneIdeeSiteBundle_homepage') }}">
                       <h1 class="accessibilite">J'ai Une Idée
                       {%if app.session.get("localisation") is not null%}
-                          {{app.session.get("localisation")}}
+                          {{app.session.get("localisation_name")}}
                       {% endif %}
                       </h1>
                       <img class="logo" src="/images/logo_orange.png" alt="J'ai Une Idée" title="J'ai Une Idée"/>
@@ -96,10 +101,14 @@
             <div class="separation gradient2">
             </div>
             {% block footer %}
+                {%if app.session.get("localisation_footer") is not null%}
+                    {{app.session.get("localisation_footer")|raw}}
+                {% else %}
                 <div class="citation">
                     <span>"Les grands esprits discutent des idées, les esprits moyens discutent des événements, les petits esprits discutent des gens."</span> Eleanor Roosevelt
                 </div>
                 Vous&nbsp;avez&nbsp;une&nbsp;idée&nbsp;?&nbsp;Parlons-en&nbsp;!<br /><br />
+                {% endif %}
                 <a href="{{ path('JaiUneIdeeSiteBundle_charte') }}">Charte</a> - <a href="{{ path('JaiUneIdeeSiteBundle_contact') }}">Contact</a>
             {% endblock %}
         </footer>

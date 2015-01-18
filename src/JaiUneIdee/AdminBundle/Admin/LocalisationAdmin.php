@@ -54,6 +54,8 @@ class LocalisationAdmin extends Admin
             ->add('niveau')
             ->add('population')
             ->add('urlName')
+            ->add('footer')
+            ->add('css')
         ;
     }
 
@@ -70,6 +72,8 @@ class LocalisationAdmin extends Admin
             ->add('niveau')
             ->add('population')
             ->add('urlName')
+            ->add('css')
+            ->add('footer')
         ;
     }
 }
