@@ -5,7 +5,7 @@
     <h1>Votre Avatar</h1>
     
     {% if (user.avatar)%}
-    <img src="{{ image('upload/' ~ user.id ~'/' ~ user.avatar).cropResize(120,120)}}" alt="avatar" />
+    <img src="{{ image('../../upload/' ~ user.id ~'/' ~ user.avatar).cropResize(120,120)}}" alt="avatar" />
     <br />
     <br />
     <a href="{{ path('supprimer_avatar') }}" >Supprimer mon avatar</a>

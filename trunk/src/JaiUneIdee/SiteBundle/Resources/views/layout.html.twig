@@ -18,7 +18,7 @@
     {%else %}
         <a href="{{ path('avatar') }}">
         {% if (app.user.avatar)%}
-            <img src="{{image('upload/' ~ app.user.id ~'/' ~ app.user.avatar).cropResize(120,120)}}"  class="avatar" alt="avatar" />
+            <img src="{{image('../../upload/' ~ app.user.id ~'/' ~ app.user.avatar).cropResize(120,120)}}"  class="avatar" alt="avatar" />
         {% else %}
             <img src="{{asset('images/avatar_default.png')}}" alt="avatar" class="avatar" />
         {% endif %}

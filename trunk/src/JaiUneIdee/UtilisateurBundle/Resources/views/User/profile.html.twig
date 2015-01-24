@@ -7,7 +7,7 @@
 	</h1>
         <div class="profile_margin">
             {% if(user.avatar) %}
-                <img src="{{image('upload/' ~ user.id ~'/' ~ user.avatar).cropResize(120,120)}}" alt="avatar de {{ user|capitalize }}" title="avatar de {{ user|capitalize }}" class="profile_avatar" />
+                <img src="{{image('../../upload/' ~ user.id ~'/' ~ user.avatar).cropResize(120,120)}}" alt="avatar de {{ user|capitalize }}" title="avatar de {{ user|capitalize }}" class="profile_avatar" />
             {% else %}
                 <img src="{{asset('images/avatar_default.png')}}" alt="avatar de {{ user|capitalize }}" title="avatar de {{ user|capitalize }}" class="profile_avatar" />
             {% endif %}

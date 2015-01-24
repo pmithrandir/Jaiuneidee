@@ -452,6 +452,8 @@ class User extends BaseUser
  
     protected function getTmpUploadRootDir() {
         // the absolute directory path where uploaded documents should be saved
+        return __DIR__ . '/../../../../../upload/';
+        
         return __DIR__ . '/../../../../web/upload/';
     }
     public function uploadAvatar() {
