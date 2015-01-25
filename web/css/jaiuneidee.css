@@ -299,7 +299,7 @@ select{
   color: black;
 }
 #login label{
-	color: #F0F0F0;
+	color: white;
 }
 #login form input[type="checkbox"]{
   display:inline-block;
@@ -342,7 +342,7 @@ select{
     clear:both;
     text-align: center;
     padding: 10px 0 0 0;
-    color: #F0F0F0;
+    color: white;
     background-color: darkgrey;
     width:100%;
     font-size:15px;
@@ -437,7 +437,6 @@ You also need to include this conditional style in the <head> of your HTML file 
 }
 .second-col hr{
     border: 1px solid #538ED5;
-    color: #538ED5;
     height: 0;
 }
 /***************************** PAGINATION *************************************/
