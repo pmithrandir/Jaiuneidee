@@ -1,5 +1,9 @@
 /*********************** VERSION 1.0 ****************************/
 /******************** Classes globales **************************/
+/* couleur de fond */
+#body {
+  /*  background-color: #fbfbfb; */
+}
 /* Degradé de spération*/
 .gradient2 {
     /* Legacy browsers */
@@ -91,6 +95,11 @@
 /* boite d'une idée en page d'accueil */
 .index_idee {
   /*  background-color: white; */
+}
+/* surlignage de la boite d'une idée.*/
+.index_idee:hover{
+  /*  background: #60A4F6; */
+  /*  color: #F0F0F0; */
 }
 /**** Page d'une idée ****/
 /* séparation horizontale dans la colonne de droite */
