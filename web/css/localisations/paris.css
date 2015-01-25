@@ -1,0 +1,97 @@
+/*********************** VERSION 1.0 ****************************/
+/******************** Classes globales **************************/
+/* Degradé de spération*/
+.gradient2 {
+    /* Legacy browsers */
+    background: lightgreen url("/images/gradient2-bg.png") repeat-y right; 
+    /* Internet Explorer */
+  /* ATTENTION, NE PAS SUPPRIMER LE "*" a la ligne suivante  */
+    * background: lightgreen;
+    background: lightgreen\0/;
+    filter: progid:DXImageTransform.Microsoft.gradient(gradientType=1, startColorstr=#FF83BEF5, endColorstr=#FF538ED5);
+    
+}
+@media all and (min-width: 0px) {
+    .gradient2 {
+        /* Opera */
+        background: light-green url("/images/gradient2-bg.svg");
+        /* Recent browsers */
+        background-image: -webkit-gradient(
+            linear,
+            left bottom, right top,
+            from(lightgreen),
+            to(darkgrey)
+            );
+        background-image: -webkit-linear-gradient(
+            left bottom,
+            lightgreen,
+            darkgrey
+            );
+        background-image: -moz-linear-gradient(
+            left bottom,
+            lightgreen,
+            darkgrey
+            );
+        background-image: -o-linear-gradient(
+            left bottom,
+            lightgreen,
+            darkgrey
+            );
+        background-image: linear-gradient(
+            left bottom,
+            lightgreen,
+            darkgrey
+            );
+    }
+}
+
+/* boite dans tous le site, bordure ombrées */
+.box {
+    box-shadow: 2px 2px 3px 1px darkgrey;
+}
+/* partie gauche de la boite, comme sur la page idée ou les info de l'utilisateur sont affichées */
+.box_left{
+    border-right: 1px solid  darkgrey;
+}
+
+.main-col {
+    border-right: 1px solid darkgrey;
+}
+/* Navigation dans la pagination */
+/* Boutons actifs */
+.pagerfanta a, .pagerfanta span {
+    border: 1px solid darkgrey;
+    color: red;
+}
+/* boutons inactifs */
+.pagerfanta .disabled {
+    border: 1px solid darkgrey;
+    color: grey;
+}
+
+/******************** Classes spécifiques **************************/
+/* header */
+#header{
+    background: none repeat scroll 0 0 lightblue;
+    box-shadow: 0 1px 5px 0 darkgrey;
+    color: purple;
+}
+/* footer */ 
+#footer {
+    background-color: lightblue;
+    color: purple;
+}
+/**** Page d'accueil ****/
+/* cadre autour des filtres */
+#cadre_filtre {
+    border: 1px solid darkgrey;
+}
+/* boite d'une idée en page d'accueil */
+.index_idee {
+    background-color: white;
+}
+/**** Page d'une idée ****/
+/* séparation horizontale dans la colonne de droite */
+.second-col hr{
+    border: 1px solid darkgrey;
+}
