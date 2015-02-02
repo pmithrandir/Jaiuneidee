@@ -14,9 +14,9 @@
     {% if is_granted('ROLE_USER') %}
         <span>
             {% if voteExistant.note is defined %}
-                <span><img src="/images/pouce_vert" alt="Pour" title="Pour" class="idee_vote {{ (voteExistant.note == 1)?'mon_vote':'gris' }}" /></span>
-                <span><img src="/images/pouce_orange" alt="Neutre" title="Neutre" class="idee_vote {{ (voteExistant.note == 0)?'mon_vote':'gris' }}" /></span>
-                <span><img src="/images/pouce_rouge" alt="Neutre" title="Neutre"  class="idee_vote {{ (voteExistant.note == -1)?'mon_vote':'gris' }}" /></span>
+                <span><img src="/images/pouce_vert.png" alt="Pour" title="Pour" class="idee_vote {{ (voteExistant.note == 1)?'mon_vote':'gris' }}" /></span>
+                <span><img src="/images/pouce_orange.png" alt="Neutre" title="Neutre" class="idee_vote {{ (voteExistant.note == 0)?'mon_vote':'gris' }}" /></span>
+                <span><img src="/images/pouce_rouge.png" alt="Contre" title="Contre"  class="idee_vote {{ (voteExistant.note == -1)?'mon_vote':'gris' }}" /></span>
                 <span><a class="" href="{{ path('JaiUneIdeeSiteBundle_vote_cancel', { 'idee_id': idee.id}) }}"><img src="/images/undo-30.png" alt="Annuler mon vote" class="idee_vote" /></a></span>
                     {% else %}
                 <a class="" href="{{ path('JaiUneIdeeSiteBundle_vote_vote', { 'idee_id': idee.id, 'note': "1" }) }}"><img src="/images/pouce_vert.png" alt="Voter pour" title="Voter pour"class="idee_vote" /></a>
