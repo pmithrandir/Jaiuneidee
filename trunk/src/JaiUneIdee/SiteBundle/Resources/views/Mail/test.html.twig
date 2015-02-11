@@ -1,0 +1,11 @@
+{% extends 'JaiUneIdeeSiteBundle::layout_email.html.twig' %}
+
+{% block body %}
+Bonjour cher admin,<br />
+<br />
+Les emails vers <a href="{{ url('JaiUneIdeeSiteBundle_homepage') }}">{{ url('JaiUneIdeeSiteBundle_homepage') }}</a> fonctionnent<br />
+<br />
+Bonne journée, <br />
+Le serveur {{ host }}<br />
+
+{% endblock %}

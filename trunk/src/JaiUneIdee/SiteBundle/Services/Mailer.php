@@ -37,6 +37,15 @@ class Mailer
 
         return $this->mailer->send($mail);
     }
+    public function sendTestMessage($email,$host){
+    	$subject = "[JaiUneIdee]Test serveur";
+    	$template = 'JaiUneIdeeSiteBundle:Mail:test.html.twig';
+    	$template2 = 'JaiUneIdeeSiteBundle:Mail:test.txt.twig';
+    	$to = $email;
+    	$body = $this->templating->render($template, array("host"=>$host));
+    	$texte = $this->templating->render($template2, array("host"=>$host));
+    	return $this->sendMessage($to, $subject, $body, $texte);
+    }
     public function sendInvitationMessage($email, $code, $invitation){
     	$subject = "[JaiUneIdee]Votre code d'invitation";
     	$template = 'JaiUneIdeeSiteBundle:Mail:invitation.html.twig';
