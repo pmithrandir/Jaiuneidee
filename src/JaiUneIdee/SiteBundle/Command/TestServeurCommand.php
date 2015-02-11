@@ -19,7 +19,7 @@ class TestServeurCommand extends ContainerAwareCommand
     {
         $em = $this->getContainer()->get('doctrine')->getManager();
         //récupérer les idées crées dans la journée.
-        $idees = $em->getRepository('JaiUneIdeeSiteBundle:Idee')->getLatestIdees24h();
+        $idees = $em->getRepository('JaiUneIdeeSiteBundle:Idee')->getLatestIdees();
         if(count($idees)>0){
             $text = "DATABASE OK\n";
         }
