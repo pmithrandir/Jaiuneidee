@@ -30,10 +30,10 @@ class TestServeurCommand extends ContainerAwareCommand
         $mail_service = $this->getContainer()->get('jai_une_idee_site.mailer');
         $mailer = $mail_service->getMailer();
         if($mail_service->sendTestMessage("jaiuneidee.net@gmail.com",$host)){
-            $text = "EMAIL OK\n";
+            $text .= "EMAIL OK\n";
         }
         else{
-            $text = "EMAIL PROBLEM\n";
+            $text .= "EMAIL PROBLEM\n";
         }
         $spool = $mailer->getTransport()->getSpool();
         $transport = $this->getContainer()->get('swiftmailer.transport.real');
