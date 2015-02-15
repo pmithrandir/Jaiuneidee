@@ -1,7 +1,8 @@
 
 <ol>
 {% for idee in idees %}
-    {% if ideesLues[idee[0].id] is defined and ideesLues[idee[0].id] |length>0%}
+
+    {% if ideesLues[idee[0].id] is defined %}
         {% set lueClass = "dejaLu" %}
     {% else %}
         {% set lueClass = "" %}

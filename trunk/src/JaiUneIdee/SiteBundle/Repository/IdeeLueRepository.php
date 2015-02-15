@@ -22,6 +22,19 @@ class IdeeLueRepository extends EntityRepository
                 ;
         return $qb->getQuery()->getResult();
     }
+    public function sontLues($idees, $user){
+        $ids = array();
+        foreach($idees as $idee) {
+            $ids[] = $idee[0]->getId();
+        }
+        $qb = $this->createQueryBuilder('il')
+                ->andWhere('il.user = :user')
+                ->andwhere('il.idee IN (:idees)')
+		->setParameter('idees',$ids)
+                ->setParameter('user', $user)
+                ;
+        return $qb->getQuery()->getResult();
+    }
     public function RemoveAllLuForIdee($idee){
         $qb = $this->createQueryBuilder('il');
         $qb->delete()

@@ -77,12 +77,19 @@ class PageController extends Controller
         }
         $ideesLues = array();     
         if (true === $this->get('security.context')->isGranted('ROLE_USER')){               
-            foreach($idees as $idee){
-                $ideesLues[$idee[0]->getId()] = $em->getRepository('JaiUneIdeeSiteBundle:IdeeLue')->estLue($idee[0],$this->get('security.context')->getToken()->getUser()->getId());
+            $ideesLuesResult = $em->getRepository('JaiUneIdeeSiteBundle:IdeeLue')->sontLues($idees,$this->get('security.context')->getToken()->getUser()->getId());
+            foreach($ideesLuesResult as $ideelue){
+                $ideesLues[$ideelue->getIdee()->getId()] = true;
             }
         }
+        $votesForIdees = $em->getRepository('JaiUneIdeeSiteBundle:Idee')->getVotesByIdees($idees);
         foreach($idees as &$idee){
-            $idee['votes'] = $em->getRepository('JaiUneIdeeSiteBundle:Vote')->getVotesByIdee($idee[0]);
+            if(isset($votesForIdees[$idee[0]->getId()])){
+                $idee['votes'] = $votesForIdees[$idee[0]->getId()];
+            }
+            else{
+                $idee['votes'] = array();
+            }
             if(!isset($idee['votes']["1"])){
                     $idee['votes']["1"] = 0;
             }
