@@ -263,7 +263,10 @@ class IdeeRepository extends EntityRepository {
                 ->andwhere('i.is_removed = false')
                 ->addGroupBy('i','t','l')
         ;
-        if ($withLocChildren === false) {
+        if(($localisation->getParent()==null)&&($withLocChildren === true)){
+            
+        }
+        elseif ($withLocChildren === false) {
             $qb->andWhere('l.id=:loc_id')
                     ->setParameter('loc_id', $localisation->getId())
             ;
@@ -296,6 +299,28 @@ class IdeeRepository extends EntityRepository {
         }
         return $qb;
     }
+    public function getVotesByIdees($idees){
+        $ids = array();
+        foreach($idees as $idee) {
+            $ids[] = $idee[0]->getId();
+        }
+        $qb = $this->createQueryBuilder('i')
+                    ->select('i.id', 'v.note','COUNT(v.id) as nombre')
+                    ->innerjoin('i.votes', 'v')
+                    ->where('i IN (:idees)')
+                    ->andwhere('v.is_removed = false')
+                    ->addGroupBy('i, v.note')
+                    ->addOrderBy('v.note')
+                    ->setParameter('idees', $ids)
+                ;
+        $result = $qb->getQuery()->getResult();
+        $aRetourner = array();
+        foreach($result as $value){
+        	$aRetourner[$value['id']][$value['note']] = $value['nombre'];
+        }
+        return $aRetourner;
+    }
+
     public function count24(){
         $qb = $this->createQueryBuilder('i');
         $qb->select('count(i.id)');
