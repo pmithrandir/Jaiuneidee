@@ -127,6 +127,7 @@ class IdeeController extends Controller {
                 $localisation = $em->getRepository('JaiUneIdeeLocalisationBundle:Localisation')->find($request->getSession()->get('localisation_id'));
                 $idee->addLocalisation($localisation);
             }
+            $idee->setLastActionAt(new \DateTime());
             $em->persist($idee);
             $em->flush();
             if($mode == "create"){
@@ -163,6 +164,8 @@ class IdeeController extends Controller {
             $comment->setUser($this->get('security.context')->getToken()->getUser());
             $em = $this->getDoctrine()->getManager();
             $em->persist($comment);
+            $idee->setLastActionAt(new \DateTime());
+            $em->persist($idee);
             $em->flush();
             //récupération de tous les abonnés
             $abonnements = $em->getRepository('JaiUneIdeeSiteBundle:AlerteIdee')->getAbonnesIdee($idee);
@@ -215,6 +218,8 @@ class IdeeController extends Controller {
         $form->handleRequest($request);
         if ($form->isValid()) {
             $em->persist($comment);
+            $comment->getIdee()->setLastActionAt(new \DateTime());
+            $em->persist($comment->getIdee());
             $em->flush();
             return $this->redirect($this->generateUrl('JaiUneIdeeSiteBundle_idee_show', array(
                                 'id' => $comment->getIdee()->getId(),

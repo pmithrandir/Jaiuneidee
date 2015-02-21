@@ -65,10 +65,11 @@ class Idee
     public function __construct()
     {
         $this->votes = new \Doctrine\Common\Collections\ArrayCollection();
-	    $this->commentaires = new \Doctrine\Common\Collections\ArrayCollection();
-	    $this->localisations = new \Doctrine\Common\Collections\ArrayCollection();
-	    $this->setCreatedAt(new \DateTime());
+        $this->commentaires = new \Doctrine\Common\Collections\ArrayCollection();
+        $this->localisations = new \Doctrine\Common\Collections\ArrayCollection();
+        $this->setCreatedAt(new \DateTime());
         $this->setUpdatedAt(new \DateTime());
+        $this->setLastActionAt(new \DateTime());
         $this->setIsPublished(true);
         $this->setIsRemoved(false);
         $this->setIsModerated(false);
@@ -640,5 +641,32 @@ class Idee
     public function removeActionsElus(\JaiUneIdee\SiteBundle\Entity\ActionElu $actionsElus)
     {
         $this->actionsElus->removeElement($actionsElus);
+    }
+    /**
+     * @var \DateTime
+     */
+    private $last_action_at;
+
+
+    /**
+     * Set last_action_at
+     *
+     * @param \DateTime $lastActionAt
+     * @return Idee
+     */
+    public function setLastActionAt($lastActionAt)
+    {
+        $this->last_action_at = $lastActionAt;
+        return $this;
+    }
+
+    /**
+     * Get last_action_at
+     *
+     * @return \DateTime 
+     */
+    public function getLastActionAt()
+    {
+        return $this->last_action_at;
     }
 }
