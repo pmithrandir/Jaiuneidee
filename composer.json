@@ -6,7 +6,7 @@
     },
     "require": {
         "php": ">=5.3.3",
-        "symfony/symfony": "2.4.*",
+        "symfony/symfony": "2.5.*",
         "doctrine/orm": "2.4.*",
         "doctrine/doctrine-bundle": "~1.2",
         "twig/extensions": "dev-master",
@@ -30,9 +30,9 @@
         "doctrine/doctrine-migrations-bundle": "dev-master",
         "white-october/pagerfanta-bundle": "dev-master",
         "pagerfanta/pagerfanta": "dev-master",
-        "sonata-project/jquery-bundle": "dev-master",
         "sonata-project/admin-bundle": "dev-master",
         "sonata-project/doctrine-orm-admin-bundle": "dev-master",
+        "sonata-project/core-bundle": "~2.2@dev",
         "gregwar/image-bundle": "dev-master"
     },
     "scripts": {
