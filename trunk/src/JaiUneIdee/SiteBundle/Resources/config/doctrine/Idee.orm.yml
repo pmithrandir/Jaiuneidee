@@ -39,6 +39,11 @@ JaiUneIdee\SiteBundle\Entity\Idee:
     updated_at:
       type: datetime
       notnull: true
+    last_action_at:
+      type: datetime
+      notnull: true
+      options:
+        default: 0
     is_validated_by_admin:
       type: boolean
       notnull: true

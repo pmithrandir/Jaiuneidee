@@ -250,18 +250,26 @@ class IdeeRepository extends EntityRepository {
             $limit = null;
         }
         $qb = $this->createQueryBuilder('i');
-        $qb->select('i','t','l', 'COUNT(DISTINCT c.id) as nombre', 'CASE WHEN COUNT(c.id)>0 THEN MAX(c.created_at) ELSE i.updated_at END AS derniere_activite')
-                ->innerjoin('i.localisations', 'l')
-                ->innerjoin('i.theme', 't')
-                ->leftJoin('i.commentaires', 'c', Expr\Join::WITH, 'c.is_removed=false AND (c.life > 0 OR c.is_validated_by_admin = true)')
-                ->where(
-                        $qb->expr()->orX(
-                                $qb->expr()->gt('i.life', 0), $qb->expr()->eq('i.is_validated_by_admin', "true")
-                        )
+        //$qb->select('i','t', 'COUNT(DISTINCT c.id) as nombre', 'CASE WHEN COUNT(c.id)>0 THEN MAX(c.created_at) ELSE i.updated_at END AS derniere_activite')
+        $qb->select('i','t', 'COUNT(DISTINCT c.id) as nombre')
+            ->innerjoin('i.localisations', 'l')
+            ->innerjoin('i.theme', 't')
+            ->leftJoin('i.commentaires', 'c', Expr\Join::WITH, 'c.is_removed=false AND (c.life > 0 OR c.is_validated_by_admin = true)')
+            ->addGroupBy('i','t')
+            ;
+        
+        if ($theme !== null) {
+            $qb->andWhere('i.theme=:theme')
+                ->setParameter('theme', $theme)
+            ;
+        }
+        $qb->andWhere('i.is_published = true')
+            ->andwhere('i.is_removed = false')
+            ->andWhere(
+                $qb->expr()->orX(
+                    $qb->expr()->gt('i.life', 0), $qb->expr()->eq('i.is_validated_by_admin', "true")
                 )
-                ->andWhere('i.is_published = true')
-                ->andwhere('i.is_removed = false')
-                ->addGroupBy('i','t','l')
+            )
         ;
         if(($localisation->getParent()==null)&&($withLocChildren === true)){
             
@@ -277,11 +285,6 @@ class IdeeRepository extends EntityRepository {
                     ->setParameter('max', $localisation->getMax())
             ;
         }
-        if ($theme !== null) {
-            $qb->andWhere('i.theme=:theme')
-                    ->setParameter('theme', $theme)
-            ;
-        }
         switch ($typeTri) {
             case "Buzz":
                 $qb->addOrderBy('nombre', 'DESC')
@@ -291,7 +294,7 @@ class IdeeRepository extends EntityRepository {
                 $qb->addOrderBy('i.id', 'DESC');
                 break;
             case "derniereActivite":
-                $qb->addOrderBy('derniere_activite', 'DESC');
+                $qb->addOrderBy('i.last_action_at', 'DESC');
                 break;
         }
         if (false === is_null($limit)) {
