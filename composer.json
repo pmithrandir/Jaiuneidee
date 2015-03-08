@@ -19,7 +19,7 @@
         "symfony/swiftmailer-bundle": "dev-master",
         "jms/security-extra-bundle": "dev-master",
         "jms/di-extra-bundle": "dev-master",
-        "jms/serializer-bundle": "dev-master",
+        "jms/serializer-bundle": "0.12.0",
         "doctrine/data-fixtures": "dev-master",
         "doctrine/doctrine-fixtures-bundle": "dev-master",
         "doctrine/migrations": "dev-master",
@@ -33,7 +33,8 @@
         "sonata-project/admin-bundle": "dev-master",
         "sonata-project/doctrine-orm-admin-bundle": "dev-master",
         "sonata-project/core-bundle": "~2.2@dev",
-        "gregwar/image-bundle": "dev-master"
+        "gregwar/image-bundle": "dev-master",
+         "friendsofsymfony/elastica-bundle": "3.0.*@dev"
     },
     "scripts": {
         "post-install-cmd": [

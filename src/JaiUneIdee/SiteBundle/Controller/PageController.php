@@ -6,39 +6,61 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 // Import new namespaces
 use JaiUneIdee\SiteBundle\Entity\Enquiry;
 use JaiUneIdee\SiteBundle\Form\EnquiryType;
+use JaiUneIdee\SiteBundle\Form\IdeeSearchType;
 use JaiUneIdee\SiteBundle\Entity\Message;
 use JaiUneIdee\SiteBundle\Form\MessageType;
 use Pagerfanta\Adapter\DoctrineORMAdapter;
+use Pagerfanta\Adapter\ArrayAdapter;
 use Pagerfanta\Pagerfanta;
+use Symfony\Component\HttpFoundation\Request;
+
+use JaiUneIdee\SiteBundle\Model\IdeeSearch;
 
 class PageController extends Controller
 {
-    public function indexAction($page = 1, $page_news = 1, $requester = "idee")
+    public function indexAction(Request $request, $page = 1, $page_news = 1, $requester = "idee")
     {
-        $request = $this->getRequest();
+        
+        $ideeSearch = new IdeeSearch();
+        $ideeSearchForm = $this->createForm(new IdeeSearchType(), $ideeSearch);
+
+        $ideeSearchForm->handleRequest($request);
+        $ideeSearch = $ideeSearchForm->getData();
+        
         $em = $this->getDoctrine()->getManager();
         if($request->getSession()->get('localisation') !==null){
-            $localisation = $em->getRepository('JaiUneIdeeLocalisationBundle:Localisation')->find($request->getSession()->get('localisation_id'));
-            $withLocChildren = true;
+            $ideeSearch->setLocalisationObject($em->getRepository('JaiUneIdeeLocalisationBundle:Localisation')->find($request->getSession()->get('localisation_id')));
+            $ideeSearch->setWithChildrenLoc(true);
         }
         else if(true === $this->get('security.context')->isGranted('ROLE_USER')){
-            if ($request->get("localisation")=="toutes"){
-                $localisation = $em->getRepository('JaiUneIdeeLocalisationBundle:Localisation')->findOneBy(array("nom"=>"France"));
-                $withLocChildren = true;
+            if ($ideeSearch->getLocalisation()=="toutes"){
+                $ideeSearch->setLocalisationObject($em->getRepository('JaiUneIdeeLocalisationBundle:Localisation')->findOneBy(array("nom"=>"France")));
+                $ideeSearch->setWithChildrenLoc(true);
             }
-            else if($request->get("localisation")=="national"){
-                $localisation = $em->getRepository('JaiUneIdeeLocalisationBundle:Localisation')->findOneBy(array("nom"=>"France"));
-                $withLocChildren = false;
+            else if($ideeSearch->getLocalisation()=="national"){
+                $ideeSearch->setLocalisationObject($em->getRepository('JaiUneIdeeLocalisationBundle:Localisation')->findOneBy(array("nom"=>"France")));
+                $ideeSearch->setWithChildrenLoc(false);
             }
             else{
-                $localisation = $this->get('security.context')->getToken()->getUser()->getLocalisation();
-                $withLocChildren = true;
+                $ideeSearch->setLocalisationObject($this->get('security.context')->getToken()->getUser()->getLocalisation());
+                $ideeSearch->setWithChildrenLoc(true);
             }
         }
         else{
-                $localisation = $em->getRepository('JaiUneIdeeLocalisationBundle:Localisation')->findOneBy(array("nom"=>"France"));
-                $withLocChildren = true;
+                $ideeSearch->setLocalisationObject($em->getRepository('JaiUneIdeeLocalisationBundle:Localisation')->findOneBy(array("nom"=>"France")));
+                $ideeSearch->setWithChildrenLoc(true);
         }
+//        $index = $this->get('fos_elastica.index.jaiuneidee');
+//        $temp = $index->search("speciale");
+//        $temp = $index->search(new Field('body', 'spéciale'));
+//        print_r($temp->getResults());
+        /** var FOS\ElasticaBundle\Manager\RepositoryManager */
+        $repositoryManager = $this->get('fos_elastica.manager.orm');
+        /** var FOS\ElasticaBundle\Repository */
+//        foreach($idees as $idee){
+//            echo $idee."<br />";
+//        }
+        
         
         $liste_themes = $this->getDoctrine()->getManager()->getRepository('JaiUneIdeeSiteBundle:Theme')->findAll();
         $theme = null;
@@ -56,17 +78,21 @@ class PageController extends Controller
         else if($request->get("tri")=="date"){
             $typeTri = "derniereIdee"; 
         }
-        $options = array(
-            'localisation'=> $localisation,
-            'theme'=> $theme,
-            'withLocChildren'=> $withLocChildren,
-            'typeTri'=> $typeTri,
-            'limit'=> null,
-            'withIdeesLues'=> $withIdeesLues
-        );
-        $qb = $em->getRepository('JaiUneIdeeSiteBundle:Idee')->getIdeesWithParamQueryBuilder($options);
+//        $options = array(
+//            'localisation'=> $localisation,
+//            'theme'=> $theme,
+//            'withLocChildren'=> $withLocChildren,
+//            'typeTri'=> $typeTri,
+//            'limit'=> null,
+//            'withIdeesLues'=> $withIdeesLues
+//        );
         
-        $adapter = new DoctrineORMAdapter($qb);
+        $repository = $repositoryManager->getRepository('JaiUneIdeeSiteBundle:Idee');
+        $results = $repository->search($ideeSearch);
+//        $qb = $em->getRepository('JaiUneIdeeSiteBundle:Idee')->getIdeesWithParamQueryBuilder($options);
+        
+        $adapter = new ArrayAdapter($results);
+        //$adapter = new DoctrineORMAdapter($qb);
         $pagerfanta = new Pagerfanta($adapter);
         try {
             $pagerfanta->setMaxPerPage(12);
@@ -82,34 +108,35 @@ class PageController extends Controller
                 $ideesLues[$ideelue->getIdee()->getId()] = true;
             }
         }
+        $votes = array();
         $votesForIdees = $em->getRepository('JaiUneIdeeSiteBundle:Idee')->getVotesByIdees($idees);
-        foreach($idees as &$idee){
-            if(isset($votesForIdees[$idee[0]->getId()])){
-                $idee['votes'] = $votesForIdees[$idee[0]->getId()];
+        foreach($idees as $idee){
+            if(isset($votesForIdees[$idee->getId()])){
+                $votes[$idee->getId()] = $votesForIdees[$idee->getId()];
             }
             else{
-                $idee['votes'] = array();
+                $votes[$idee->getId()] = array();
             }
-            if(!isset($idee['votes']["1"])){
-                    $idee['votes']["1"] = 0;
+            if(!isset($votes[$idee->getId()]["1"])){
+                    $votes[$idee->getId()]["1"] = 0;
             }
-            if(!isset($idee['votes']["0"])){
-                    $idee['votes']["0"] = 0;
+            if(!isset($votes[$idee->getId()]["0"])){
+                    $votes[$idee->getId()]["0"] = 0;
             }
-            if(!isset($idee['votes']["-1"])){
-                    $idee['votes']["-1"] = 0;
+            if(!isset($votes[$idee->getId()]["-1"])){
+                    $votes[$idee->getId()]["-1"] = 0;
             }
-            $idee['votes']["max"] = max($idee['votes']);
-            $idee['votes']["total"] = $idee['votes']["1"] + $idee['votes']["-1"] + $idee['votes']["0"];
-            if($idee['votes']["total"]>0){
-                    $idee['votes']["pourcent_1"] = round($idee['votes']["1"]*100/$idee['votes']["total"],2);
-                    $idee['votes']["pourcent_-1"] = round($idee['votes']["-1"]*100/$idee['votes']["total"],2);
-                    $idee['votes']["pourcent_0"] = round($idee['votes']["0"]*100/$idee['votes']["total"],2);
+            $votes[$idee->getId()]["max"] = max($votes[$idee->getId()]);
+            $votes[$idee->getId()]["total"] = $votes[$idee->getId()]["1"] + $votes[$idee->getId()]["-1"] + $votes[$idee->getId()]["0"];
+            if($votes[$idee->getId()]["total"]>0){
+                    $votes[$idee->getId()]["pourcent_1"] = round($votes[$idee->getId()]["1"]*100/$votes[$idee->getId()]["total"],2);
+                    $votes[$idee->getId()]["pourcent_-1"] = round($votes[$idee->getId()]["-1"]*100/$votes[$idee->getId()]["total"],2);
+                    $votes[$idee->getId()]["pourcent_0"] = round($votes[$idee->getId()]["0"]*100/$votes[$idee->getId()]["total"],2);
             }
             else{
-                    $idee['votes']["pourcent_1"] = 0;
-                    $idee['votes']["pourcent_-1"] = 0;
-                    $idee['votes']["pourcent_0"] = 0;
+                    $votes[$idee->getId()]["pourcent_1"] = 0;
+                    $votes[$idee->getId()]["pourcent_-1"] = 0;
+                    $votes[$idee->getId()]["pourcent_0"] = 0;
             }
         }
         $qb_news = $em->getRepository('JaiUneIdeeSiteBundle:News')->getNewsPublicQb();
@@ -143,6 +170,7 @@ class PageController extends Controller
         return $this->render('JaiUneIdeeSiteBundle:Page:'.$template, array(
             'idees' => $idees,
             'ideesLues'=>$ideesLues,
+            'votes'=>$votes,
             'news' => $news,
             'pager' => $pagerfanta,
             'pager_news' => $pagerfanta_news,
@@ -152,7 +180,8 @@ class PageController extends Controller
             'themes'=>$liste_themes,
             'options_pager'=>$options_pager,
             'options_pager_news'=>$options_pager_news,
-            'liste_site' => $liste_site
+            'liste_site' => $liste_site,
+            'ideeSearchForm' => $ideeSearchForm->createView(),
         ));
     }
     public function charteAction()

@@ -5,7 +5,7 @@ jQuery(document).ready(function() {
     $("#filtres").submit(function(event){
         $.ajax({
            url: $(this).attr('href'),
-           type:"GET", 
+           type:"POST", 
            data: $(this).serialize(),
            dataType: "html",
            success: function(html){

@@ -309,4 +309,13 @@ class Commentaire
     {
         return $this->is_moderated;
     }
+    /**
+     * Get is_visible
+     *
+     * @return boolean 
+     */
+    public function getIsVisible()
+    {
+        return ((($this->getLife()>0)||($this->getIsValidatedByAdmin()==true))&&($this->getIsRemoved()===false));
+    }
 }
