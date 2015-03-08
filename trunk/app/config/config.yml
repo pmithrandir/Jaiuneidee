@@ -105,3 +105,53 @@ services:
         tags:
             - { name: twig.extension }
 gregwar_image: ~
+fos_elastica:
+    clients:
+        default: { host: %es_host%, port: %es_port% }
+#    serializer:
+#        callback_class: FOS\ElasticaBundle\Serializer\Callback
+#        serializer: serializer
+    indexes:
+        jaiuneidee:
+            client: default
+            settings:
+                index:
+                    analysis:
+                        analyzer:
+                            custom_french_analyzer:
+                                type: custom
+                                tokenizer: letter
+                                filter: ["asciifolding", "lowercase", "french_stem", "stop_fr"]
+                        filter:
+                            stop_fr:
+                                type: "stop"
+                                stopwords: ["l", "m", "t", "qu", "n", "s", "j", "d"]
+            types:
+                Idee:
+                    mappings:
+                        id:
+                            type: integer
+                        updatedAt :
+                            type : date
+                        lastAction :
+                            type : date
+                        theme : ~
+                        localisations: ~
+                        localisationsNiveau0: ~
+                        localisationsNiveau1: ~
+                        localisationsNiveau2: ~
+                        localisationsNiveau3: ~
+                        isVisible :
+                            type : boolean
+                        countCommentaires:
+                            type: integer
+                        title : { analyzer: custom_french_analyzer }
+                        description : { analyzer: custom_french_analyzer }
+                        content : { analyzer: custom_french_analyzer }
+                    persistence:
+                        driver: orm # orm, mongodb, propel are available
+                        model:  JaiUneIdee\SiteBundle\Entity\Idee
+                        provider: ~
+                        listener: ~ # by default, listens to "insert", "update" and "delete"
+                        finder: ~
+                        repository: JaiUneIdee\SiteBundle\SearchRepository\IdeeRepository

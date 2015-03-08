@@ -1,12 +1,28 @@
 {# src/JaiUneIdee/SiteBundle/Resources/views/Page/index.html.twig #}
 {% extends 'JaiUneIdeeSiteBundle::layout_2_col.html.twig' %}
 {% block title %}Accueil{% if page>1 %} (page {{ page }}) {% endif %} {% endblock %}
+{% form_theme ideeSearchForm _self %}
+{% block _jaiuneidee_sitebundle_idee_search_type_theme_widget %}
+    <select {{ block('widget_attributes') }} class="theme">
+        <option value="">-- Thème --</option>
+        {%for choice in choices%}
+             <option value="{{ choice.value }}" 
+                        {% if choice is selectedchoice(value) %} selected="selected"{% endif %}
+                        data-image="/images/themes/{{choice.label|lower}}.png">
+            {{ choice.label|trans({}, translation_domain) }}
+             </option>
+	{%endfor%}
+    </select>
+{% endblock %}
 {% block mainCol %}
 <fieldset id="cadre_filtre">
     <legend>
         Filtres et tris
     </legend>
-    <form action="{{ path('JaiUneIdeeSiteBundle_homepage') }}" method="post" id="filtres">
+
+    <form action="{{ path('JaiUneIdeeSiteBundle_homepage') }}" method="get" id="filtres">
+        {{ form_widget(ideeSearchForm) }}
+    {#
         <div>
             {% if is_granted('IS_AUTHENTICATED_REMEMBERED') and app.session.get("localisation") is null %}
             <label for="localisation_locale">{{app.user.localisation}}</label>
@@ -33,6 +49,7 @@
             <label for="tri_par_nombre_commentaire">Buzz</label>
             <input type="radio" name="tri" id="tri_par_nombre_commentaire" value="nb_commentaire" />
         </div>
+    #}
         <!--<input type="submit" value="Actualiser" id="filtres_submit"/>-->
     </form>
 </fieldset>

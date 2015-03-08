@@ -25,7 +25,7 @@ class IdeeLueRepository extends EntityRepository
     public function sontLues($idees, $user){
         $ids = array();
         foreach($idees as $idee) {
-            $ids[] = $idee[0]->getId();
+            $ids[] = $idee->getId();
         }
         $qb = $this->createQueryBuilder('il')
                 ->andWhere('il.user = :user')

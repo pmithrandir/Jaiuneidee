@@ -305,7 +305,7 @@ class IdeeRepository extends EntityRepository {
     public function getVotesByIdees($idees){
         $ids = array();
         foreach($idees as $idee) {
-            $ids[] = $idee[0]->getId();
+            $ids[] = $idee->getId();
         }
         $qb = $this->createQueryBuilder('i')
                     ->select('i.id', 'v.note','COUNT(v.id) as nombre')

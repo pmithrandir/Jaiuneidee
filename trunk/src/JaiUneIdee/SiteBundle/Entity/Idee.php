@@ -669,4 +669,117 @@ class Idee
     {
         return $this->last_action_at;
     }
+    /**
+     * Get is_visible
+     *
+     * @return boolean 
+     */
+    public function getIsVisible()
+    {
+        return ((($this->getLife()>0)||($this->getIsValidatedByAdmin()==true))&&($this->getIsRemoved()===false)&&($this->getIsPublished()==true));
+    }
+    /**
+     * Get countCommentaire
+     *
+     * @return boolean 
+     */
+    public function getCountCommentaires()
+    {
+        $commentaires = $this->getCommentaires();
+        $i = 0;
+        foreach($commentaires as $commentaire){
+            if($commentaire->getIsVisible()==true){
+                $i++;
+            }
+        }
+        return $i;
+    }
+    /**
+     * Get lastAction
+     *
+     * @return boolean 
+     */
+    public function getLastAction()
+    {
+        $commentaires = $this->getCommentaires();
+        $date = $this->getCreatedAt();
+        foreach($commentaires as $commentaire){
+            if($commentaire->getCreatedAt()>$date){
+                $date = $commentaire->getCreatedAt();
+            }
+        }
+        return $date;
+    }
+    /**
+     * Get lastAction
+     *
+     * @return array 
+     */
+    private function getLocalisationsNiveau($niveau)
+    {
+        $localisations = $this->getLocalisations();
+        $return = array();
+        foreach($localisations as $localisation){
+            if($localisation->getNiveau() >= $niveau){
+                $currentLocalisation = $localisation;
+                for($i = $localisation->getNiveau();$i > $niveau;$i--){
+                    $currentLocalisation = $currentLocalisation->getParent();
+                }
+                if(!in_array($currentLocalisation, $return)){
+                    $return[] = $currentLocalisation;
+                }
+            }
+        }
+        return $return;
+    }
+    /**
+     * Get getLocalisationsNiveau0
+     *
+     * @return array 
+     */
+    public function getLocalisationsNiveau0(){
+        return $this->getLocalisationsNiveau(0);
+    }
+    /**
+     * Get getLocalisationsNiveau1
+     *
+     * @return array 
+     */
+    public function getLocalisationsNiveau1(){
+        return $this->getLocalisationsNiveau(1);
+    }
+    /**
+     * Get getLocalisationsNiveau2
+     *
+     * @return array 
+     */
+    public function getLocalisationsNiveau2(){
+        return $this->getLocalisationsNiveau(2);
+    }
+    /**
+     * Get getLocalisationsNiveau3
+     *
+     * @return array 
+     */
+    public function getLocalisationsNiveau3(){
+        return $this->getLocalisationsNiveau(3);
+    }
+    
+    /**
+     * Get getLocalisationsNiveau4
+     *
+     * @return array 
+     */
+    public function getLocalisationsNiveau4(){
+        return $this->getLocalisationsNiveau(4);
+    }
+    
+    /**
+     * Get getLocalisationsNiveau2
+     *
+     * @return array 
+     */
+    public function getLocalisationsNiveau5(){
+        return $this->getLocalisationsNiveau(5);
+    }
 }
