@@ -164,7 +164,7 @@ class IdeeController extends Controller {
             $comment->setUser($this->get('security.context')->getToken()->getUser());
             $em = $this->getDoctrine()->getManager();
             $em->persist($comment);
-            $idee->setLastActionAt(new \DateTime());
+            $idee->setTitle($idee->getTitle());
             $em->persist($idee);
             $em->flush();
             //récupération de tous les abonnés
