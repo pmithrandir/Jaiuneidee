@@ -54,6 +54,11 @@ class LocalisationsToIdsTransformer implements DataTransformerInterface
         foreach ($idsArray as $id) {
             $localisations->add($this->entityManager->getRepository('JaiUneIdeeLocalisationBundle:Localisation')->find($id));
         }
+        if(count($localisations)==0){
+            //si non touvé, erreur, mettre France    
+            $france = $em->getRepository('JaiUneIdeeLocalisationBundle:Localisation')->findOneBy(array("nom"=>"France"));
+            $localisations->add($france);
+        }
         return $localisations;
     }
 }
