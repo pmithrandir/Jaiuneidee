@@ -11,6 +11,7 @@ use JaiUneIdee\SiteBundle\Entity\Message;
 use JaiUneIdee\SiteBundle\Form\MessageType;
 use Pagerfanta\Adapter\DoctrineORMAdapter;
 use Pagerfanta\Adapter\ArrayAdapter;
+use Pagerfanta\Adapter\ElasticaAdapter;
 use Pagerfanta\Pagerfanta;
 use Symfony\Component\HttpFoundation\Request;
 
@@ -22,7 +23,7 @@ class PageController extends Controller
     {
         
         $ideeSearch = new IdeeSearch();
-        $ideeSearchForm = $this->createForm(new IdeeSearchType(), $ideeSearch);
+        $ideeSearchForm = $this->createForm(new IdeeSearchType($this->get('security.context'), ($request->getSession()->get('localisation') !== null)), $ideeSearch);
 
         $ideeSearchForm->handleRequest($request);
         $ideeSearch = $ideeSearchForm->getData();
@@ -32,35 +33,20 @@ class PageController extends Controller
             $ideeSearch->setLocalisationObject($em->getRepository('JaiUneIdeeLocalisationBundle:Localisation')->find($request->getSession()->get('localisation_id')));
             $ideeSearch->setWithChildrenLoc(true);
         }
-        else if(true === $this->get('security.context')->isGranted('ROLE_USER')){
-            if ($ideeSearch->getLocalisation()=="toutes"){
-                $ideeSearch->setLocalisationObject($em->getRepository('JaiUneIdeeLocalisationBundle:Localisation')->findOneBy(array("nom"=>"France")));
-                $ideeSearch->setWithChildrenLoc(true);
-            }
-            else if($ideeSearch->getLocalisation()=="national"){
-                $ideeSearch->setLocalisationObject($em->getRepository('JaiUneIdeeLocalisationBundle:Localisation')->findOneBy(array("nom"=>"France")));
-                $ideeSearch->setWithChildrenLoc(false);
-            }
-            else{
-                $ideeSearch->setLocalisationObject($this->get('security.context')->getToken()->getUser()->getLocalisation());
-                $ideeSearch->setWithChildrenLoc(true);
-            }
+        else if((true === $this->get('security.context')->isGranted('ROLE_USER'))&&(($ideeSearch->getLocalisation()=="local")||($ideeSearch->getLocalisation()==""))){
+            $ideeSearch->setLocalisationObject($this->get('security.context')->getToken()->getUser()->getLocalisation());
+            $ideeSearch->setWithChildrenLoc(true);
+        }
+        else if($ideeSearch->getLocalisation()=="national"){
+            $ideeSearch->setLocalisationObject($em->getRepository('JaiUneIdeeLocalisationBundle:Localisation')->findOneBy(array("nom"=>"France")));
+            $ideeSearch->setWithChildrenLoc(false);
         }
         else{
-                $ideeSearch->setLocalisationObject($em->getRepository('JaiUneIdeeLocalisationBundle:Localisation')->findOneBy(array("nom"=>"France")));
-                $ideeSearch->setWithChildrenLoc(true);
+            $ideeSearch->setLocalisationObject($em->getRepository('JaiUneIdeeLocalisationBundle:Localisation')->findOneBy(array("nom"=>"France")));
+            $ideeSearch->setWithChildrenLoc(true);
         }
-//        $index = $this->get('fos_elastica.index.jaiuneidee');
-//        $temp = $index->search("speciale");
-//        $temp = $index->search(new Field('body', 'spéciale'));
-//        print_r($temp->getResults());
-        /** var FOS\ElasticaBundle\Manager\RepositoryManager */
+
         $repositoryManager = $this->get('fos_elastica.manager.orm');
-        /** var FOS\ElasticaBundle\Repository */
-//        foreach($idees as $idee){
-//            echo $idee."<br />";
-//        }
-        
         
         $liste_themes = $this->getDoctrine()->getManager()->getRepository('JaiUneIdeeSiteBundle:Theme')->findAll();
         $theme = null;
@@ -71,31 +57,18 @@ class PageController extends Controller
         if (true === $this->get('security.context')->isGranted('ROLE_USER')){
             $withIdeesLues = true;
         }
-        $typeTri = "derniereActivite";
-        if($request->get("tri")=="nb_commentaire"){
-            $typeTri = "Buzz"; 
-        }
-        else if($request->get("tri")=="date"){
-            $typeTri = "derniereIdee"; 
-        }
-//        $options = array(
-//            'localisation'=> $localisation,
-//            'theme'=> $theme,
-//            'withLocChildren'=> $withLocChildren,
-//            'typeTri'=> $typeTri,
-//            'limit'=> null,
-//            'withIdeesLues'=> $withIdeesLues
-//        );
-        
+
         $repository = $repositoryManager->getRepository('JaiUneIdeeSiteBundle:Idee');
         $results = $repository->search($ideeSearch);
-//        $qb = $em->getRepository('JaiUneIdeeSiteBundle:Idee')->getIdeesWithParamQueryBuilder($options);
+        $search = new \Elastica\Search($this->container->get('fos_elastica.client'));
+        //$adapter = new ArrayAdapter($results);//
+        $index = $this->get('fos_elastica.index.jaiuneidee');
+        $adapter = new ElasticaAdapter($index, $repository->searchQuery($ideeSearch));
         
-        $adapter = new ArrayAdapter($results);
         //$adapter = new DoctrineORMAdapter($qb);
         $pagerfanta = new Pagerfanta($adapter);
         try {
-            $pagerfanta->setMaxPerPage(12);
+            $pagerfanta->setMaxPerPage(10);
             $pagerfanta->setCurrentPage($page);
             $idees = $pagerfanta->getCurrentPageResults();
         } catch (\Pagerfanta\Exception\NotValidCurrentPageException $e) {

@@ -146,6 +146,7 @@ fos_elastica:
                         countCommentaires:
                             type: integer
                         title : { analyzer: custom_french_analyzer }
+                        slug : ~ 
                         description : { analyzer: custom_french_analyzer }
                         content : { analyzer: custom_french_analyzer }
                     persistence:

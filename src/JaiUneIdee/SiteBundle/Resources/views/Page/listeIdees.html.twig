@@ -8,13 +8,13 @@
         {% set lueClass = "" %}
     {% endif %}
     <li class="index_idee {{lueClass}} box">
-        <a class="idee" href="{{ path('JaiUneIdeeSiteBundle_idee_show', { 'id': idee.id, 'slug': idee.slug }) }}" alt="{{ idee}}" title="{{ idee}}">
+        <a class="idee" href="{{ path('JaiUneIdeeSiteBundle_idee_show', { 'id': idee.id, 'slug': idee.slug }) }}" alt="{{ idee.title}}" title="{{ idee.title}}">
             <header class="separation"></header>
             <div class="index_idee_theme">
                 <img src="/images/themes/{{ idee.theme|lower }}.png" alt="{{ idee.theme }}" title="{{ idee.theme }}"/>
             </div>
             <div class="index_idee_commentaire">
-                {#{{ idee.commentaires|length }}#} commentaires
+                {{ idee.countCommentaires }} commentaires
             </div>
             {% if votes[idee.id]["total"]>0 %}
                 <div class="vote_graph">

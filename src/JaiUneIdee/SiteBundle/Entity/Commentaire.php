@@ -49,6 +49,9 @@ class Commentaire
         $metadata->addPropertyConstraint('content', new Length(array('min'=>8)));
         $metadata->addPropertyConstraint('content', new Length(array('max'=>5000)));
     }
+    public function __toString(){
+    	return $this->content;
+    }
     /**
      * Get id
      *
