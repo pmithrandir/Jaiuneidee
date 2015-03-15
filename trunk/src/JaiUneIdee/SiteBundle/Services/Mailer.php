@@ -85,10 +85,10 @@ class Mailer
         }
     	$template = 'JaiUneIdeeSiteBundle:Mail:alerteQuotidienne.html.twig';
     	$template2 = 'JaiUneIdeeSiteBundle:Mail:alerteQuotidienne.txt.twig';
-    	$body = $this->templating->render($template, array('idees'=> $idees, "news"=>$news));
-    	$texte = $this->templating->render($template2, array('idees'=> $idees, "news"=>$news));
         $valid = true;
         foreach($users as $user){
+            $body = $this->templating->render($template, array('idees'=> $idees, "news"=>$news, "user"=>$user));
+            $texte = $this->templating->render($template2, array('idees'=> $idees, "news"=>$news, "user"=>$user));
             $to = $user->getEmail();
             if(false === $this->sendMessage($to, $subject, $body, $texte)){
                 $valid = false;   

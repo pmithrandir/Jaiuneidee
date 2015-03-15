@@ -1,7 +1,7 @@
 {% extends 'JaiUneIdeeSiteBundle::layout_email.html.twig' %}
 
 {% block body %}
-    Bonjour,
+    Bonjour {{user | capitalize}},
     <br />
     <br />
     {% if news|length>0%}
@@ -22,7 +22,11 @@
         Voici les idées qui ont été créées depuis hier sur J'ai Une Idée.
         <ol>
         {% for idee in idees %}
-            <li><a href="{{ url('JaiUneIdeeSiteBundle_idee_show', { 'id': idee.id, 'slug': idee.slug }) }}">{{idee}}</a></li>
+            {% if user.localisation.urlname is defined and user.localisation in idee.localisations %}
+                <li><a href="//{{user.localisation.urlname}}.{{main_site}}{{ path('JaiUneIdeeSiteBundle_idee_show', { 'id': idee.id, 'slug': idee.slug }) }}">{{idee}}</a></li>
+            {% else %}
+                <li><a href="{{ url('JaiUneIdeeSiteBundle_idee_show', { 'id': idee.id, 'slug': idee.slug }) }}">{{idee}}</a></li>
+            {% endif %}
         {% endfor%}
         </ol>
     {% endif %}
