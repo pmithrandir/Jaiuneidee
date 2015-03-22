@@ -1,6 +1,6 @@
 {# src/JaiUneIdee/SiteBundle/Resources/views/layout.html.twig #}
 {% extends '::base.html.twig' %}
-{% block javascript %}
+{% block javascripts %}
     {{ parent() }}
     {% javascripts '@JaiUneIdeeSiteBundle/Resources/public/js/*'
                 '@JaiUneIdeeLocalisationBundle/Resources/public/js/*' 
@@ -43,5 +43,3 @@
     {% endif %}
     </div>
 {% endblock %}
-
-{% block javascripts %}{% endblock %}
