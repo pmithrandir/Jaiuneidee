@@ -8,24 +8,29 @@
         <meta name="description" content="{% block descriptionSite %}Site de démocratie participative permettant de proposer des idées locales ou nationales.{% endblock %}">
         <meta name="keywords" content="démocratie, participative, edemocratie, e-democratie, democratie participative, consultation, concertation, idée, échange, opinion, commentaire, débat, vote, elections, élu, citoyen, participation, participer, debattre" />
         {% block javascript %}
-        <!--[if lt IE 9]>
-            <script src="//html5shim.googlecode.com/svn/trunk/html5.js"></script>
-        <![endif]-->
         
-        <script async src="//code.jquery.com/jquery-1.8.2.min.js"></script>
-        {% javascripts 'js/jquery.validate.min.js'
-                    'js/messages_fr.js'
-                    'js/tokeninput.js'
-                    'js/msdropdown/jquery.dd.min.js'
-                output='js/compiled/lib.js' %}
-            <script  async type="text/javascript" src="{{ asset_url }}"></script>
-        {% endjavascripts %}
         {% endblock %}
         {#
         <link rel="shortcut icon" href="{{ asset('favicon.ico') }}" />
         #}
         <meta property="fb:admins" content="100005771354609" />
         <link href="https://plus.google.com/u/0/b/118203067427668607877/118203067427668607877/" rel="publisher" />
+        
+        {% block stylesheets %}
+            {% stylesheets 'css/token-input.css'
+                    'css/token-input-facebook.css'
+                    'css/msdropdown/dd.css'
+                    'css/jaiuneidee.css'
+                output='css/compiled/jaiuneidee.css'
+                %}
+                <link rel="stylesheet" href="{{ asset_url }}" />
+            {% endstylesheets %}
+            
+            {%if app.session.get("localisation_css") is not null%}
+                <link rel="stylesheet" href="/css/localisations/{{app.session.get("localisation_css")}}" />
+            {% endif %}
+                
+        {% endblock %}
     </head>
     <body>
         <div id="fb-root"></div>
@@ -93,21 +98,19 @@
             {% endblock %}
         </footer>
 
-        {% block javascripts %}{% endblock %}
+        {% block javascripts %}
+	  <!--[if lt IE 9]>
+	      <script src="//html5shim.googlecode.com/svn/trunk/html5.js"></script>
+	  <![endif]-->
+	  
+	  <script src="//code.jquery.com/jquery-1.8.2.min.js"></script>
+	  {% javascripts 'js/jquery.validate.min.js'
+		      'js/messages_fr.js'
+		      'js/tokeninput.js'
+		      'js/msdropdown/jquery.dd.min.js'
+		  output='js/compiled/lib.js' %}
+	      <script  type="text/javascript" src="{{ asset_url }}"></script>
+	  {% endjavascripts %}
+        {% endblock %}
     </body>
 </html>
-        {% block stylesheets %}
-            {% stylesheets 'css/token-input.css'
-                    'css/token-input-facebook.css'
-                    'css/msdropdown/dd.css'
-                    'css/jaiuneidee.css'
-                output='css/compiled/jaiuneidee.css'
-                %}
-                <link rel="stylesheet" href="{{ asset_url }}" />
-            {% endstylesheets %}
-            
-            {%if app.session.get("localisation_css") is not null%}
-                <link rel="stylesheet" href="/css/localisations/{{app.session.get("localisation_css")}}" />
-            {% endif %}
-                
-        {% endblock %}
