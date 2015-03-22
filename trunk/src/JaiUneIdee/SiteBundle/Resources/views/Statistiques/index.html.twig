@@ -24,6 +24,7 @@
             {%endfor%}
 {% endblock %}
 {% block javascripts %}
+    {{ parent() }}
     <script language="javascript">
         jQuery(document).ready(function() {
             {%for key,value in tabStatsJson%} 
