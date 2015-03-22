@@ -12,38 +12,14 @@
             <script src="//html5shim.googlecode.com/svn/trunk/html5.js"></script>
         <![endif]-->
         
-        <script src="//code.jquery.com/jquery-1.8.2.min.js"></script>
-        {#
-        <script src="{{ asset('js/jquery-1.8.2.min.js') }}"></script>
-        #}
-        {#
-        <script src="{{ asset('js/jquery.validate.min.js') }}"></script>
-        <script src="{{ asset('js/messages_fr.js') }}"></script>
-        <script src="{{ asset('js/tokeninput.js') }}"></script>
-        <script src="{{ asset('js/msdropdown/jquery.dd.min.js') }}"></script>
-        #}
+        <script async src="//code.jquery.com/jquery-1.8.2.min.js"></script>
         {% javascripts 'js/jquery.validate.min.js'
                     'js/messages_fr.js'
                     'js/tokeninput.js'
                     'js/msdropdown/jquery.dd.min.js'
                 output='js/compiled/lib.js' %}
-            <script type="text/javascript" src="{{ asset_url }}"></script>
+            <script  async type="text/javascript" src="{{ asset_url }}"></script>
         {% endjavascripts %}
-        {% endblock %}
-        {% block stylesheets %}
-            {% stylesheets 'css/token-input.css'
-                    'css/token-input-facebook.css'
-                    'css/msdropdown/dd.css'
-                    'css/jaiuneidee.css'
-                output='css/compiled/jaiuneidee.css'
-                %}
-                <link rel="stylesheet" href="{{ asset_url }}" />
-            {% endstylesheets %}
-            
-            {%if app.session.get("localisation_css") is not null%}
-                <link rel="stylesheet" href="/css/localisations/{{app.session.get("localisation_css")}}" />
-            {% endif %}
-                
         {% endblock %}
         {#
         <link rel="shortcut icon" href="{{ asset('favicon.ico') }}" />
@@ -120,3 +96,18 @@
         {% block javascripts %}{% endblock %}
     </body>
 </html>
+        {% block stylesheets %}
+            {% stylesheets 'css/token-input.css'
+                    'css/token-input-facebook.css'
+                    'css/msdropdown/dd.css'
+                    'css/jaiuneidee.css'
+                output='css/compiled/jaiuneidee.css'
+                %}
+                <link rel="stylesheet" href="{{ asset_url }}" />
+            {% endstylesheets %}
+            
+            {%if app.session.get("localisation_css") is not null%}
+                <link rel="stylesheet" href="/css/localisations/{{app.session.get("localisation_css")}}" />
+            {% endif %}
+                
+        {% endblock %}
