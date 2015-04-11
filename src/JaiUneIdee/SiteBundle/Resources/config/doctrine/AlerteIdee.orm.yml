@@ -10,14 +10,14 @@ JaiUneIdee\SiteBundle\Entity\AlerteIdee:
         strategy: AUTO
     activated:
       type: boolean
-      notnull: true
+      nullable: false
       options:
         default: true
     created_at:
       type: datetime
-      notnull: true
+      nullable: false
       options:
-        default: 0
+        default: '1990-01-01 00:00:00'
   manyToOne:
     idee:
       targetEntity: Idee

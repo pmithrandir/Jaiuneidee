@@ -1,6 +1,7 @@
 JaiUneIdee\UtilisateurBundle\Entity\Invitation:
   type: entity
   repositoryClass: JaiUneIdee\UtilisateurBundle\Repository\InvitationRepository
+  table: invitation
   fields:
     id:
       type: string
@@ -14,9 +15,9 @@ JaiUneIdee\UtilisateurBundle\Entity\Invitation:
         default: false
     created_at:
       type: datetime
-      notnull: true
+      nullable: false
       options:
-        default: 0
+        default: '1990-01-01 00:00:00'
   oneToOne:
     user:
       targetEntity: User

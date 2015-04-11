@@ -11,4 +11,4 @@ JaiUneIdee\SiteBundle\Entity\Parti:
     nom:
       type: string
       lenght: 255
-      notnull: true
+      nullable: true

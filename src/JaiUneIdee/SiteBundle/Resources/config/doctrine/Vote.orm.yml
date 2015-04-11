@@ -10,15 +10,15 @@ JaiUneIdee\SiteBundle\Entity\Vote:
         strategy: AUTO
     note:
       type: integer
-      notnull: true
+      nullable: false
     created_at:
       type: datetime
-      notnull: true
+      nullable: false
       options:
-        default: 0
+        default: '1990-01-01 00:00:00'
     is_removed:
       type: boolean
-      notnull: true
+      nullable: false
       options:
         default: false
   manyToOne:

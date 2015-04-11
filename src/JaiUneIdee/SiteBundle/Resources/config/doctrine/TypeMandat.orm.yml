@@ -11,5 +11,5 @@ JaiUneIdee\SiteBundle\Entity\TypeMandat:
     nom:
       type: string
       lenght: 255
-      notnull: true
+      nullable: true
     

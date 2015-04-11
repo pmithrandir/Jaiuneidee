@@ -10,25 +10,25 @@ JaiUneIdee\SiteBundle\Entity\News:
         strategy: AUTO
     content:
       type: text
-      notnull: true
+      nullable: false
     is_validated_by_admin:
       type: boolean
-      notnull: true
+      nullable: false
       options:
         default: false
     is_removed:
       type: boolean
-      notnull: true
+      nullable: false
       options:
         default: false
     publication_date:
       type: datetime
-      notnull: true
+      nullable: false
     created_at:
       type: datetime
-      notnull: true
+      nullable: false
     updated_at:
       type: datetime
-      notnull: true
+      nullable: false
   lifecycleCallbacks:
     preUpdate: [ setUpdatedValue ]
