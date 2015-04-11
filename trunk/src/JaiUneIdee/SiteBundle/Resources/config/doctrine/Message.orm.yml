@@ -11,13 +11,13 @@ JaiUneIdee\SiteBundle\Entity\Message:
     sujet:
       type: string
       lenght: 255
-      notnull: true
+      nullable: false
     message:
       type: text
-      notnull: true
+      nullable: false
     created_at:
       type: datetime
-      notnull: true
+      nullable: false
     nom:
       type: string
       lenght: 255
@@ -29,7 +29,7 @@ JaiUneIdee\SiteBundle\Entity\Message:
       targetEntity: JaiUneIdee\UtilisateurBundle\Entity\User
     userTo:
       targetEntity: JaiUneIdee\UtilisateurBundle\Entity\User
-      notnull: true
+      nullable: true
   manyToMany:
   lifecycleCallbacks:
     preUpdate: [ setUpdatedValue ]

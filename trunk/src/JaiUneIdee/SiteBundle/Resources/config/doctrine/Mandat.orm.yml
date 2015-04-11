@@ -10,10 +10,10 @@ JaiUneIdee\SiteBundle\Entity\Mandat:
         strategy: AUTO
     date_election:
       type: date
-      notnull: false
+      nullable: true
     date_prise_de_fonction:
       type: date
-      notnull: false
+      nullable: true
   manyToOne:
     localisation:
       targetEntity: JaiUneIdee\LocalisationBundle\Entity\Localisation

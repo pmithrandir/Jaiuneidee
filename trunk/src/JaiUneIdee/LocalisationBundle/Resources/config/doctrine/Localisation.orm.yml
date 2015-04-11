@@ -2,6 +2,11 @@ JaiUneIdee\LocalisationBundle\Entity\Localisation:
   type: entity
   repositoryClass: JaiUneIdee\LocalisationBundle\Repository\LocalisationRepository
   table: localisation
+  indexes:
+    by_niveau_idx:
+      columns: [ niveau ]
+    url_name_idx:
+      columns: [ urlName ]
   fields:
     id:
       type: integer

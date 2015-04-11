@@ -38,11 +38,11 @@ class PageController extends Controller
             $ideeSearch->setWithChildrenLoc(true);
         }
         else if($ideeSearch->getLocalisation()=="national"){
-            $ideeSearch->setLocalisationObject($em->getRepository('JaiUneIdeeLocalisationBundle:Localisation')->findOneBy(array("nom"=>"France")));
+            $ideeSearch->setLocalisationObject($em->getRepository('JaiUneIdeeLocalisationBundle:Localisation')->findOneBy(array("niveau"=>0)));
             $ideeSearch->setWithChildrenLoc(false);
         }
         else{
-            $ideeSearch->setLocalisationObject($em->getRepository('JaiUneIdeeLocalisationBundle:Localisation')->findOneBy(array("nom"=>"France")));
+            $ideeSearch->setLocalisationObject($em->getRepository('JaiUneIdeeLocalisationBundle:Localisation')->findOneBy(array("niveau"=>0)));
             $ideeSearch->setWithChildrenLoc(true);
         }
 

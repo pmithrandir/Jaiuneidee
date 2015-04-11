@@ -10,7 +10,7 @@ JaiUneIdee\SiteBundle\Entity\Statistique:
         strategy: AUTO
     created_at:
       type: datetime
-      notnull: true
+      nullable: false
     nb_utilisateurs_connectes_24:
       type: integer
       options:

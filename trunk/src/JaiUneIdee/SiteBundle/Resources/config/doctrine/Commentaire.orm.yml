@@ -10,10 +10,10 @@ JaiUneIdee\SiteBundle\Entity\Commentaire:
         strategy: AUTO
     content:
       type: text
-      notnull: true
+      nullable: false
     is_validated_by_admin:
       type: boolean
-      notnull: true
+      nullable: false
       options:
         default: false
     life:
@@ -22,20 +22,24 @@ JaiUneIdee\SiteBundle\Entity\Commentaire:
         default: 500
     is_removed:
       type: boolean
-      notnull: true
+      nullable: false
       options:
         default: false
     is_moderated:
       type: boolean
-      notnull: true
+      nullable: false
       options:
         default: false
     created_at:
       type: datetime
-      notnull: true
+      nullable: false      
+      options:
+        default: '1990-01-01 00:00:00'
     updated_at:
       type: datetime
-      notnull: true
+      nullable: false
+      options:
+        default: '1990-01-01 00:00:00'
   manyToOne:
     idee:
       targetEntity: Idee

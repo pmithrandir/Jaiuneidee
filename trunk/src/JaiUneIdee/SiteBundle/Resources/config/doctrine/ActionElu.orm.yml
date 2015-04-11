@@ -10,34 +10,34 @@ JaiUneIdee\SiteBundle\Entity\ActionElu:
         strategy: AUTO
     date_jaime:
       type: datetime
-      notnull: false
+      nullable: true
     jaime:
       type: boolean
-      notnull: true
+      nullable: false
       options:
         default: false
     date_jemengage:
       type: datetime
-      notnull: false
+      nullable: true
     jemengage:
       type: boolean
-      notnull: true
+      nullable: false
       options:
         default: false
     date_jairealise:
       type: datetime
-      notnull: false
+      nullable: true
     jairealise:
       type: boolean
-      notnull: true
+      nullable: false
       options:
         default: false
     date_jenaimepas:
       type: datetime
-      notnull: false
+      nullable: true
     jenaimepas:
       type: boolean
-      notnull: true
+      nullable: false
       options:
         default: false
   manyToOne:

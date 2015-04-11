@@ -2,6 +2,9 @@ JaiUneIdee\SiteBundle\Entity\IdeeLue:
   type: entity
   repositoryClass: JaiUneIdee\SiteBundle\Repository\IdeeLueRepository
   table: idee_lue
+  indexes:
+    idee_lue_idx:
+      columns: [ user_id, idee_id ]
   fields:
     id:
       type: integer

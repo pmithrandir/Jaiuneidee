@@ -11,17 +11,17 @@ JaiUneIdee\SiteBundle\Entity\Theme:
     nom:
       type: string
       lenght: 255
-      notnull: true
+      nullable: false
     descriptif:
       type: string
       lenght: 255
-      notnull: true
+      nullable: false
     is_moderated:
       type: boolean
       options:
         default: false
     ordre:
       type: integer
-      notnull: true
+      nullable: false
       options:
         default: 0

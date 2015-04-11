@@ -11,47 +11,47 @@ JaiUneIdee\SiteBundle\Entity\Idee:
     slug:
       type: string
       lenght: 255
-      notnull: true
+      nullable: false
     title:
       type: string
       lenght: 255
-      notnull: true
+      nullable: false
     description:
       type: string
       lenght: 140
-      notnull: true
+      nullable: false
     content:
       type: text
-      notnull: true
+      nullable: false
     is_published:
       type: boolean
-      notnull: true
+      nullable: false
       options:
         default: false
     is_removed:
       type: boolean
-      notnull: true
+      nullable: false
       options:
         default: false
     created_at:
       type: datetime
-      notnull: true
+      nullable: false
     updated_at:
       type: datetime
-      notnull: true
+      nullable: false
     last_action_at:
       type: datetime
-      notnull: true
+      nullable: false
       options:
-        default: 0
+        default: '1990-01-01 00:00:00'
     is_validated_by_admin:
       type: boolean
-      notnull: true
+      nullable: false
       options:
         default: false
     is_moderated:
       type: boolean
-      notnull: true
+      nullable: false
       options:
         default: false
     life:

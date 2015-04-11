@@ -3,12 +3,12 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/home/pmithrandir/workspace/jaiuneidee/src/JaiUneIdee/SiteBundle/Repository/IdeeRepository.php</file>
-            <file>file:/home/pmithrandir/workspace/jaiuneidee/src/JaiUneIdee/SiteBundle/Command/TestServeurCommand.php</file>
+            <file>file:/home/pmithrandir/workspace/jaiuneidee/src/JaiUneIdee/SiteBundle/Resources/views/Idee/stat.html.twig</file>
+            <file>file:/home/pmithrandir/workspace/jaiuneidee/src/JaiUneIdee/SiteBundle/Resources/views/layout.html.twig</file>
+            <file>file:/home/pmithrandir/workspace/jaiuneidee/src/JaiUneIdee/UtilisateurBundle/Resources/views/Profile/edit.html.twig</file>
+            <file>file:/home/pmithrandir/workspace/jaiuneidee/src/JaiUneIdee/SiteBundle/Resources/views/Idee/create.html.twig</file>
+            <file>file:/home/pmithrandir/workspace/jaiuneidee/src/JaiUneIdee/SiteBundle/Resources/views/Statistiques/index.html.twig</file>
             <file>file:/home/pmithrandir/workspace/jaiuneidee/app/config/config.yml</file>
-            <file>file:/home/pmithrandir/workspace/jaiuneidee/src/JaiUneIdee/SiteBundle/Services/Mailer.php</file>
-            <file>file:/home/pmithrandir/workspace/jaiuneidee/src/JaiUneIdee/SiteBundle/Resources/views/Mail/test.html.twig</file>
-            <file>file:/home/pmithrandir/workspace/jaiuneidee/src/JaiUneIdee/SiteBundle/Resources/views/Mail/test.txt.twig</file>
         </group>
     </open-files>
 </project-private>

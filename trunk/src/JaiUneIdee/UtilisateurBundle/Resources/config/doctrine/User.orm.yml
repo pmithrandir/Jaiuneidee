@@ -10,54 +10,54 @@ JaiUneIdee\UtilisateurBundle\Entity\User:
         strategy: AUTO
     created_at:
       type: datetime
-      notnull: true
+      nullable: false
       options:
-        default: 0
+        default: '1990-01-01 00:00:00'
     last_activity:
       type: datetime
-      notnull: true
+      nullable: false
       options:
-        default: 0
+        default: '1990-01-01 00:00:00'
     date_de_naissance:
       type: date
     date_de_naissance_public:
       type: boolean
-      notnull: true
+      nullable: false
       options:
         default: false
     approbation_charte:
       type: boolean
-      notnull: true
+      nullable: false
     sexe_public:
       type: boolean
-      notnull: true
+      nullable: false
       options:
         default: false
     localisation_public:
       type: boolean
-      notnull: true
+      nullable: false
       options:
         default: false
     tendance_politique_public:
       type: boolean
-      notnull: true
+      nullable: false
       options:
         default: false
     newsletter:
       type: boolean
-      notnull: true
+      nullable: false
       options:
         default: true
     avatar:
       type: string
-      notnull: false
+      nullable: true
       options:
         default: ""
       length: 255
   oneToOne:
     invitation:
       targetEntity: Invitation
-      notnull: false
+      nullable: false
       inversedBy: user
       joinColumn:
         name: invitation_code
@@ -69,7 +69,7 @@ JaiUneIdee\UtilisateurBundle\Entity\User:
       targetEntity: TendancePolitique
     dommage:
       targetEntity: Dommage
-      notnull: true
+      nullable: true
     localisation:
       targetEntity: JaiUneIdee\LocalisationBundle\Entity\Localisation
   oneToMany:
