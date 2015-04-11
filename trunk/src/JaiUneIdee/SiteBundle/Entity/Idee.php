@@ -704,7 +704,7 @@ class Idee
         $commentaires = $this->getCommentaires();
         $date = $this->getCreatedAt();
         foreach($commentaires as $commentaire){
-            if($commentaire->getCreatedAt()>$date){
+            if(($commentaire->getIsVisible()==true)&&($commentaire->getCreatedAt()>$date)){
                 $date = $commentaire->getCreatedAt();
             }
         }
