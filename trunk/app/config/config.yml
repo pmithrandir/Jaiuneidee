@@ -19,7 +19,7 @@ framework:
         cookie_lifetime: 0
         save_path: %kernel.root_dir%/cache/sessions
         cookie_domain: .%main_site%
-        name: SFSESSID
+        name: %cookies_name%
 #    trust_proxy_headers: false
 
 # Twig Configuration
