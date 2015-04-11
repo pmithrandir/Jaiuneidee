@@ -22,6 +22,15 @@ jQuery(document).ready(function() {
     $("#filtres select").change(function(event){
         $("#filtres").submit();
     });
+    var timer;
+    $("#filtres input[type=text]").keyup(function(event){
+        var timerCallback = function(){
+            $("#filtres").submit();
+        };
+        clearTimeout( timer );
+        timer = setTimeout( timerCallback, 300 );
+        return false;
+    });
     $("form.nouveau_commentaire").validate({
         rules: {
             "jaiuneidee_sitebundle_commentairetype[content]": {
