@@ -59,8 +59,8 @@ class PageController extends Controller
         }
 
         $repository = $repositoryManager->getRepository('JaiUneIdeeSiteBundle:Idee');
-        $results = $repository->search($ideeSearch);
-        $search = new \Elastica\Search($this->container->get('fos_elastica.client'));
+//        $results = $repository->search($ideeSearch);
+//        $search = new \Elastica\Search($this->container->get('fos_elastica.client'));
         //$adapter = new ArrayAdapter($results);//
         $index = $this->get('fos_elastica.index.jaiuneidee');
         $adapter = new ElasticaAdapter($index, $repository->searchQuery($ideeSearch));

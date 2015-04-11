@@ -77,4 +77,13 @@ class IdeeRepository extends Repository
     {
         return $this->find($this->searchQuery($ideeSearch));
     }
+    /**
+     * @param $ideeSearch
+     * @return array<Idee>
+     */
+    public function searchES(IdeeSearch $ideeSearch)
+    {
+        return $this->findHybrid($this->searchQuery($ideeSearch));
+    }
+    
 }
