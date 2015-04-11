@@ -47,9 +47,9 @@ class IdeeSearchType extends AbstractType
                 'label'=> false,
                 'required'  => false,
             ))
-            ->add('submit','submit',array(
-                'label'=> "Chercher"
-            ))
+//            ->add('submit','submit',array(
+//                'label'=> "Chercher"
+//            ))
             ->add('sort','choice',array(
                 'choices' => IdeeSearch::$sortChoices,
                 'required'  => true,
