@@ -127,9 +127,10 @@ class IdeeController extends Controller {
                 $localisation = $em->getRepository('JaiUneIdeeLocalisationBundle:Localisation')->find($request->getSession()->get('localisation_id'));
                 $idee->addLocalisation($localisation);
             }
-            $idee->setLastActionAt(new \DateTime());
+            //$idee->setLastActionAt(new \DateTime());
             $em->persist($idee);
             $em->flush();
+            $this->updateES ($idee);
             if($mode == "create"){
                 $alerte = $em->getRepository('JaiUneIdeeSiteBundle:AlerteIdee')->getAlerteIdeeByIdeeAndUser($idee, $this->get('security.context')->getToken()->getUser());
                 if (!$alerte) {
@@ -164,9 +165,9 @@ class IdeeController extends Controller {
             $comment->setUser($this->get('security.context')->getToken()->getUser());
             $em = $this->getDoctrine()->getManager();
             $em->persist($comment);
-            $idee->setTitle($idee->getTitle());
-            $em->persist($idee);
             $em->flush();
+            $idee->addCommentaire($comment);
+            $this->updateES ($idee);
             //récupération de tous les abonnés
             $abonnements = $em->getRepository('JaiUneIdeeSiteBundle:AlerteIdee')->getAbonnesIdee($idee);
             foreach ($abonnements as $abonnement) {
@@ -218,7 +219,7 @@ class IdeeController extends Controller {
         $form->handleRequest($request);
         if ($form->isValid()) {
             $em->persist($comment);
-            $comment->getIdee()->setLastActionAt(new \DateTime());
+            //$comment->getIdee()->setLastActionAt(new \DateTime());
             $em->persist($comment->getIdee());
             $em->flush();
             return $this->redirect($this->generateUrl('JaiUneIdeeSiteBundle_idee_show', array(
@@ -271,6 +272,7 @@ class IdeeController extends Controller {
             $em = $this->getDoctrine()->getManager();
             $em->persist($moderation);
             $em->flush();
+            $this->updateES ($idee);
         }
         return $this->redirect($this->generateUrl('JaiUneIdeeSiteBundle_idee_show', array(
                             'id' => $idee->getId(),
@@ -291,6 +293,7 @@ class IdeeController extends Controller {
             $em = $this->getDoctrine()->getManager();
             $em->persist($moderation);
             $em->flush();
+            $this->updateES ($commentaire->getIdee());
         }
         return $this->redirect($this->generateUrl('JaiUneIdeeSiteBundle_idee_show', array(
                             'id' => $commentaire->getIdee()->getId(),
@@ -308,6 +311,7 @@ class IdeeController extends Controller {
             $moderationExistantes = $em->getRepository('JaiUneIdeeSiteBundle:Moderation')->getModerationByIdee($idee);
             $this->amelioreDommage($moderationExistantes);
             $em->flush();
+            $this->updateES ($idee);
         }
         return $this->redirect($this->generateUrl('JaiUneIdeeSiteBundle_homepage', array()));
     }
@@ -322,6 +326,7 @@ class IdeeController extends Controller {
             $moderationExistantes = $em->getRepository('JaiUneIdeeSiteBundle:Moderation')->getModerationByIdee($idee);
             $this->diminueDommage($moderationExistantes);
             $em->flush();
+            $this->updateES ($idee);
         }
         return $this->redirect($this->generateUrl('JaiUneIdeeSiteBundle_homepage', array()));
     }
@@ -336,6 +341,7 @@ class IdeeController extends Controller {
             $moderationExistantes = $em->getRepository('JaiUneIdeeSiteBundle:ModerationCommentaire')->getModerationByCommentaire($commentaire);
             $this->amelioreDommage($moderationExistantes);
             $em->flush();
+            $this->updateES ($commentaire->getIdee());
         }
         return $this->redirect($this->generateUrl('JaiUneIdeeSiteBundle_idee_show', array(
                             'id' => $commentaire->getIdee()->getId(),
@@ -353,6 +359,8 @@ class IdeeController extends Controller {
             $moderationExistantes = $em->getRepository('JaiUneIdeeSiteBundle:ModerationCommentaire')->getModerationByCommentaire($commentaire);
             $this->amelioreDommage($moderationExistantes);
             $em->flush();
+            
+            $this->updateES ($commentaire->getIdee());
         }
         return $this->redirect($this->generateUrl('JaiUneIdeeSiteBundle_idee_show', array(
                             'id' => $commentaire->getIdee()->getId(),
@@ -401,6 +409,7 @@ class IdeeController extends Controller {
             $idee->setIsPublished(true);
             $idee->setIsRemoved(false);
             $em->flush();
+            $this->updateES ($idee);
         }
         return $this->redirect($this->generateUrl('JaiUneIdeeSiteBundle_idees_moderation_admin', array()));
     }
@@ -412,6 +421,7 @@ class IdeeController extends Controller {
             $idee->setIsPublished(false);
             $idee->setIsRemoved(true);
             $em->flush();
+            $this->updateES ($idee);
         }
         return $this->redirect($this->generateUrl('JaiUneIdeeSiteBundle_idees_moderation_admin', array()));
     }
@@ -487,5 +497,9 @@ class IdeeController extends Controller {
                     'idee' => $idee
         ));
     }
-
+    private function updateES ($idee){
+    
+        $persister = $this->get('fos_elastica.object_persister.jaiuneidee.idee');
+        $persister->insertOne($idee);
+}
 }
