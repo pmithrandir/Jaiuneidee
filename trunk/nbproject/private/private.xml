@@ -3,12 +3,11 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/home/pmithrandir/workspace/jaiuneidee/src/JaiUneIdee/SiteBundle/Resources/views/Idee/stat.html.twig</file>
-            <file>file:/home/pmithrandir/workspace/jaiuneidee/src/JaiUneIdee/SiteBundle/Resources/views/layout.html.twig</file>
-            <file>file:/home/pmithrandir/workspace/jaiuneidee/src/JaiUneIdee/UtilisateurBundle/Resources/views/Profile/edit.html.twig</file>
-            <file>file:/home/pmithrandir/workspace/jaiuneidee/src/JaiUneIdee/SiteBundle/Resources/views/Idee/create.html.twig</file>
-            <file>file:/home/pmithrandir/workspace/jaiuneidee/src/JaiUneIdee/SiteBundle/Resources/views/Statistiques/index.html.twig</file>
-            <file>file:/home/pmithrandir/workspace/jaiuneidee/app/config/config.yml</file>
+            <file>file:/home/pmithrandir/workspace/jaiuneidee/src/JaiUneIdee/SiteBundle/Form/IdeeSearchType.php</file>
+            <file>file:/home/pmithrandir/workspace/jaiuneidee/src/JaiUneIdee/SiteBundle/Entity/Idee.php</file>
+            <file>file:/home/pmithrandir/workspace/jaiuneidee/src/JaiUneIdee/SiteBundle/Controller/IdeeController.php</file>
+            <file>file:/home/pmithrandir/workspace/jaiuneidee/src/JaiUneIdee/SiteBundle/Controller/PageController.php</file>
+            <file>file:/home/pmithrandir/workspace/jaiuneidee/src/JaiUneIdee/SiteBundle/Resources/public/js/siteBundle.js</file>
         </group>
     </open-files>
 </project-private>
