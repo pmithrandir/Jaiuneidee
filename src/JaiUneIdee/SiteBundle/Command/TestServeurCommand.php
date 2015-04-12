@@ -20,19 +20,20 @@ class TestServeurCommand extends ContainerAwareCommand
         $em = $this->getContainer()->get('doctrine')->getManager();
         //récupérer les idées crées dans la journée.
         $idees = $em->getRepository('JaiUneIdeeSiteBundle:Idee')->getLatestIdees();
+        $text ="";
         if(count($idees)>0){
-            $text = "DATABASE OK\n";
+            $text .= "DATABASE OK\n";
         }
         else{
-            $text = "DATABASE PROBLEM\n";
+            $text .= "DATABASE PROBLEM\n";
         }
         $index = $this->getContainer()->get('fos_elastica.index.jaiuneidee');
         $idees = $index->search();
         if(count($idees)>0){
-            $text = "ES OK\n";
+            $text .= "ES OK\n";
         }
         else{
-            $text = "ES PROBLEM\n";
+            $text .= "ES PROBLEM\n";
         }
         $host = $this->getContainer()->get('router')->getContext()->getHost();
         $mail_service = $this->getContainer()->get('jai_une_idee_site.mailer');
