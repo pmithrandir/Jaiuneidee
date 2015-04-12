@@ -23,7 +23,7 @@ class MessageController extends Controller
         $em = $this->getDoctrine()->getManager();
         $admins = $em->getRepository('JaiUneIdeeUtilisateurBundle:User')->findByUsername("admin");
         //$entities = $em->getRepository('JaiUneIdeeSiteBundle:Message')->findByUserTo($this->get('security.context')->getToken()->getUser());
-        $entities = $em->getRepository('JaiUneIdeeSiteBundle:Message')->findByUserTo($admins[0]);
+        $entities = $em->getRepository('JaiUneIdeeSiteBundle:Message')->findByUserTo($admins[0],array('id' => 'DESC'));
 
         return $this->render('JaiUneIdeeSiteBundle:Message:index.html.twig', array(
             'entities' => $entities,
