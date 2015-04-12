@@ -4,6 +4,7 @@ namespace JaiUneIdee\SiteBundle\Command;
 use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
+use Symfony\Component\Console\Input\InputArgument;
 
 class TestServeurCommand extends ContainerAwareCommand
 {
@@ -11,12 +12,18 @@ class TestServeurCommand extends ContainerAwareCommand
     {
         $this
             ->setName('site:testserveur')
+            ->addArgument('email', InputArgument::OPTIONAL, 'Email a envoyer à la place de l\'admin par defaut')
             ->setDescription('effectuer un lot de tests sur le serveur.')
         ;
     }
 
     protected function execute(InputInterface $input, OutputInterface $output)
     {
+        if ($input->getArgument('email')) {
+            $email = $input->getArgument('email');
+        } else {
+            $email = 'jaiuneidee.net@gmail.com';
+        }
         $em = $this->getContainer()->get('doctrine')->getManager();
         //récupérer les idées crées dans la journée.
         $idees = $em->getRepository('JaiUneIdeeSiteBundle:Idee')->getLatestIdees();
@@ -38,11 +45,11 @@ class TestServeurCommand extends ContainerAwareCommand
         $host = $this->getContainer()->get('router')->getContext()->getHost();
         $mail_service = $this->getContainer()->get('jai_une_idee_site.mailer');
         $mailer = $mail_service->getMailer();
-        if($mail_service->sendTestMessage("jaiuneidee.net@gmail.com",$host)){
-            $text .= "EMAIL OK\n";
+        if($mail_service->sendTestMessage($email,$host)){
+            $text .= "EMAIL OK $email \n";
         }
         else{
-            $text .= "EMAIL PROBLEM\n";
+            $text .= "EMAIL PROBLEM $email \n";
         }
         $spool = $mailer->getTransport()->getSpool();
         $transport = $this->getContainer()->get('swiftmailer.transport.real');
