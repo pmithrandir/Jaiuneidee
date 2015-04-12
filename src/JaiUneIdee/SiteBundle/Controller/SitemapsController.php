@@ -28,7 +28,7 @@ class SitemapsController extends Controller
        }
 
         $index = $this->get('fos_elastica.index.jaiuneidee');
-        $idees = $index->search("");
+        $idees = $index->search();
         foreach ($idees as $idee) {
             $urls[] = array('loc' => $this->get('router')->generate('JaiUneIdeeSiteBundle_idee_show', array('id' => $idee->getId(),'slug' => $idee->getSource()['slug']),true), 'changefreq' => 'daily','lastmod'=>$idee->getSource()['lastAction'],'priority'=>0.5);
         }
