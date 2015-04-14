@@ -27,7 +27,11 @@
             {% endstylesheets %}
             
             {%if app.session.get("localisation_css") is not null%}
-                <link rel="stylesheet" href="/css/localisations/{{app.session.get("localisation_css")}}" />
+                {%if "http://" in app.session.get("localisation_css") %}
+                    <link rel="stylesheet" href="{{app.session.get("localisation_css")}}" />
+                {% else %}
+                    <link rel="stylesheet" href="/css/localisations/{{app.session.get("localisation_css")}}" />
+                {% endif %}
             {% endif %}
                 
         {% endblock %}
