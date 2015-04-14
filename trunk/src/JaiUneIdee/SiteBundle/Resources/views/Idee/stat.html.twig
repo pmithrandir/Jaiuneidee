@@ -1,19 +1,6 @@
 {% extends 'JaiUneIdeeSiteBundle::layout_1_col.html.twig' %}
 {% block title %}Statistiques de l'idée : {{idee}}{% endblock%}
 
-{% block javascript %}
-    {{ parent() }}
-    <!--[if lt IE 9]><script language="javascript" type="text/javascript" src="{{ asset('js/jqplot/excanvas.js') }}"></script><![endif]-->
-    <script language="javascript" type="text/javascript" src="{{ asset('js/jqplot/jquery.jqplot.min.js') }}"></script>
-    <script language="javascript" type="text/javascript" src="{{ asset('js/jqplot/plugins/jqplot.highlighter.min.js') }}"></script>
-    <script language="javascript" type="text/javascript" src="{{ asset('js/jqplot/plugins/jqplot.cursor.min.js') }}"></script>
-    <script language="javascript" type="text/javascript" src="{{ asset('js/jqplot/plugins/jqplot.dateAxisRenderer.min.js') }}"></script>
-    <script language="javascript" type="text/javascript" src="{{ asset('js/jqplot/plugins/jqplot.pieRenderer.min.js') }}"></script>
-    <script language="javascript" type="text/javascript" src="{{ asset('js/jqplot/plugins/jqplot.donutRenderer.min.js') }}"></script>
-    <script language="javascript" type="text/javascript" src="{{ asset('js/jqplot/plugins/jqplot.barRenderer.min.js') }}"></script>
-    <script language="javascript" type="text/javascript" src="{{ asset('js/jqplot/plugins/jqplot.categoryAxisRenderer.min.js') }}"></script>
-    <script language="javascript" type="text/javascript" src="{{ asset('js/jqplot/plugins/jqplot.pointLabels.min.js') }}"></script>
-{% endblock %}
 {% block stylesheets %}
     {{ parent() }}
     <link rel="stylesheet" type="text/css" href="{{ asset('css/jqplot/jquery.jqplot.css') }}" />
@@ -30,6 +17,16 @@
 {% endblock %}
 {% block javascripts %}
     {{ parent() }}
+    <!--[if lt IE 9]><script type="text/javascript" src="{{ asset('js/jqplot/excanvas.js') }}"></script><![endif]-->
+    <script type="text/javascript" src="{{ asset('js/jqplot/jquery.jqplot.min.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('js/jqplot/plugins/jqplot.highlighter.min.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('js/jqplot/plugins/jqplot.cursor.min.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('js/jqplot/plugins/jqplot.dateAxisRenderer.min.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('js/jqplot/plugins/jqplot.pieRenderer.min.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('js/jqplot/plugins/jqplot.donutRenderer.min.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('js/jqplot/plugins/jqplot.barRenderer.min.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('js/jqplot/plugins/jqplot.categoryAxisRenderer.min.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('js/jqplot/plugins/jqplot.pointLabels.min.js') }}"></script>
     <script language="javascript">
         jQuery(document).ready(function() {
             {% for key,value in tabStatsJson.pie%} 
