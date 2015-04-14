@@ -12,7 +12,7 @@ use Doctrine\ORM\EntityRepository;
  */
 class LocalisationRepository extends EntityRepository
 {
-	public function getListe($param)
+    public function getListe($param)
     {
         $qb = $this->createQueryBuilder('l');
         $qb->select("l.id, CONCAT(l.nom, CONCAT(".$qb->expr()->literal(' (').", CONCAT(CASE WHEN p.nom IS NULL THEN 'Pays entier' ELSE p.nom END,".$qb->expr()->literal(')')."))) as nom");
@@ -22,7 +22,10 @@ class LocalisationRepository extends EntityRepository
            ->addOrderBy('l.nom', 'ASC');
         $qb->leftjoin('l.parent', 'p');
         $qb->setParameter('param', '%'.$param.'%');
-    	return $qb->getQuery()->getArrayResult();
+        $query = $qb->getQuery();
+        $query->useResultCache(true);
+        $query->setResultCacheLifetime(2000000);
+    	return $query->getArrayResult();
     }
     public function getListeSousDomaine()
     {
@@ -31,6 +34,9 @@ class LocalisationRepository extends EntityRepository
            ->addOrderBy('l.population', 'ASC')
            ->addOrderBy('l.niveau', 'ASC')
            ->addOrderBy('l.nom', 'ASC');
-    	return $qb->getQuery()->getResult();
+        $query = $qb->getQuery();
+        $query->useResultCache(true);
+        $query->setResultCacheLifetime(3600);
+    	return $query->getResult();
     }
 }
