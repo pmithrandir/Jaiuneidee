@@ -14,6 +14,8 @@ class StatistiqueRepository extends EntityRepository
 {
     public function getAllStats(){
         $qb = $this->createQueryBuilder('s');
+        $qb->where('s.created_at >= :last_year');
+        $qb->setParameter('last_year', new \DateTime('-1 year'));
         $qb->orderBy('s.created_at');
         $result = $qb->getQuery()->getResult();
         $aRetourner = Array();

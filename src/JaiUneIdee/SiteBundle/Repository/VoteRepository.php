@@ -52,6 +52,8 @@ class VoteRepository extends EntityRepository
         $notes = array(0=>"Neutre", 1=>"Pour", -1 => "Contre");
         $sexes = array('Homme', 'Femme');
         foreach($sexes as $sexe){
+            $aRetourner['results'][$sexe] = array();
+            $aRetourner['count'][$sexe] = 0;
             foreach($notes as $note){
                 $aRetourner['results'][$sexe][$note] =  array($note,0);
             }   
