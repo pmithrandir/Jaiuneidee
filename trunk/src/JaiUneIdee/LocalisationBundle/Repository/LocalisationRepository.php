@@ -17,7 +17,7 @@ class LocalisationRepository extends EntityRepository
         $qb = $this->createQueryBuilder('l');
         $qb->select("l.id, CONCAT(l.nom, CONCAT(".$qb->expr()->literal(' (').", CONCAT(CASE WHEN p.nom IS NULL THEN 'Pays entier' ELSE p.nom END,".$qb->expr()->literal(')')."))) as nom");
         $qb->add('where', $qb->expr()->like('UPPER(l.nom)','UPPER(:param)'))
-           ->addOrderBy('l.population', 'ASC')
+           ->addOrderBy('l.population', 'DESC')
            ->addOrderBy('l.niveau', 'ASC')
            ->addOrderBy('l.nom', 'ASC');
         $qb->leftjoin('l.parent', 'p');
