@@ -73,7 +73,7 @@ class IdeeRepository extends Repository
      * @param $ideeSearch
      * @return array<Idee>
      */
-    public function search(IdeeSearch $ideeSearch)
+    public function findTransformed(IdeeSearch $ideeSearch)
     {
         return $this->find($this->searchQuery($ideeSearch));
     }
@@ -81,9 +81,16 @@ class IdeeRepository extends Repository
      * @param $ideeSearch
      * @return array<Idee>
      */
-    public function searchES(IdeeSearch $ideeSearch)
+    public function findTransformedHybrid(IdeeSearch $ideeSearch)
     {
         return $this->findHybrid($this->searchQuery($ideeSearch));
     }
-    
+    /**
+     * @param $ideeSearch
+     * @return array<Idee>
+     */
+    public function searchES(IdeeSearch $ideeSearch)
+    {
+        return $this->findRawResult($this->searchQuery($ideeSearch));
+    }
 }

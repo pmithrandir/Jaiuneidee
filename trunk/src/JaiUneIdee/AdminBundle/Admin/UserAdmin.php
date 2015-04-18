@@ -77,6 +77,7 @@ class UserAdmin extends Admin
             ->add('date_de_naissance')
             ->add('dommage')
             ->add('newsletter','checkbox',array("required"=>false))
+            ->add('localisation', 'sonata_type_model_autocomplete', array('property'=>'nom'))
         ;
     }
 

@@ -732,54 +732,10 @@ class Idee
         }
         return $return;
     }
-    /**
-     * Get getLocalisationsNiveau0
-     *
-     * @return array 
-     */
-    public function getLocalisationsNiveau0(){
-        return $this->getLocalisationsNiveau(0);
-    }
-    /**
-     * Get getLocalisationsNiveau1
-     *
-     * @return array 
-     */
-    public function getLocalisationsNiveau1(){
-        return $this->getLocalisationsNiveau(1);
-    }
-    /**
-     * Get getLocalisationsNiveau2
-     *
-     * @return array 
-     */
-    public function getLocalisationsNiveau2(){
-        return $this->getLocalisationsNiveau(2);
-    }
-    /**
-     * Get getLocalisationsNiveau3
-     *
-     * @return array 
-     */
-    public function getLocalisationsNiveau3(){
-        return $this->getLocalisationsNiveau(3);
-    }
-    
-    /**
-     * Get getLocalisationsNiveau4
-     *
-     * @return array 
-     */
-    public function getLocalisationsNiveau4(){
-        return $this->getLocalisationsNiveau(4);
-    }
-    
-    /**
-     * Get getLocalisationsNiveau2
-     *
-     * @return array 
-     */
-    public function getLocalisationsNiveau5(){
-        return $this->getLocalisationsNiveau(5);
+    public function __get($name)
+    {
+        if ((substr($name, 0, 19) == 'localisationsNiveau')&&(is_numeric(substr($name, 19, strlen($name))))) {
+            return $this->getLocalisationsNiveau(substr($name, 19, strlen($name)));
+        }
     }
 }

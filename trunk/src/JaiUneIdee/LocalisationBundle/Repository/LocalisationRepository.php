@@ -60,39 +60,57 @@ class LocalisationRepository extends EntityRepository
         $qb = $this->createQueryBuilder('l');
         $query = $qb->update()
             ->set('l.min','l.min + 2')
-            ->where('l.min >= :minParent')
-            ->setParameter("minParent", $minParent)
+            ->where('l.min > :maxParent')
+            ->setParameter("maxParent", $maxParent)
+            ->getQuery();
+        $p = $query->execute();
+    }
+    public function preRemoveProcess(Localisation $localisation, Localisation  $parent){
+        //attribuer mon parent a tous mes enfants directs
+        $qb = $this->createQueryBuilder('l');
+        $query = $qb->update()
+            ->set('l.parent', $parent->getId())
+            ->set('l.niveau', $parent->getNiveau()+1)
+            ->where('l.parent = :localisation')
+            ->setParameter("localisation", $localisation)
             ->getQuery();
         $p = $query->execute();
     }
     public function deleteElementProcess($min, $max,Localisation  $parent){
         $qb = $this->createQueryBuilder('l');
         $query = $qb->update()
-            ->set('l.parent', $parent)
-            ->where('l.min > :min')
-            ->andWhere('l.max < :max')
+            ->set('l.min','l.min - 1')
+            ->set('l.max', 'l.max - 1')
+            ->where('l.max < :max')
+            -> andWhere('l.min > :min')
             ->setParameter("min", $min)
             ->setParameter("max", $max)
             ->getQuery();
         $p = $query->execute();
         $qb = $this->createQueryBuilder('l');
         $query = $qb->update()
-            ->set('l.min','l.min - 2')
-            ->where('l.min >= :minParent')
-            ->setParameter("minParent", $min)
+            ->set('l.max', 'l.max - 2')
+            ->where('l.max >= :max')
+            ->setParameter("max", $max)
             ->getQuery();
         $p = $query->execute();
         $qb = $this->createQueryBuilder('l');
         $query = $qb->update()
-            ->set('l.max', 'l.max - 2')
-            ->where('l.max >= :maxParent')
-            ->setParameter("maxParent", $max)
+            ->set('l.min','l.min - 2')
+            ->where('l.min >= :max')
+            ->setParameter("max", $max)
             ->getQuery();
         $p = $query->execute();
     }
-    public function updateElementProcess(Localisation $localisation, Localisation $oldParent, Localisation $newParent, $oldMin, $oldMax){
-        //agrandir le parent final
+    public function updateElementProcess(Localisation $localisation, Localisation $newParent){
+        //agrandir le parent final à droite
         $tailleElement = $localisation->getMax()-$localisation->getMin()+1;
+        $correction = 0;
+        if ($newParent->getMax() < $localisation->getMax()){
+            $correction = $tailleElement;
+        }
+        $diff = $localisation->getMin()+$correction-$newParent->getMax();
+        //on créé l'emplacement pour accueillir les éléments
         $qb = $this->createQueryBuilder('l');
         $query = $qb->update()
             ->set('l.max', "l.max + $tailleElement")
@@ -104,40 +122,35 @@ class LocalisationRepository extends EntityRepository
         $query = $qb->update()
             ->set('l.min', "l.min + $tailleElement")
             ->where('l.min > :destMin')
-            ->setParameter("destMin", $newParent->getMin())
+            ->setParameter("destMin", $newParent->getMax())
             ->getQuery();
         $p = $query->execute();
         //decaler tous les elements dans le nouveau parent
-        $correction = 0;
-        if($newParent->getMax()<=$oldParent->getMax()){
-            $correction = $tailleElement;
-        }
-        $diff = $oldMax+$correction-($newParent->getMax())-1;
         $qb = $this->createQueryBuilder('l');
         $query = $qb->update()
-            ->set('l.max', "l.max - $diff")
             ->set('l.min', "l.min - $diff")
-            ->where('l.max <= :max')
-            ->andWhere('l.min >= :min')
+            ->set('l.max', "l.max - $diff")
+            ->where('l.min >= :min')
+            ->andWhere('l.max <= :max')
             ->setParameter("min", $localisation->getMin()+$correction)
             ->setParameter("max", $localisation->getMax()+$correction)
             ->getQuery();
         $p = $query->execute();
-        //décaler tous les éléments vers min pour boucher le trou
+        //on rebouche le trou
+         $qb = $this->createQueryBuilder('l');
+        $query = $qb->update()
+            ->set('l.min', "l.min - $tailleElement")
+            ->where('l.min >= :oldMinCorrige')
+            ->setParameter("oldMinCorrige", $localisation->getMin()+$correction)
+            ->getQuery();
+        $p = $query->execute();
         $qb = $this->createQueryBuilder('l');
         $query = $qb->update()
             ->set('l.max', "l.max - $tailleElement")
-            ->where('l.max > :originParentMax')
-            ->setParameter("originParentMax", $oldMax + $correction)
+            ->where('l.max >= :oldMaxCorrige')
+            ->setParameter("oldMaxCorrige", $localisation->getMax()+$correction)
             ->getQuery();
         $p = $query->execute();
         $qb = $this->createQueryBuilder('l');
-        $query = $qb->update()
-            ->set('l.min', "l.min - $tailleElement")
-            ->where('l.min > :originParentMin')
-            ->setParameter("originParentMin", $oldMin + $correction)
-            ->getQuery();
-        $p = $query->execute();
-        
     }
 }

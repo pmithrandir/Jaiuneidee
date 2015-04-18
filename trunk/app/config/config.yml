@@ -142,6 +142,12 @@ fos_elastica:
                         localisationsNiveau1: ~
                         localisationsNiveau2: ~
                         localisationsNiveau3: ~
+                        localisationsNiveau4: ~
+                        localisationsNiveau5: ~
+                        localisationsNiveau6: ~
+                        localisationsNiveau7: ~
+                        localisationsNiveau8: ~
+                        localisationsNiveau9: ~
                         isVisible :
                             type : boolean
                         countCommentaires:
