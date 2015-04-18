@@ -268,4 +268,50 @@ class Localisation
     {
         return $this->css;
     }
+    /**
+     * @var \Doctrine\Common\Collections\Collection
+     */
+    private $enfants;
+
+    /**
+     * Constructor
+     */
+    public function __construct()
+    {
+        $this->enfants = new \Doctrine\Common\Collections\ArrayCollection();
+    }
+
+    /**
+     * Add enfant
+     *
+     * @param \JaiUneIdee\LocalisationBundle\Entity\Localisation $enfant
+     *
+     * @return Localisation
+     */
+    public function addEnfant(\JaiUneIdee\LocalisationBundle\Entity\Localisation $enfant)
+    {
+        $this->enfants[] = $enfant;
+
+        return $this;
+    }
+
+    /**
+     * Remove enfant
+     *
+     * @param \JaiUneIdee\LocalisationBundle\Entity\Localisation $enfant
+     */
+    public function removeEnfant(\JaiUneIdee\LocalisationBundle\Entity\Localisation $enfant)
+    {
+        $this->enfants->removeElement($enfant);
+    }
+
+    /**
+     * Get enfants
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getEnfants()
+    {
+        return $this->enfants;
+    }
 }
