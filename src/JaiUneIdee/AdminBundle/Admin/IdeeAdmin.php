@@ -75,6 +75,7 @@ class IdeeAdmin extends Admin
             ->add('is_validated_by_admin','checkbox',array("required"=>false))
             ->add('is_moderated','checkbox',array("required"=>false))
             ->add('life')
+            ->add('localisations', 'sonata_type_model_autocomplete', array('property'=>'nom', 'multiple'=>true))
         ;
     }
 

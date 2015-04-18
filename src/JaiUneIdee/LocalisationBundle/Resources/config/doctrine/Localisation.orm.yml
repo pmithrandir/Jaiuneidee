@@ -55,6 +55,7 @@ JaiUneIdee\LocalisationBundle\Entity\Localisation:
   manyToOne:
     parent:
       targetEntity: Localisation
+      inversedBy: enfants
   oneToMany:
     enfants:
       targetEntity: Localisation

@@ -8,10 +8,7 @@ use JaiUneIdee\SiteBundle\Entity\Enquiry;
 use JaiUneIdee\SiteBundle\Form\EnquiryType;
 use JaiUneIdee\SiteBundle\Form\IdeeSearchType;
 use JaiUneIdee\SiteBundle\Entity\Message;
-use JaiUneIdee\SiteBundle\Form\MessageType;
 use Pagerfanta\Adapter\DoctrineORMAdapter;
-use Pagerfanta\Adapter\ArrayAdapter;
-use Pagerfanta\Adapter\ElasticaAdapter;
 use Pagerfanta\Pagerfanta;
 use Symfony\Component\HttpFoundation\Request;
 
@@ -59,14 +56,15 @@ class PageController extends Controller
         }
 
         $repository = $repositoryManager->getRepository('JaiUneIdeeSiteBundle:Idee');
-//        $results = $repository->search($ideeSearch);
-//        $search = new \Elastica\Search($this->container->get('fos_elastica.client'));
-        //$adapter = new ArrayAdapter($results);//
-        $index = $this->get('fos_elastica.index.jaiuneidee');
-        $adapter = new ElasticaAdapter($index, $repository->searchQuery($ideeSearch));
+//        $results = $repository->searchES($ideeSearch);
+//        print_r($results);
+//        exit;
+//        $index = $this->get('fos_elastica.index.jaiuneidee');
+//        $adapter = new ElasticaAdapter($index, $repository->searchQuery($ideeSearch));
         
         //$adapter = new DoctrineORMAdapter($qb);
-        $pagerfanta = new Pagerfanta($adapter);
+//        $pagerfanta = new Pagerfanta($adapter);
+        $pagerfanta = $repository->findRawPaginated($repository->searchQuery($ideeSearch));
         try {
             $pagerfanta->setMaxPerPage(10);
             $pagerfanta->setCurrentPage($page);
@@ -84,32 +82,32 @@ class PageController extends Controller
         $votes = array();
         $votesForIdees = $em->getRepository('JaiUneIdeeSiteBundle:Idee')->getVotesByIdees($idees);
         foreach($idees as $idee){
-            if(isset($votesForIdees[$idee->getId()])){
-                $votes[$idee->getId()] = $votesForIdees[$idee->getId()];
+            if(isset($votesForIdees[$idee['id']])){
+                $votes[$idee['id']] = $votesForIdees[$idee['id']];
             }
             else{
-                $votes[$idee->getId()] = array();
+                $votes[$idee['id']] = array();
             }
-            if(!isset($votes[$idee->getId()]["1"])){
-                    $votes[$idee->getId()]["1"] = 0;
+            if(!isset($votes[$idee['id']]["1"])){
+                    $votes[$idee['id']]["1"] = 0;
             }
-            if(!isset($votes[$idee->getId()]["0"])){
-                    $votes[$idee->getId()]["0"] = 0;
+            if(!isset($votes[$idee['id']]["0"])){
+                    $votes[$idee['id']]["0"] = 0;
             }
-            if(!isset($votes[$idee->getId()]["-1"])){
-                    $votes[$idee->getId()]["-1"] = 0;
+            if(!isset($votes[$idee['id']]["-1"])){
+                    $votes[$idee['id']]["-1"] = 0;
             }
-            $votes[$idee->getId()]["max"] = max($votes[$idee->getId()]);
-            $votes[$idee->getId()]["total"] = $votes[$idee->getId()]["1"] + $votes[$idee->getId()]["-1"] + $votes[$idee->getId()]["0"];
-            if($votes[$idee->getId()]["total"]>0){
-                    $votes[$idee->getId()]["pourcent_1"] = round($votes[$idee->getId()]["1"]*100/$votes[$idee->getId()]["total"],2);
-                    $votes[$idee->getId()]["pourcent_-1"] = round($votes[$idee->getId()]["-1"]*100/$votes[$idee->getId()]["total"],2);
-                    $votes[$idee->getId()]["pourcent_0"] = round($votes[$idee->getId()]["0"]*100/$votes[$idee->getId()]["total"],2);
+            $votes[$idee['id']]["max"] = max($votes[$idee['id']]);
+            $votes[$idee['id']]["total"] = $votes[$idee['id']]["1"] + $votes[$idee['id']]["-1"] + $votes[$idee['id']]["0"];
+            if($votes[$idee['id']]["total"]>0){
+                    $votes[$idee['id']]["pourcent_1"] = round($votes[$idee['id']]["1"]*100/$votes[$idee['id']]["total"],2);
+                    $votes[$idee['id']]["pourcent_-1"] = round($votes[$idee['id']]["-1"]*100/$votes[$idee['id']]["total"],2);
+                    $votes[$idee['id']]["pourcent_0"] = round($votes[$idee['id']]["0"]*100/$votes[$idee['id']]["total"],2);
             }
             else{
-                    $votes[$idee->getId()]["pourcent_1"] = 0;
-                    $votes[$idee->getId()]["pourcent_-1"] = 0;
-                    $votes[$idee->getId()]["pourcent_0"] = 0;
+                    $votes[$idee['id']]["pourcent_1"] = 0;
+                    $votes[$idee['id']]["pourcent_-1"] = 0;
+                    $votes[$idee['id']]["pourcent_0"] = 0;
             }
         }
         $qb_news = $em->getRepository('JaiUneIdeeSiteBundle:News')->getNewsPublicQb();

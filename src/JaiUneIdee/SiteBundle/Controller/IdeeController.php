@@ -501,5 +501,5 @@ class IdeeController extends Controller {
     
         $persister = $this->get('fos_elastica.object_persister.jaiuneidee.idee');
         $persister->insertOne($idee);
-}
+    }
 }

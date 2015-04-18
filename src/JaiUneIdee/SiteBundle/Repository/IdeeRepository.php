@@ -86,6 +86,14 @@ class IdeeRepository extends EntityRepository {
             $qb->setMaxResults($limit);
         return $qb->getQuery()->execute();
     }
+    public function getAllIdeesByLocalisationWithoutChildren($localisation) {
+        $qb = $this->createQueryBuilder('i');
+        $qb->innerjoin('i.localisations', 'l')
+            ->andWhere('l.id=:loc_id')
+            ->setParameter('loc_id', $localisation->getId())
+        ;
+        return $qb->getQuery()->execute();
+    }
 
     public function getLatestIdeesQb($limit = null, $offset = null) {
         $qb = $this->createQueryBuilder('i');
@@ -305,7 +313,7 @@ class IdeeRepository extends EntityRepository {
     public function getVotesByIdees($idees){
         $ids = array();
         foreach($idees as $idee) {
-            $ids[] = $idee->getId();
+            $ids[] = $idee['id'];
         }
         $qb = $this->createQueryBuilder('i')
                     ->select('i.id', 'v.note','COUNT(v.id) as nombre')
