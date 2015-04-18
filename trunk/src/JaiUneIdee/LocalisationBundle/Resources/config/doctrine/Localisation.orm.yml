@@ -2,6 +2,8 @@ JaiUneIdee\LocalisationBundle\Entity\Localisation:
   type: entity
   repositoryClass: JaiUneIdee\LocalisationBundle\Repository\LocalisationRepository
   table: localisation
+  entityListeners:
+    JaiUneIdee\LocalisationBundle\Listener\LocalisationListener: ~
   indexes:
     by_niveau_idx:
       columns: [ niveau ]
@@ -53,4 +55,8 @@ JaiUneIdee\LocalisationBundle\Entity\Localisation:
   manyToOne:
     parent:
       targetEntity: Localisation
+  oneToMany:
+    enfants:
+      targetEntity: Localisation
+      mappedBy: parent
   lifecycleCallbacks: {  }

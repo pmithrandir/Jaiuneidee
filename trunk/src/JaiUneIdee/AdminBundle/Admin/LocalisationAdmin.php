@@ -51,11 +51,11 @@ class LocalisationAdmin extends Admin
     {
         $formMapper
             ->add('nom')
-            ->add('niveau')
             ->add('population')
             ->add('urlName')
             ->add('footer')
             ->add('css')
+            ->add('parent', 'sonata_type_model_autocomplete', array('property'=>'nom'))
         ;
     }
 
