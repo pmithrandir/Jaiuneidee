@@ -22,6 +22,7 @@ class CorrectLocalisationMinMaxCommand extends ContainerAwareCommand
 
     protected function execute(InputInterface $input, OutputInterface $output)
     {
+        die("Cette migration a déjà été effectuée");
         $em = $this->getContainer()->get('doctrine')->getManager();
         //récupérer les idées crées dans la journée.
         $localisations = $em->getRepository('JaiUneIdeeLocalisationBundle:Localisation')->findAllIdScalar();
