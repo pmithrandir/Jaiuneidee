@@ -107,7 +107,7 @@ bindPagination = function() {
         var element = $(this);
         var data;
         var type = "GET";
-        if($("#filtres")){
+        if($("#filtres").length>0){
             data = $("#filtres").serialize();
             type = "POST";
         }
