@@ -319,6 +319,7 @@ select{
 #header .logo{
     display: block;
     margin: auto;
+    max-width: 100%
 }
 #promo_elu{
     background: none repeat scroll 0 0 #FBFBFB;
@@ -762,4 +763,64 @@ select.theme{
 .color3
 {
 	color: red;
+}
+@media screen and (max-width: 350px)and (max-height: 490px) {
+    #login,
+    #promo_elu,
+    #ccm,
+    #cadre_ccm2,
+    #cadre_ccm1,
+    .second-col{
+        display: none;
+    }
+    .main-col{
+        border-right: 0px;
+        width: 99%;
+        margin: auto;
+        padding: 0 2px;
+    }
+    #toutes_les_idees{
+        clear: both;
+        float: none;
+        min-width: unset;
+    }
+    
+    .index_idee{
+        height: inherit;
+        margin: 15px 0;
+    }
+    .index_idee_body{
+        margin-top: 40px;
+        margin-left: 2px;
+        margin-right: 2px;
+    }
+    #header hgroup{
+        height: auto;
+    }
+    #header h2 {
+        margin-bottom: 0px;
+    }
+    .idee_body{
+        margin: 5px 3px 3px;
+    }
+    .box_left{
+        width:100%;
+        border-right: none;
+        border-bottom: 1px solid #538ed5;
+        padding-bottom:3px;
+    }
+    .form input:not([type]), 
+    .form input[type="text"], 
+    .form input[type="email"], 
+    .form input[type="password"], 
+    .form textarea{
+        width:95%;
+        margin: auto;
+    }
+    .profile_margin{
+        float: none;
+    }
+    .profile_content{
+        margin-left: auto;
+    }
 }
