@@ -49,17 +49,6 @@
             
         <section id="wrapper">
             <header id="header">
-                {% block login %}{% endblock %}
-                    {%if app.session.get("localisation") is not null%}
-                        
-                    {% else %}
-                <div id="promo_elu">
-                    <a href="{{ path('JaiUneIdeeSiteBundle_contact') }}">
-                        <span>Candidats ou Elus ? </span>
-                        <br /> Contactez-nous pour un <br />compte avancé !
-                    </a>
-            	</div>
-                    {% endif %}
                 <hgroup>
                     <a href="{{ path('JaiUneIdeeSiteBundle_homepage') }}">
                       <h1 class="accessibilite">J'ai Une Idée
@@ -79,6 +68,18 @@
                       {% endblock %}
                     </h2>
                 </hgroup>
+                {% block login %}{% endblock %}
+                    {%if app.session.get("localisation") is not null%}
+                        
+                    {% else %}
+                <div id="promo_elu">
+                    <a href="{{ path('JaiUneIdeeSiteBundle_contact') }}">
+                        <span>Candidats ou Elus ? </span>
+                        <br /> Contactez-nous pour un <br />compte avancé !
+                    </a>
+            	</div>
+                    {% endif %}
+                
                 <div id="bandeau" class="separation gradient2">
                     {% block bandeau %}{% endblock %}
                 </div>

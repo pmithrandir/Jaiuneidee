@@ -63,6 +63,9 @@
             {% if is_granted('IS_AUTHENTICATED_REMEMBERED') and idee.user == app.user %}
                 <br /><a href="{{ path('JaiUneIdeeSiteBundle_idee_edit', { 'id': idee.id }) }}" class="lien_visible">Editer</a>
             {% endif %}
+            <span id="bloc_votes_mobile">
+            {% include "JaiUneIdeeSiteBundle:Idee:votes.html.twig" %}
+            </span>
             
         </div>
         <div class="box_content">
@@ -96,6 +99,7 @@
             <li><u>Thème :</u> {{ idee.theme }}
        </ul>
         <br />
+    <hr />
         <span id="bloc_votes">
     {% include "JaiUneIdeeSiteBundle:Idee:votes.html.twig" %}
         </span>
