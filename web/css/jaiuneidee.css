@@ -838,6 +838,10 @@ select.theme{
         width: auto;
         margin-left: 10px;
     }
+    .index_idee .vote_graph{
+        width:50%;
+        min-width:100px;
+    }
     .pagerfanta a, 
     .pagerfanta span{
         padding: 1.25em 1.36em;
