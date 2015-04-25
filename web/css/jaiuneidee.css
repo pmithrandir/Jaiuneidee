@@ -777,10 +777,18 @@ select.theme{
         padding:1%;
         height: auto;
     }
+    #login label{
+        width:50%;
+    }
+    #login label,
     #login form input:not([type]),
     #login form input[type="text"],
     #login form input[type="password"]{
-        display: inline;
+        display: inline-block;
+        margin: 5px 0;
+    }
+    #login span{
+        display: inherit;
     }
     #login ul{
         text-align: center;
@@ -826,7 +834,10 @@ select.theme{
         float: none;
         min-width: unset;
     }
-    
+    .pagerfanta a, 
+    .pagerfanta span{
+        padding: 1.25em 1.36em;
+    }
     .index_idee{
         height: inherit;
         margin: 15px 0;
@@ -856,9 +867,11 @@ select.theme{
     .form input[type="text"], 
     .form input[type="email"], 
     .form input[type="password"], 
-    .form textarea{
+    .form textarea,
+    #jaiuneidee_utilisateurbundle_invitationtype_email{
         width:95%;
-        margin: auto;
+        margin: 5px auto;
+        
     }
     .profile_margin{
         float: none;
