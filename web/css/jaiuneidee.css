@@ -285,6 +285,7 @@ select{
     padding:5px;
     width: 200px;
     height: 115px;
+    margin-top: -130px;
 }
 #login label,
 #login form input:not([type]),
@@ -326,9 +327,8 @@ select{
     box-shadow: 0 0 6px 3px #F0F0F0;
     color: #538ED5;
     font-size: 16px;
-    margin: 30px 20px;
+    margin: -110px 20px 30px 20px;
     padding: 2px;
-    position: absolute;
     text-align: center;
     width: 245px;
 }
@@ -756,7 +756,9 @@ select.theme{
   border: 1px solid #83BEF5;
   padding:3px;
 }
-
+#bloc_votes_mobile{
+    display: none;
+}
 /*************************** A SUPRIMER ***************************************/
 .color1,
 .color2,
@@ -764,8 +766,32 @@ select.theme{
 {
 	color: red;
 }
-@media only screen and(max-device-width: 360px) {
-    #login,
+@media screen and (max-width: 360px) {
+    #header{
+        height:auto;
+    }
+    #login{
+        float: none;
+        margin-top: 0px;
+        width: 98%;
+        padding:1%;
+        height: auto;
+    }
+    #login form input:not([type]),
+    #login form input[type="text"],
+    #login form input[type="password"]{
+        display: inline;
+    }
+    #login ul{
+        text-align: center;
+    }
+    #login li{
+        display: inline;
+        margin: 1%;
+    }
+    #login .avatar{
+        display: none;
+    }
     #promo_elu,
     #ccm,
     #cadre_ccm2,
@@ -775,9 +801,25 @@ select.theme{
     }
     .main-col{
         border-right: 0px;
-        width: 99%;
+        width: 98%;
         margin: auto;
-        padding: 0 2px;
+        padding: 0 1%;
+    }
+    #cadre_filtre{
+       float: none; 
+       margin-right: 0px;
+       padding: 5px;
+    }
+    #cadre_filtre label{
+        font-size: large;
+        margin-right: 2px;
+        padding-left: 0px;
+    }
+    #jaiuneidee_sitebundle_idee_search_type div{
+        margin-bottom:3px;
+    }
+    #index_ajout_idee{
+/*        height: 110px;*/
     }
     #toutes_les_idees{
         clear: both;
@@ -809,6 +851,7 @@ select.theme{
         border-bottom: 1px solid #538ed5;
         padding-bottom:3px;
     }
+    ul.token-input-list-facebook,
     .form input:not([type]), 
     .form input[type="text"], 
     .form input[type="email"], 
@@ -822,5 +865,14 @@ select.theme{
     }
     .profile_content{
         margin-left: auto;
+    }
+    #bloc_votes_mobile{
+        display: block;
+    }
+    #bloc_votes_mobile .vote_graph{
+        margin: auto;
+    }
+    #bloc_votes_mobile h3{
+        visibility:hidden;
     }
 }
