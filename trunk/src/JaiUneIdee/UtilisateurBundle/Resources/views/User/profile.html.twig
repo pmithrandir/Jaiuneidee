@@ -45,7 +45,7 @@
                 <tr>
                     <td class="strong">Parrain</td>
                     <td>
-                        {%  if(user.invitation.inviteur) %}
+                        {%  if (user.invitation) and (user.invitation.inviteur) %}
                             <a href="{{ path('user_profile', { 'user_id': user.invitation.inviteur.id, 'username':user.invitation.inviteur}) }}">{{ user.invitation.inviteur|capitalize }}</a>
                         {% endif %}
                     </td>
