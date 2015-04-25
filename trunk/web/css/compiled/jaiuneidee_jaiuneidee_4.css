@@ -764,7 +764,7 @@ select.theme{
 {
 	color: red;
 }
-@media only screen and(max-device-width: 320px) {
+@media only screen and(max-device-width: 360px) {
     #login,
     #promo_elu,
     #ccm,
