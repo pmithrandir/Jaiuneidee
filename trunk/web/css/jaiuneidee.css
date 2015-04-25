@@ -766,7 +766,7 @@ select.theme{
 {
 	color: red;
 }
-@media screen and (max-width: 360px) {
+@media screen and (max-width: 400px) {
     #header{
         height:auto;
     }
@@ -833,6 +833,10 @@ select.theme{
         clear: both;
         float: none;
         min-width: unset;
+    }
+    .index_idee_theme{
+        width: auto;
+        margin-left: 10px;
     }
     .pagerfanta a, 
     .pagerfanta span{
