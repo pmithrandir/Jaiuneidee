@@ -832,7 +832,7 @@ select.theme{
     #toutes_les_idees{
         clear: both;
         float: none;
-        min-width: unset;
+        min-width: 0;
     }
     .index_idee_theme{
         width: auto;
