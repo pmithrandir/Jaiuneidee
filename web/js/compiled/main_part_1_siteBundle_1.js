@@ -138,6 +138,19 @@ bindVotes = function() {
         });
         return false;
     });
+    $("#bloc_votes_mobile a").click(function(event){
+        
+        $.ajax({
+           url: $(this).attr('href'),
+           type: "GET",
+           dataType: "html",
+           success: function(html){
+            $("#bloc_votes_mobile").html(html);    
+            bindVotes();
+           }
+        });
+        return false;
+    });
 };
 function is_touch_device() {
   return 'ontouchstart' in window // works on most browsers 
