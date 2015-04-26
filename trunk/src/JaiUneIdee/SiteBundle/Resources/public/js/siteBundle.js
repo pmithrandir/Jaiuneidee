@@ -132,7 +132,8 @@ bindVotes = function() {
            type: "GET",
            dataType: "html",
            success: function(html){
-            $("#bloc_votes").html(html);    
+            $("#bloc_votes").html(html);  
+            $("#bloc_votes_mobile").html(html);    
             bindVotes();
            }
         });
@@ -145,6 +146,7 @@ bindVotes = function() {
            type: "GET",
            dataType: "html",
            success: function(html){
+            $("#bloc_votes").html(html);  
             $("#bloc_votes_mobile").html(html);    
             bindVotes();
            }
