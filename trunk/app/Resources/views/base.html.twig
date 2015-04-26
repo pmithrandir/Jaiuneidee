@@ -17,7 +17,25 @@
         <meta property="fb:admins" content="100005771354609" />
         <link href="https://plus.google.com/u/0/b/118203067427668607877/118203067427668607877/" rel="publisher" />
         
-        
+        {% block stylesheets %}
+            {% stylesheets 'css/token-input.css'
+                    'css/token-input-facebook.css'
+                    'css/msdropdown/dd.css'
+                    'css/jaiuneidee.css'
+                output='css/compiled/jaiuneidee.css'
+                %}
+                <link rel="stylesheet" href="{{ asset_url }}" />
+            {% endstylesheets %}
+            
+            {%if app.session.get("localisation_css") is not null%}
+                {%if "http://" in app.session.get("localisation_css") %}
+                    <link rel="stylesheet" href="{{app.session.get("localisation_css")}}" />
+                {% else %}
+                    <link rel="stylesheet" href="/css/localisations/{{app.session.get("localisation_css")}}" />
+                {% endif %}
+            {% endif %}
+                
+        {% endblock %}
     </head>
     <body>
         <div id="fb-root"></div>
@@ -102,22 +120,3 @@
         {% endblock %}
     </body>
 </html>
-{% block stylesheets %}
-    {% stylesheets 'css/token-input.css'
-            'css/token-input-facebook.css'
-            'css/msdropdown/dd.css'
-            'css/jaiuneidee.css'
-        output='css/compiled/jaiuneidee.css'
-        %}
-        <link rel="stylesheet" href="{{ asset_url }}" />
-    {% endstylesheets %}
-
-    {%if app.session.get("localisation_css") is not null%}
-        {%if "http://" in app.session.get("localisation_css") %}
-            <link rel="stylesheet" href="{{app.session.get("localisation_css")}}" />
-        {% else %}
-            <link rel="stylesheet" href="/css/localisations/{{app.session.get("localisation_css")}}" />
-        {% endif %}
-    {% endif %}
-
-{% endblock %}
