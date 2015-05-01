@@ -29,7 +29,7 @@ class LocalisationListener
     }
     public function preUpdate(Localisation $localisation, PreUpdateEventArgs  $event)
     {
-        if(($localisation->getParent())&&($event->getNewValue("parent")!= $event->getOldValue("parent"))){
+        if(($localisation->getParent())&&(true===$event->hasChangedField("parent"))&&($event->getNewValue("parent")!= $event->getOldValue("parent"))){
             if(($event->getNewValue("parent")->getMin()>=$localisation->getMin())&&($event->getNewValue("parent")->getMax()<=$localisation->getMax())){
                 die("Impossible de définir un parent qui est un enfant actuel");
             }
