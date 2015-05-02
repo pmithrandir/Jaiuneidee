@@ -45,7 +45,6 @@ class PageController extends Controller
 
         $repositoryManager = $this->get('fos_elastica.manager.orm');
         
-        $liste_themes = $this->getDoctrine()->getManager()->getRepository('JaiUneIdeeSiteBundle:Theme')->findAll();
         $theme = null;
         if(($request->get("theme")!==null) &&($request->get("theme")!="all")){
             $theme = $this->getDoctrine()->getManager()->getRepository('JaiUneIdeeSiteBundle:Theme')->find($request->get("theme"));
@@ -148,7 +147,6 @@ class PageController extends Controller
             'page' => $page,
             'page_news' => $page_news,
             'theme_selected'=>($theme!==null)?$theme->getId():null,
-            'themes'=>$liste_themes,
             'options_pager'=>$options_pager,
             'options_pager_news'=>$options_pager_news,
             'liste_site' => $liste_site,

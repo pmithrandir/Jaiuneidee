@@ -2,6 +2,9 @@ JaiUneIdee\SiteBundle\Entity\News:
   type: entity
   repositoryClass: JaiUneIdee\SiteBundle\Repository\NewsRepository
   table: news
+  indexes:
+    by_date_pub_idx:
+      columns: [ publication_date ]
   fields:
     id:
       type: integer

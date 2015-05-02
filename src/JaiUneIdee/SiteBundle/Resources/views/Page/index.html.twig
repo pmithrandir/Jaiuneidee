@@ -22,35 +22,6 @@
 
     <form action="{{ path('JaiUneIdeeSiteBundle_homepage') }}" method="get" id="filtres">
         {{ form_widget(ideeSearchForm) }}
-    {#
-        <div>
-            {% if is_granted('IS_AUTHENTICATED_REMEMBERED') and app.session.get("localisation") is null %}
-            <label for="localisation_locale">{{app.user.localisation}}</label>
-            <input type="radio" checked="checked" name="localisation" id="localisation_locale" value="local" />
-            <label for="localisation_toutes">Toutes les idées</label>
-            <input type="radio" name="localisation" id="localisation_toutes" value="toutes" />
-            <label for="localisation_nationale">Idées nationales</label>
-            <input type="radio" name="localisation" id="localisation_nationale" value="national" />
-            {% endif %}
-        </div>
-        <div>
-            <select name="theme" class="theme" onchange="">
-                <option value="all">-- Thème --</option>
-                {% for theme in themes %}
-                    <option data-image="/images/themes/{{ theme.nom|lower }}.png" value="{{ theme.id }}" {% if theme.id == theme_selected %}selected="selected"{% endif %}>{{ theme.nom }}</option>
-                {% endfor %}
-            </select>
-        </div>
-        <div>
-            <label for="tri_par_date_dernier_commentaire">Dernière activité</label>
-            <input type="radio" checked="checked" name="tri" id="tri_par_date_dernier_commentaire" value="derniere_activite" />
-            <label for="tri_par_date">Date de création</label>
-            <input type="radio" name="tri" id="tri_par_date" value="date" />
-            <label for="tri_par_nombre_commentaire">Buzz</label>
-            <input type="radio" name="tri" id="tri_par_nombre_commentaire" value="nb_commentaire" />
-        </div>
-    #}
-        <!--<input type="submit" value="Actualiser" id="filtres_submit"/>-->
     </form>
 </fieldset>
 <div id="index_ajout_idee">
