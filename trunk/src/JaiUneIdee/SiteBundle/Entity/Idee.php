@@ -676,7 +676,7 @@ class Idee
      */
     public function getIsVisible()
     {
-        return ((($this->getLife()>0)||($this->getIsValidatedByAdmin()==true))&&($this->getIsRemoved()===false)&&($this->getIsPublished()==true));
+        return (($this->getIsRemoved()===false)&&($this->getIsPublished()===true)&&(($this->getLife()>0)||($this->getIsValidatedByAdmin()==true)));
     }
     /**
      * Get countCommentaire

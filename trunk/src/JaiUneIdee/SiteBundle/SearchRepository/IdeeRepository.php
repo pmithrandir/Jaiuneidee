@@ -57,6 +57,9 @@ class IdeeRepository extends Repository
                 new \Elastica\Filter\Term(array('localisations'=>strtolower($ideeSearch->getLocalisationObject()->getNom())))
             );
         }
+        $filters->addMust(
+            new \Elastica\Filter\Term(array('isVisible'=>true))
+        );
         $filtered = new \Elastica\Query\Filtered($query_part, $filters);
         
         $query = new \Elastica\Query($filtered);
