@@ -13,16 +13,20 @@ Bonjour,
     Voici les idées qui ont été créées depuis hier sur J'ai Une Idée.
     {% for idee in idees %}
         {% if user.localisation.urlname is defined and user.localisation in idee.localisations %}
-                - {{idee}} : {{scheme}}//{{user.localisation.urlname}}.{{main_site}}{{ path('JaiUneIdeeSiteBundle_idee_show', { 'id': idee.id, 'slug': idee.slug }) }}
-            {% else %}
-                - {{idee}} : {{ url('JaiUneIdeeSiteBundle_idee_show', { 'id': idee.id, 'slug': idee.slug }) }}
-            {% endif %}
-        
+            - {{idee}} : {{scheme}}://{{user.localisation.urlname}}.{{main_site}}{{ path('JaiUneIdeeSiteBundle_idee_show', { 'id': idee.id, 'slug': idee.slug }) }}
+        {% else %}
+            - {{idee}} : {{ url('JaiUneIdeeSiteBundle_idee_show', { 'id': idee.id, 'slug': idee.slug }) }}
+        {% endif %}
     {% endfor%}
 {% endif %}
 Bonne journée,
 L'équipe J'ai Une Idée.
-{{ url('JaiUneIdeeSiteBundle_homepage')}}
+{% if user.localisation.urlname is defined and user.localisation in idee.localisations %}
+    {{scheme}}://{{user.localisation.urlname}}.{{main_site}}
+{% else %}
+    {{ url('JaiUneIdeeSiteBundle_homepage')}}
+{% endif %}
+
 
 
 Vous pouvez vous désabonner sur votre compte : {{ url('fos_user_profile_edit')}}.
