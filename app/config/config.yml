@@ -28,6 +28,7 @@ twig:
     strict_variables: %kernel.debug%
     globals:
       main_site: %main_site%
+      scheme: %router.request_context.scheme%
 
 # Assetic Configuration
 assetic:

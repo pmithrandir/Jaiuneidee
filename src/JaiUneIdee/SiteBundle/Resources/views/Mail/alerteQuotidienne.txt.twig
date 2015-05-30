@@ -12,7 +12,12 @@ Bonjour,
 {% if idees|length>0%}
     Voici les idées qui ont été créées depuis hier sur J'ai Une Idée.
     {% for idee in idees %}
-        - {{idee}} : {{ url('JaiUneIdeeSiteBundle_idee_show', { 'id': idee.id, 'slug': idee.slug }) }}
+        {% if user.localisation.urlname is defined and user.localisation in idee.localisations %}
+                - {{idee}} : {{scheme}}//{{user.localisation.urlname}}.{{main_site}}{{ path('JaiUneIdeeSiteBundle_idee_show', { 'id': idee.id, 'slug': idee.slug }) }}
+            {% else %}
+                - {{idee}} : {{ url('JaiUneIdeeSiteBundle_idee_show', { 'id': idee.id, 'slug': idee.slug }) }}
+            {% endif %}
+        
     {% endfor%}
 {% endif %}
 Bonne journée,

@@ -23,7 +23,7 @@
         <ol>
         {% for idee in idees %}
             {% if user.localisation.urlname is defined and user.localisation in idee.localisations %}
-                <li><a href="//{{user.localisation.urlname}}.{{main_site}}{{ path('JaiUneIdeeSiteBundle_idee_show', { 'id': idee.id, 'slug': idee.slug }) }}">{{idee}}</a></li>
+                <li><a href="{{scheme}}//{{user.localisation.urlname}}.{{main_site}}{{ path('JaiUneIdeeSiteBundle_idee_show', { 'id': idee.id, 'slug': idee.slug }) }}">{{idee}}</a></li>
             {% else %}
                 <li><a href="{{ url('JaiUneIdeeSiteBundle_idee_show', { 'id': idee.id, 'slug': idee.slug }) }}">{{idee}}</a></li>
             {% endif %}
