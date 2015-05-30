@@ -21,7 +21,7 @@ Bonjour,
 {% endif %}
 Bonne journée,
 L'équipe J'ai Une Idée.
-{% if user.localisation.urlname is defined and user.localisation in idee.localisations %}
+{% if user.localisation.urlname is defined %}
     {{scheme}}://{{user.localisation.urlname}}.{{main_site}}
 {% else %}
     {{ url('JaiUneIdeeSiteBundle_homepage')}}
