@@ -13,7 +13,7 @@ use Doctrine\ORM\EntityRepository;
 class InvitationRepository extends EntityRepository
 {
 	public function getInvitationsByUser($user){
-        $qb = $this->createQueryBuilder('i','u')
+        $qb = $this->createQueryBuilder('i')
                     ->addSelect('i','u')
         			->leftJoin('i.user', 'u')
                     ->where('i.inviteur = '.$user->getId());
