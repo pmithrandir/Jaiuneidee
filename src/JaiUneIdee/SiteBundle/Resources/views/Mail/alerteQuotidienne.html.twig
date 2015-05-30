@@ -34,7 +34,7 @@
     Bonne journée, <br />
     L'équipe J'ai Une Idée.
     <br />
-    {% if user.localisation.urlname is defined and user.localisation in idee.localisations %}
+    {% if user.localisation.urlname is defined %}
         <a href="{{scheme}}://{{user.localisation.urlname}}.{{main_site}}">{{scheme}}://{{user.localisation.urlname}}.{{main_site}}</a>
     {% else %}
         <a href="{{ url('JaiUneIdeeSiteBundle_homepage')}}">{{ url('JaiUneIdeeSiteBundle_homepage')}}</a>
