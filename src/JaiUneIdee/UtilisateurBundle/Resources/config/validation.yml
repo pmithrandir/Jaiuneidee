@@ -15,3 +15,7 @@ JaiUneIdee\UtilisateurBundle\Entity\User:
                 maxWidth: 10000
                 minHeight: 50
                 maxHeight: 10000
+        sexe:
+            - NotBlank: ~
+        localisation:
+            - NotBlank: ~

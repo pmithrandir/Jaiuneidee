@@ -26,7 +26,7 @@ class RegistrationFormType extends BaseType
 		)
     	->add('sexe', 'entity',
 	    	 array(
-				'empty_value' => 'Sélectionner',
+                    'empty_value' => 'Sélectionner',
 	            'class' => 'JaiUneIdeeUtilisateurBundle:Sexe',
 	            'required' => true,
 	        ))

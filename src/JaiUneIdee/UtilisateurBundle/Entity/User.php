@@ -3,10 +3,6 @@
 namespace JaiUneIdee\UtilisateurBundle\Entity;
 
 use FOS\UserBundle\Entity\User as BaseUser;
-use Doctrine\ORM\Mapping as ORM;
-
-use Symfony\Component\Validator\Mapping\ClassMetadata;
-use Symfony\Component\Validator\Constraints\NotBlank;
 use Doctrine\Common\Collections\ArrayCollection;
 /**
  * JaiUneIdee\UtilisateurBundle\Entity\User

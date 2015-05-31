@@ -65,6 +65,7 @@ JaiUneIdee\UtilisateurBundle\Entity\User:
   manyToOne:
     sexe:
       targetEntity: Sexe
+      nullable: false
     tendance_politique:
       targetEntity: TendancePolitique
     dommage:
@@ -72,11 +73,11 @@ JaiUneIdee\UtilisateurBundle\Entity\User:
       nullable: true
     localisation:
       targetEntity: JaiUneIdee\LocalisationBundle\Entity\Localisation
+      nullable: false
   oneToMany:
     invitations:
       targetEntity: Invitation
       mappedBy: inviteur
-
   lifecycleCallbacks:
     preUpdate: [uploadAvatar ]
     prePersist: [uploadAvatar ]
