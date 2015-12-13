@@ -74,6 +74,9 @@ JaiUneIdee\UtilisateurBundle\Entity\User:
     localisation:
       targetEntity: JaiUneIdee\LocalisationBundle\Entity\Localisation
       nullable: false
+    localisationRecherchee:
+      targetEntity: JaiUneIdee\LocalisationBundle\Entity\Localisation
+      nullable: true
   oneToMany:
     invitations:
       targetEntity: Invitation

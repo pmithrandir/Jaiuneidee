@@ -536,4 +536,45 @@ class User extends BaseUser
     {
         return $this->newsletter;
     }
+    /**
+     * @var \JaiUneIdee\LocalisationBundle\Entity\Localisation
+     */
+    private $localisationRecherchee;
+
+
+    /**
+     * Set localisationRecherchee
+     *
+     * @param \JaiUneIdee\LocalisationBundle\Entity\Localisation $localisationRecherchee
+     *
+     * @return User
+     */
+    public function setLocalisationRecherchee($localisationRecherchee = null)
+    {
+        if($localisationRecherchee instanceof ArrayCollection){
+            if($localisationRecherchee->count()>0){
+                    $this->localisationRecherchee = $localisationRecherchee->first();
+            }
+            else{
+                $this->localisationRecherchee = null;
+            }
+        }
+        elseif ($localisationRecherchee instanceof \JaiUneIdee\LocalisationBundle\Entity\Localisation){
+            $this->localisationRecherchee = $localisationRecherchee;
+        }
+        else{
+            $this->localisationRecherchee = null;
+        }
+        return $this;
+    }
+
+    /**
+     * Get localisationRecherchee
+     *
+     * @return \JaiUneIdee\LocalisationBundle\Entity\Localisation
+     */
+    public function getLocalisationRecherchee()
+    {
+        return $this->localisationRecherchee;
+    }
 }

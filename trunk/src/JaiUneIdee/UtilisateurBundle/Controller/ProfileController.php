@@ -40,6 +40,7 @@ class ProfileController extends BaseController
         	array(
 				'form' => $form->createView(), 
 				'localisation' => $user->getLocalisation(),
+				'localisation_recherchee' => $user->getLocalisationRecherchee(),
 			)
         );
         return $reponse;

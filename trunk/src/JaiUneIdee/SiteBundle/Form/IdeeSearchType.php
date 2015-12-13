@@ -23,7 +23,12 @@ class IdeeSearchType extends AbstractType
     {
         $choice_selected = 'toutes';
         if($this->context->isGranted('ROLE_USER')){
-            $choices['local'] = $this->context->getToken()->getUser()->getLocalisation()->getNom();
+            if($this->context->getToken()->getUser()->getLocalisationRecherchee()!=null){
+                $choices['local'] = $this->context->getToken()->getUser()->getLocalisationRecherchee()->getNom();
+            }
+            else{
+                $choices['local'] = $this->context->getToken()->getUser()->getLocalisation()->getNom();
+            }
             $choice_selected = 'local';
         }
         $choices['toutes'] = 'Toutes les idées';
