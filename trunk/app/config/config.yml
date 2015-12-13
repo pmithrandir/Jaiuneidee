@@ -1,5 +1,5 @@
 imports:
-    - { resource: parameters.ini }
+    - { resource: parameters.yml }
     - { resource: security.yml }
     - { resource: @JaiUneIdeeAdminBundle/Resources/config/config.yml }
 
@@ -14,7 +14,7 @@ framework:
     default_locale: %locale%
     router:
         resource: "%kernel.root_dir%/config/routing.yml"
-        strict_requirements: "%kernel.debug%"
+        strict_requirements: null
     session:
         cookie_lifetime: 0
         save_path: %kernel.root_dir%/cache/sessions
@@ -164,3 +164,7 @@ fos_elastica:
                         listener: ~ # by default, listens to "insert", "update" and "delete"
                         finder: ~
                         repository: JaiUneIdee\SiteBundle\SearchRepository\IdeeRepository
+white_october_pagerfanta:
+    exceptions_strategy:
+        out_of_range_page:        to_http_not_found
+        not_valid_current_page:   to_http_not_found
