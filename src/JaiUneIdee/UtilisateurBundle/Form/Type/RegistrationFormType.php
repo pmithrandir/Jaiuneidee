@@ -55,7 +55,7 @@ class RegistrationFormType extends BaseType
 		)
                 */
          ->add('localisation', 'jaiuneidee_localisation_type', array(
-            		'label' => "La zone géographique qui vous intéresse",
+            		'label' => "Votre localisation",
                         'required' => true,
                         'attr' => array(
                             'class' => 'tokeninput_unique',
@@ -69,6 +69,13 @@ class RegistrationFormType extends BaseType
             		'required' => false,
 			)
 		)
+    	->add('localisation_recherchee', 'jaiuneidee_localisation_type', array(
+            		'label' => 'La zone géographique qui vous intéresse',
+			        'required' => false,
+					'attr' => array(
+			            'class' => 'tokeninput_unique2',
+			        )
+			    ))
         ->add('invitation', 'jaiuneidee_invitation_type', array(
             		'label' => "Code de parrainage (optionnel)",
                         'required' => false,

@@ -14,8 +14,15 @@ class UserType extends BaseType
             ->add('email')
             ->add('password')
             ->add('localisation', 'jaiuneidee_localisation_type', array(
-            		'label' => 'Votre localisation',
+            		'label' => 'Votre Ville',
 			        'required' => true,
+					'attr' => array(
+			            'class' => 'tokeninput_unique',
+			        )
+			    ))
+            ->add('localisation_recherchee', 'jaiuneidee_localisation_type', array(
+            		'label' => 'Votre localisation préférée',
+			        'required' => false,
 					'attr' => array(
 			            'class' => 'tokeninput_unique',
 			        )

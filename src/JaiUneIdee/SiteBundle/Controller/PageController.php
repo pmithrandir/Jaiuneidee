@@ -31,7 +31,12 @@ class PageController extends Controller
             $ideeSearch->setWithChildrenLoc(true);
         }
         else if((true === $this->get('security.context')->isGranted('ROLE_USER'))&&(($ideeSearch->getLocalisation()=="local")||($ideeSearch->getLocalisation()==""))){
-            $ideeSearch->setLocalisationObject($this->get('security.context')->getToken()->getUser()->getLocalisation());
+            if($this->get('security.context')->getToken()->getUser()->getLocalisationRecherchee()!=null){
+                $ideeSearch->setLocalisationObject($this->get('security.context')->getToken()->getUser()->getLocalisationRecherchee());
+            }
+            else{
+                $ideeSearch->setLocalisationObject($this->get('security.context')->getToken()->getUser()->getLocalisation());
+            }
             $ideeSearch->setWithChildrenLoc(true);
         }
         else if($ideeSearch->getLocalisation()=="national"){

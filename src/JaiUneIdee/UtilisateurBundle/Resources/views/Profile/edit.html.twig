@@ -13,5 +13,10 @@
 		 		{id: {{ localisation.id }}, nom: "{{ localisation.nom }}"},
 			{% endif %}
 		]
+                var datas2 =[
+			{% if localisation_recherchee %}
+		 		{id: {{ localisation_recherchee.id }}, nom: "{{ localisation_recherchee.nom }}"},
+			{% endif %}
+		]
 		</script>
 {% endblock %}
