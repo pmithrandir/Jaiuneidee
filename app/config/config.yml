@@ -14,7 +14,7 @@ framework:
     default_locale: %locale%
     router:
         resource: "%kernel.root_dir%/config/routing.yml"
-        strict_requirements: null
+        strict_requirements: true
     session:
         cookie_lifetime: 0
         save_path: %kernel.root_dir%/cache/sessions

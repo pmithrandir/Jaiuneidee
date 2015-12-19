@@ -16,9 +16,10 @@ use JaiUneIdee\SiteBundle\Model\IdeeSearch;
 
 class PageController extends Controller
 {
-    public function indexAction(Request $request, $page = 1, $page_news = 1, $requester = "idee")
+    public function indexAction(Request $request, $type = "")
     {
-        
+        $page = ($request->query->get('page')!="")?$request->query->get('page'):1;
+        $page_news = ($request->query->get('page_news')!="")?$request->query->get('page_news'):1;
         $ideeSearch = new IdeeSearch();
         $ideeSearchForm = $this->createForm(new IdeeSearchType($this->get('security.context'), ($request->getSession()->get('localisation') !== null)), $ideeSearch);
 
@@ -125,15 +126,16 @@ class PageController extends Controller
             throw $this->createNotFoundException("Cette page n'existe pas.");
         }
         $options_pager['routeName'] = $options_pager_news['routeName'] = "JaiUneIdeeSiteBundle_homepage_pagination";
-        $options_pager['routeParams'] = Array("page"=>$page, "page_news"=>$page_news, "requester" => "idee");
-        $options_pager_news['routeParams'] = Array("page"=>$page, "page_news"=>$page_news, "requester" => "news");
+        $options_pager['routeName'] = $options_pager_news['routeName'] = "JaiUneIdeeSiteBundle_homepage";
+        $options_pager['routeParams'] = Array("page"=>$page, "page_news"=>$page_news, "type" => "listeidee");
+        $options_pager_news['routeParams'] = Array("page"=>$page, "page_news"=>$page_news, "type" => "listenews");
         $options_pager_news['pageParameter'] = '[page_news]';
         if( $this->getRequest()->isXMLHttpRequest()){
-            if($requester == "idee"){
-                $template = 'listeIdees.html.twig';
+            if($type == "listenews"){
+                $template = 'listeNews.html.twig';
             }
             else{
-                $template = 'listeNews.html.twig';
+                $template = 'listeIdees.html.twig';
             }
         }
         else{

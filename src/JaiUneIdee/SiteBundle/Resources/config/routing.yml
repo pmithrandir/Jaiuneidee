@@ -3,14 +3,18 @@
 #    host:     "{localisation}.%main_site%"
 #    defaults: {_controller: JaiUneIdeeSiteBundle:Page:index, page:1, page_news:1 }
 JaiUneIdeeSiteBundle_homepage:
-    pattern:  /
-    defaults: {_controller: JaiUneIdeeSiteBundle:Page:index, page:1, page_news:1 }
-JaiUneIdeeSiteBundle_homepage_pagination:
-    pattern:  /{page}/{page_news}/{requester}
-    defaults: {_controller: JaiUneIdeeSiteBundle:Page:index, page:1, page_news:1 }
-    requirements:
-        page: \d+
-        page_news: \d+
+    pattern:  /{type}
+    defaults: {_controller: JaiUneIdeeSiteBundle:Page:index, type:null }
+#    defaults: {_controller: JaiUneIdeeSiteBundle:Page:index, page:1, page_news:1 }
+#    requirements:
+#        page: \d+
+#        page_news: \d+
+#JaiUneIdeeSiteBundle_homepage_pagination:
+#    pattern:  /{page}/{page_news}/{requester}
+#    defaults: {_controller: JaiUneIdeeSiteBundle:Page:index, page:1, page_news:1 }
+#    requirements:
+#        page: \d+
+#        page_news: \d+
 JaiUneIdeeSiteBundle_charte:
     pattern:  /charte
     defaults: { _controller: JaiUneIdeeSiteBundle:Page:charte }
