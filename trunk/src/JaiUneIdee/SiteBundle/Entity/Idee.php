@@ -247,7 +247,15 @@ class Idee
     {
         return $this->theme;
     }
-
+    /**
+     * Get theme
+     *
+     * @return JaiUneIdee\SiteBundle\Entity\Theme 
+     */
+    public function getThemeSlug()
+    {
+        return $this->theme->getNomSlug();
+    }
     /**
      * Set user
      *

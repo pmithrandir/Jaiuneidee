@@ -58,6 +58,15 @@ class Theme
     {
         return $this->nom;
     }
+    /**
+     * Get nom
+     *
+     * @return string 
+     */
+    public function getNomSlug()
+    {
+        return str_replace(" ","",$this->nom);
+    }
 
     /**
      * Set descriptif

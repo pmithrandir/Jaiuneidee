@@ -44,7 +44,7 @@ class IdeeRepository extends Repository
         
         if($ideeSearch->getTheme() !== null){
             $filters->addMust(
-                new \Elastica\Filter\Term(array('theme'=>strtolower($ideeSearch->getTheme()->getNom())))
+                new \Elastica\Filter\Term(array('themeSlug'=>strtolower($ideeSearch->getTheme()->getNomSlug())))
             );
         }
         if($ideeSearch->getWithChildrenLoc()===true){
