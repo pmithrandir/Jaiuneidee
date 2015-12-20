@@ -138,6 +138,7 @@ fos_elastica:
                         lastAction :
                             type : date
                         theme : ~
+                        themeSlug: ~
                         localisations: ~
                         localisationsNiveau0: ~
                         localisationsNiveau1: ~
