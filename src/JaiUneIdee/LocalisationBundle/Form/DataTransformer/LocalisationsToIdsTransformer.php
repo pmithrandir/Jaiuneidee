@@ -56,7 +56,7 @@ class LocalisationsToIdsTransformer implements DataTransformerInterface
         }
         if(count($localisations)==0){
             //si non touvé, erreur, mettre France    
-            $france = $em->getRepository('JaiUneIdeeLocalisationBundle:Localisation')->findOneBy(array("nom"=>"France"));
+            $france = $this->entityManager->getRepository('JaiUneIdeeLocalisationBundle:Localisation')->findOneBy(array("nom"=>"France"));
             $localisations->add($france);
         }
         return $localisations;
