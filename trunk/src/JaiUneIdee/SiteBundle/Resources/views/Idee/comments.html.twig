@@ -3,7 +3,7 @@
     <div class="box_left">
         <a href="{{ path('user_profile', { 'user_id': comment.user.id, 'username':comment.user}) }}">
         {% if(comment.user.avatar) %}
-            <img src="{{ image('../../upload/' ~ comment.user.id ~'/' ~ comment.user.avatar).cropResize(120,120)}}" alt="avatar" title="avatar" class="avatar" />
+            <img src="{{ image('../../upload/avatar/' ~ comment.user.id ~'/' ~ comment.user.avatar).cropResize(120,120)}}" alt="avatar" title="avatar" class="avatar" />
         {% else %}
             <img src="{{asset('images/avatar_default.png')}}" alt="avatar" title="avatar" class="avatar" />
         {% endif %}
